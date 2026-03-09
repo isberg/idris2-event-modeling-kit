@@ -1,0 +1,10 @@
+package emkit-sourcing
+version = 0.1.0
+authors = ""
+
+sourcedir = "src"
+
+modules = EmKit.Sourcing.History
+        , EmKit.Sourcing.Decider
+
+depends = base

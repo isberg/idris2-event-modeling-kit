@@ -1,0 +1,4 @@
+[custom.all.emkit-wire]
+type = "local"
+path = "."
+ipkg = "emkit-wire.ipkg"

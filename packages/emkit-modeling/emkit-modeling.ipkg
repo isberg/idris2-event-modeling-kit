@@ -1,0 +1,16 @@
+package emkit-modeling
+version = 0.1.0
+authors = ""
+
+sourcedir = "src"
+
+modules = EmKit.Modeling.Pattern.CommandStateChange
+        , EmKit.Modeling.Pattern.StateView
+        , EmKit.Modeling.Pattern.Automation
+        , EmKit.Modeling.Pattern.Translation
+        , EmKit.Modeling.Screen.Contracts
+        , EmKit.Modeling.Screen.Actions
+        , EmKit.Modeling.Traceability.Slice
+
+depends = base
+        , emkit-sourcing

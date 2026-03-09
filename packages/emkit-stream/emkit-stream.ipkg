@@ -1,0 +1,10 @@
+package emkit-stream
+version = 0.1.0
+authors = ""
+
+sourcedir = "src"
+
+modules = EmKit.Stream.Version
+        , EmKit.Stream.SSE
+
+depends = base

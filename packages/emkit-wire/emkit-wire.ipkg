@@ -1,0 +1,9 @@
+package emkit-wire
+version = 0.1.0
+authors = ""
+
+sourcedir = "src"
+
+modules = EmKit.Wire.Contracts
+
+depends = base

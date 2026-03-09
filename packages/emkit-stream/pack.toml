@@ -1,0 +1,4 @@
+[custom.all.emkit-stream]
+type = "local"
+path = "."
+ipkg = "emkit-stream.ipkg"

@@ -1,0 +1,9 @@
+[custom.all.emkit-modeling]
+type = "local"
+path = "."
+ipkg = "emkit-modeling.ipkg"
+
+[custom.all.emkit-sourcing]
+type = "local"
+path = "../emkit-sourcing"
+ipkg = "emkit-sourcing.ipkg"
