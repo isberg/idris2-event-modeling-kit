@@ -1,0 +1,4 @@
+[custom.all.counter-console]
+type = "local"
+path = "."
+ipkg = "counter-console.ipkg"

@@ -1,0 +1,16 @@
+package counter-console
+version = 0.1.0
+authors = ""
+
+sourcedir = "src"
+
+main = Main
+executable = "counter-console"
+
+modules = Domain
+        , Main
+
+depends = base
+        , emkit-sourcing
+        , emkit-modeling
+        , emkit-store
