@@ -101,6 +101,18 @@ decrementNat : Nat -> Nat
 decrementNat Z = Z
 decrementNat (S k) = k
 
+data BelowMax : Nat -> Type where
+  Below0 : BelowMax 0
+  Below1 : BelowMax 1
+  Below2 : BelowMax 2
+  Below3 : BelowMax 3
+  Below4 : BelowMax 4
+  Below5 : BelowMax 5
+  Below6 : BelowMax 6
+  Below7 : BelowMax 7
+  Below8 : BelowMax 8
+  Below9 : BelowMax 9
+
 public export
 implementation Projection CounterEvent CounterState where
   initial = MkCounterState Nothing 0
@@ -109,34 +121,54 @@ implementation Projection CounterEvent CounterState where
   evolve state Decremented = MkCounterState (name state) (decrementNat (value state))
 
 data CounterLegal : Command -> CounterState -> Type where
-  MkCounterLegal : CounterLegal cmd st
+  CanCreateMissing :
+    {title : String} ->
+    {value : Nat} ->
+    CounterLegal (Create title) (MkCounterState Nothing value)
+  CanIncrementBelowMax :
+    {counterName : String} ->
+    {value : Nat} ->
+    BelowMax value ->
+    CounterLegal Increment (MkCounterState (Just counterName) value)
+  CanDecrementPositive :
+    {counterName : String} ->
+    {remaining : Nat} ->
+    CounterLegal Decrement (MkCounterState (Just counterName) (S remaining))
+
+createLegal : (title : String) -> (state : CounterState) -> Either Rejection (CounterLegal (Create title) state)
+createLegal _ (MkCounterState Nothing value) = Right CanCreateMissing
+createLegal _ (MkCounterState (Just _) _) = Left AlreadyCreated
+
+incrementLegal : (state : CounterState) -> Either Rejection (CounterLegal Increment state)
+incrementLegal (MkCounterState Nothing _) = Left NotCreatedYet
+incrementLegal (MkCounterState (Just _) 0) = Right (CanIncrementBelowMax Below0)
+incrementLegal (MkCounterState (Just _) 1) = Right (CanIncrementBelowMax Below1)
+incrementLegal (MkCounterState (Just _) 2) = Right (CanIncrementBelowMax Below2)
+incrementLegal (MkCounterState (Just _) 3) = Right (CanIncrementBelowMax Below3)
+incrementLegal (MkCounterState (Just _) 4) = Right (CanIncrementBelowMax Below4)
+incrementLegal (MkCounterState (Just _) 5) = Right (CanIncrementBelowMax Below5)
+incrementLegal (MkCounterState (Just _) 6) = Right (CanIncrementBelowMax Below6)
+incrementLegal (MkCounterState (Just _) 7) = Right (CanIncrementBelowMax Below7)
+incrementLegal (MkCounterState (Just _) 8) = Right (CanIncrementBelowMax Below8)
+incrementLegal (MkCounterState (Just _) 9) = Right (CanIncrementBelowMax Below9)
+incrementLegal (MkCounterState (Just _) _) = Left AtMaximum
+
+decrementLegal : (state : CounterState) -> Either Rejection (CounterLegal Decrement state)
+decrementLegal (MkCounterState Nothing _) = Left NotCreatedYet
+decrementLegal (MkCounterState (Just _) Z) = Left AtMinimum
+decrementLegal (MkCounterState (Just _) (S remaining)) = Right CanDecrementPositive
 
 public export
 implementation Decider List Command Rejection CounterEvent CounterState where
   Legal = CounterLegal
 
-  legal (Create _) state =
-    case name state of
-      Nothing => Right MkCounterLegal
-      Just _ => Left AlreadyCreated
-  legal Increment state =
-    case name state of
-      Nothing => Left NotCreatedYet
-      Just _ =>
-        if value state < maxValue
-          then Right MkCounterLegal
-          else Left AtMaximum
-  legal Decrement state =
-    case name state of
-      Nothing => Left NotCreatedYet
-      Just _ =>
-        if value state == 0
-          then Left AtMinimum
-          else Right MkCounterLegal
+  legal (Create title) state = createLegal title state
+  legal Increment state = incrementLegal state
+  legal Decrement state = decrementLegal state
 
-  decide (Create title) _ MkCounterLegal = [Created title]
-  decide Increment _ MkCounterLegal = [Incremented]
-  decide Decrement _ MkCounterLegal = [Decremented]
+  decide (Create title) _ CanCreateMissing = [Created title]
+  decide Increment _ (CanIncrementBelowMax _) = [Incremented]
+  decide Decrement _ CanDecrementPositive = [Decremented]
 
 public export
 implementation StateView CounterEvent CounterView where
