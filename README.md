@@ -12,13 +12,14 @@ This repository is not an application. It is a package workspace intended to sho
   Event Modeling pattern helpers, screen contracts, and traceability helpers.
 - `emkit-stream`
   Stream version/cursor helpers and transport-neutral SSE framing helpers.
+- `emkit-store`
+  Persistence contracts plus memory/file adapters for event streams.
 - `emkit-wire`
   Shared transport contracts for execute, stream, and resync payloads.
 
 ## Planned Packages
 
-- `emkit-store`
-  Generic event-store interfaces and adapters.
+- template or example consumer app once the core package set stabilizes.
 
 ## Quickstart
 
@@ -31,6 +32,9 @@ Build a package from its package directory:
     pack build
 
     cd ../emkit-stream
+    pack build
+
+    cd ../emkit-store
     pack build
 
     cd ../emkit-wire

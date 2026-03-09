@@ -1,0 +1,4 @@
+[custom.all.emkit-store]
+type = "local"
+path = "."
+ipkg = "emkit-store.ipkg"

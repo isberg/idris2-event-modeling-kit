@@ -1,0 +1,14 @@
+package emkit-store
+version = 0.1.0
+authors = ""
+
+sourcedir = "src"
+
+modules = EmKit.Store.Core
+        , EmKit.Store.Memory
+        , EmKit.Store.File
+
+depends = base
+        , contrib
+        , json
+        , json-simple

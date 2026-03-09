@@ -36,6 +36,16 @@ It should remain framework-neutral. It must not encode app-specific route naming
 
 It should remain contract-focused. Domain route naming, JSON codec policy, and transport-framework integration should not be added until repeated use proves the right public shape.
 
+`emkit-store` owns persistence contracts and basic adapters:
+
+- stream load/append contracts,
+- stream listing contract,
+- stream/category subscription contracts,
+- in-memory store adapter,
+- file-backed store adapter.
+
+It must not own domain routing, event envelopes, command execution, or transport DTOs.
+
 The following concerns remain app-local unless extraction evidence becomes strong enough:
 
 - route names,

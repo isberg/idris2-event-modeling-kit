@@ -13,6 +13,11 @@ type = "local"
 path = "packages/emkit-stream"
 ipkg = "emkit-stream.ipkg"
 
+[custom.all.emkit-store]
+type = "local"
+path = "packages/emkit-store"
+ipkg = "emkit-store.ipkg"
+
 [custom.all.emkit-wire]
 type = "local"
 path = "packages/emkit-wire"

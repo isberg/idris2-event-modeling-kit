@@ -12,5 +12,8 @@ pack build
 cd "$repo_root/packages/emkit-stream"
 pack build
 
+cd "$repo_root/packages/emkit-store"
+pack build
+
 cd "$repo_root/packages/emkit-wire"
 pack build
