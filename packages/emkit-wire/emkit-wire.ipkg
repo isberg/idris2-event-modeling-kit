@@ -5,5 +5,9 @@ authors = ""
 sourcedir = "src"
 
 modules = EmKit.Wire.Contracts
+        , EmKit.Wire.JSON
+        , EmKit.Wire.JSON.Simple
 
 depends = base
+        , json
+        , json-simple

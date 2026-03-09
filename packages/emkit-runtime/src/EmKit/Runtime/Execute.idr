@@ -70,30 +70,65 @@ projectStreamView streamId = do
       Left err => Left err
       Right (version, history) => Right (version, projectFromList history)
 
-public export
-executeOnStream :
-  {m : Type -> Type} ->
-  {stream, command, rejection, event, state : Type} ->
-  Monad m =>
-  EventStore m stream event =>
-  Decider List command rejection event state =>
-  stream ->
-  command ->
-  m (Either (RuntimeExecuteError rejection) (RuntimeExecuteSuccess event state))
-executeOnStream streamId cmd = do
-  loaded <- loadHistoryOrEmpty {m} {stream} {event} streamId
-  case loaded of
-    Left err => pure (Left (RuntimeLoadFailed err))
-    Right (version, history) =>
-      let currentState = hydrate {h=List} {event=event} {state=state} history in
-      case decideR {h=List} {command=command} {rejection=rejection} {event=event} {state=state} cmd currentState of
-        Left domainRejection => pure (Left (RuntimeRejected domainRejection))
-        Right events => do
-          appended <- append streamId version events
-          pure $
-            case appended of
-              Left Conflict => Left RuntimeConflict
-              Left err => Left (RuntimeAppendFailed err)
-              Right newVersion =>
-                let nextState = replayFrom currentState events
-                 in Right (MkRuntimeExecuteSuccess version newVersion events nextState)
+mutual
+  public export
+  executeOnStream :
+    {m : Type -> Type} ->
+    {stream, command, rejection, event, state : Type} ->
+    Monad m =>
+    EventStore m stream event =>
+    Decider List command rejection event state =>
+    stream ->
+    command ->
+    m (Either (RuntimeExecuteError rejection) (RuntimeExecuteSuccess event state))
+  executeOnStream streamId cmd = do
+    loaded <- loadHistoryOrEmpty {m} {stream} {event} streamId
+    case loaded of
+      Left err => pure (Left (RuntimeLoadFailed err))
+      Right (version, history) =>
+        executeAgainstLoaded streamId version history cmd
+
+  executeAgainstLoaded :
+    {m : Type -> Type} ->
+    {stream, command, rejection, event, state : Type} ->
+    Monad m =>
+    EventStore m stream event =>
+    Decider List command rejection event state =>
+    stream ->
+    Nat ->
+    List event ->
+    command ->
+    m (Either (RuntimeExecuteError rejection) (RuntimeExecuteSuccess event state))
+  executeAgainstLoaded streamId version history cmd = do
+    let currentState = hydrate {h=List} {event=event} {state=state} history
+    case decideR {h=List} {command=command} {rejection=rejection} {event=event} {state=state} cmd currentState of
+      Left domainRejection => pure (Left (RuntimeRejected domainRejection))
+      Right events => do
+        appended <- append streamId version events
+        pure $
+          case appended of
+            Left Conflict => Left RuntimeConflict
+            Left err => Left (RuntimeAppendFailed err)
+            Right newVersion =>
+              let nextState = replayFrom currentState events
+               in Right (MkRuntimeExecuteSuccess version newVersion events nextState)
+
+  public export
+  executeOnStreamExpected :
+    {m : Type -> Type} ->
+    {stream, command, rejection, event, state : Type} ->
+    Monad m =>
+    EventStore m stream event =>
+    Decider List command rejection event state =>
+    stream ->
+    Nat ->
+    command ->
+    m (Either (RuntimeExecuteError rejection) (RuntimeExecuteSuccess event state))
+  executeOnStreamExpected streamId expectedVersion cmd = do
+    loaded <- loadHistoryOrEmpty {m} {stream} {event} streamId
+    case loaded of
+      Left err => pure (Left (RuntimeLoadFailed err))
+      Right (version, history) =>
+        if expectedVersion == version
+          then executeAgainstLoaded streamId version history cmd
+          else pure (Left RuntimeConflict)
