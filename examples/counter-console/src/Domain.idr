@@ -108,20 +108,23 @@ implementation Projection CounterEvent CounterState where
   evolve state Incremented = MkCounterState (name state) (S (value state))
   evolve state Decremented = MkCounterState (name state) (decrementNat (value state))
 
+data CounterLegal : Command -> CounterState -> Type where
+  MkCounterLegal : CounterLegal cmd st
+
 public export
 implementation Decider List Command Rejection CounterEvent CounterState where
-  Legal _ _ = ()
+  Legal = CounterLegal
 
   legal (Create _) state =
     case name state of
-      Nothing => Right ()
+      Nothing => Right MkCounterLegal
       Just _ => Left AlreadyCreated
   legal Increment state =
     case name state of
       Nothing => Left NotCreatedYet
       Just _ =>
         if value state < maxValue
-          then Right ()
+          then Right MkCounterLegal
           else Left AtMaximum
   legal Decrement state =
     case name state of
@@ -129,11 +132,11 @@ implementation Decider List Command Rejection CounterEvent CounterState where
       Just _ =>
         if value state == 0
           then Left AtMinimum
-          else Right ()
+          else Right MkCounterLegal
 
-  decide (Create title) _ _ = [Created title]
-  decide Increment _ _ = [Incremented]
-  decide Decrement _ _ = [Decremented]
+  decide (Create title) _ MkCounterLegal = [Created title]
+  decide Increment _ MkCounterLegal = [Incremented]
+  decide Decrement _ MkCounterLegal = [Decremented]
 
 public export
 implementation StateView CounterEvent CounterView where
