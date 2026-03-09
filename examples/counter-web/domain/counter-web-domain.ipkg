@@ -1,0 +1,14 @@
+package counter-web-domain
+version = 0.1.0
+authors = ""
+
+sourcedir = "src"
+
+modules = Domain
+        , WebApiTypes
+
+depends = base
+        , contrib
+        , emkit-sourcing
+        , emkit-modeling
+        , json-simple

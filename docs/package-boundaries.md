@@ -61,3 +61,10 @@ The following concerns remain app-local unless extraction evidence becomes stron
 - domain-specific live event DTOs,
 - screen catalogs and projection bundles,
 - automation policy rules.
+
+After `examples/counter-web`, two more seams are now concrete but still intentionally local:
+
+- backend SSE subscription/replay glue (`examples/counter-web/backend/src/BackendSSE.idr`)
+- frontend EventSource lifecycle glue (`examples/counter-web/frontend/src/FrontendSSE.idr`)
+
+They should become shared packages only after at least one more web example confirms that their current shape is stable.

@@ -1,0 +1,19 @@
+package counter-web-frontend
+version = 0.1.0
+authors = ""
+
+sourcedir = "src"
+
+modules = FrontendSSE
+        , FrontendMain
+
+main = FrontendMain
+executable = "counter_web_frontend.js"
+opts = "--codegen javascript"
+
+depends = base
+        , contrib
+        , dom-mvc
+        , json-simple
+        , counter-web-domain
+        , emkit-modeling

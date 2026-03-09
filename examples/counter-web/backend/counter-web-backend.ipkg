@@ -1,0 +1,27 @@
+package counter-web-backend
+version = 0.1.0
+authors = ""
+
+sourcedir = "src"
+
+modules = BackendSSE
+        , BackendMain
+
+main = BackendMain
+executable = "counter_web_backend"
+opts = "--codegen node"
+
+depends = base
+        , contrib
+        , json
+        , json-simple
+        , promise
+        , tyttp
+        , tyttp-adapter-node
+        , tyttp-json
+        , node
+        , counter-web-domain
+        , emkit-modeling
+        , emkit-runtime
+        , emkit-store
+        , emkit-stream

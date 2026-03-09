@@ -1,4 +1,3 @@
-build/
-*.ttc
-*.ttm
-*.ibc
+/build/
+**/build/
+examples/*/static/frontend.js

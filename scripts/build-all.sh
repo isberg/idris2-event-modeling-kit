@@ -20,3 +20,9 @@ pack build
 
 cd "$repo_root/packages/emkit-wire"
 pack build
+
+cd "$repo_root/examples/counter-console"
+pack build
+
+cd "$repo_root/examples/counter-web"
+./scripts/build.sh
