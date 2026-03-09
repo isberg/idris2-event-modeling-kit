@@ -1,4 +1,4 @@
-module FrontendSSE
+module EmKit.Frontend.SSE
 
 import JS
 import Web.MVC

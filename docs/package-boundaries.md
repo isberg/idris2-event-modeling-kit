@@ -44,6 +44,21 @@ It should remain framework-neutral. It must not encode app-specific route naming
 
 It should remain contract-focused. Domain route naming, JSON codec policy, and transport-framework integration should not be added until repeated use proves the right public shape.
 
+
+`emkit-backend` owns shared backend web adapters:
+
+- SSE replay plus live subscription helpers,
+- per-stream subscription cleanup discipline.
+
+It may depend on `emkit-store` and `emkit-stream`, but it must not own route naming, auth, or domain-specific DTO policy.
+
+`emkit-frontend` owns shared frontend web adapters:
+
+- browser EventSource lifecycle helpers,
+- client id generation for live subscriptions.
+
+It should remain route-neutral. Higher-level execute or stream controller helpers should be added only when more than one local example truly needs them.
+
 `emkit-store` owns persistence contracts and basic adapters:
 
 - stream load/append contracts,
@@ -64,7 +79,7 @@ The following concerns remain app-local unless extraction evidence becomes stron
 
 After `examples/counter-web`, two more seams are now concrete but still intentionally local:
 
-- backend SSE subscription/replay glue (`examples/counter-web/backend/src/BackendSSE.idr`)
-- frontend EventSource lifecycle glue (`examples/counter-web/frontend/src/FrontendSSE.idr`)
+- higher-level execute helpers
+- higher-level stream endpoint/controller helpers
 
-They should become shared packages only after at least one more web example confirms that their current shape is stable.
+The low-level SSE seam is now shared in `emkit-backend` and `emkit-frontend`. The next likely extraction candidates are typed frontend execute helpers and route-neutral stream endpoint helpers, but they remain deferred until another web example or a refactor of `counter-web` confirms the public shape.

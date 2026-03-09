@@ -17,7 +17,11 @@ This repository is not an application. It is a package workspace intended to sho
 - `emkit-store`
   Persistence contracts plus memory/file adapters for event streams.
 - `emkit-wire`
-  Shared transport contracts for execute, stream, and resync payloads.
+  Shared transport contracts plus JSON codecs for execute, stream, and resync payloads.
+- `emkit-backend`
+  Shared backend SSE replay/live adapter helpers.
+- `emkit-frontend`
+  Shared frontend EventSource lifecycle helpers.
 
 ## Planned Packages
 
@@ -28,7 +32,9 @@ This repository is not an application. It is a package workspace intended to sho
 - `examples/counter-console`
   Small console application that proves the current package stack and the first `emkit-runtime` extraction.
 - `examples/counter-web`
-  Small SSE-first web application with one fixed stream and one screen. It proves the current backend/frontend seams before extracting shared web helper packages.
+  Small SSE-first web application with one fixed stream and one screen. It now uses shared backend/frontend SSE helpers while keeping app-specific UI and snapshot logic local.
+- `examples/counter-web-multi`
+  Multi-stream SSE-first web application with typed execute and resync payloads. It proves the wire codecs and the multi-stream cleanup fix in the shared backend SSE adapter.
 
 ## Quickstart
 
@@ -52,15 +58,25 @@ Build a package from its package directory:
     cd ../emkit-wire
     pack build
 
+    cd ../emkit-backend
+    pack build
+
+    cd ../emkit-frontend
+    pack build
+
 Build and smoke the first example:
 
     cd examples/counter-console
     pack build
     ./scripts/smoke.sh
 
-Build and smoke the first web example:
+Build and smoke the web examples:
 
     cd examples/counter-web
+    ./scripts/build.sh
+    ./scripts/smoke.sh
+
+    cd ../counter-web-multi
     ./scripts/build.sh
     ./scripts/smoke.sh
 

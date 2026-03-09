@@ -1,0 +1,14 @@
+package emkit-backend
+version = 0.1.0
+authors = ""
+
+sourcedir = "src"
+
+modules = EmKit.Backend.SSE
+
+depends = base
+        , contrib
+        , node
+        , tyttp
+        , emkit-store
+        , emkit-stream

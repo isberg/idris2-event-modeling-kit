@@ -1,0 +1,11 @@
+package emkit-frontend
+version = 0.1.0
+authors = ""
+
+sourcedir = "src"
+
+modules = EmKit.Frontend.SSE
+
+depends = base
+        , contrib
+        , dom-mvc

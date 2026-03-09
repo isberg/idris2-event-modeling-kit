@@ -1,4 +1,4 @@
-module BackendSSE
+module EmKit.Backend.SSE
 
 import Control.Monad.Reader
 import Data.Buffer.Ext
@@ -20,12 +20,12 @@ emptyClientUnsubs : ClientUnsubs
 emptyClientUnsubs = SortedMap.empty
 
 registerCleanup : IORef.IORef ClientUnsubs -> String -> IO () -> IO ()
-registerCleanup ref clientId cleanup = do
+registerCleanup ref key cleanup = do
   current <- IORef.readIORef ref
-  case SortedMap.lookup clientId current of
+  case SortedMap.lookup key current of
     Nothing => pure ()
     Just oldCleanup => oldCleanup
-  IORef.writeIORef ref (SortedMap.insert clientId cleanup current)
+  IORef.writeIORef ref (SortedMap.insert key cleanup current)
 
 cleanupKey : String -> String -> String
 cleanupKey streamId clientId = streamId ++ "::" ++ clientId

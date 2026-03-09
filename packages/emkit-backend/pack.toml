@@ -1,0 +1,4 @@
+[custom.all.emkit-backend]
+type = "local"
+path = "."
+ipkg = "emkit-backend.ipkg"

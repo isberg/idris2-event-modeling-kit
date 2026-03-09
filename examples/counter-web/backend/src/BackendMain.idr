@@ -7,7 +7,7 @@ import Data.IORef as IORef
 import Data.SortedMap
 import Data.String
 import Domain
-import BackendSSE
+import EmKit.Backend.SSE
 import EmKit.Modeling.Pattern.StateView
 import EmKit.Runtime.Execute
 import EmKit.Sourcing.Decider

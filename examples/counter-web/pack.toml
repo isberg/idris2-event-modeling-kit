@@ -42,3 +42,13 @@ ipkg = "emkit-store.ipkg"
 type = "local"
 path = "../../packages/emkit-wire"
 ipkg = "emkit-wire.ipkg"
+
+[custom.all.emkit-backend]
+type = "local"
+path = "../../packages/emkit-backend"
+ipkg = "emkit-backend.ipkg"
+
+[custom.all.emkit-frontend]
+type = "local"
+path = "../../packages/emkit-frontend"
+ipkg = "emkit-frontend.ipkg"

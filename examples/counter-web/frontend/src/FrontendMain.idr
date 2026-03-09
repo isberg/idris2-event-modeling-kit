@@ -4,7 +4,7 @@ import Data.List
 import Data.String
 import Domain
 import EmKit.Modeling.Pattern.StateView
-import FrontendSSE
+import EmKit.Frontend.SSE as FrontendSSE
 import JS.Util
 import JSON.Simple
 import Text.HTML.Attribute as HtmlAttr

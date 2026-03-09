@@ -1,6 +1,6 @@
 module BackendMain
 
-import BackendSSE
+import EmKit.Backend.SSE
 import Control.Monad.Reader
 import Data.Buffer.Ext
 import Data.IORef as IORef

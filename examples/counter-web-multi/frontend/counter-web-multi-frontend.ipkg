@@ -4,8 +4,7 @@ authors = ""
 
 sourcedir = "src"
 
-modules = FrontendSSE
-        , FrontendMain
+modules = FrontendMain
 
 main = FrontendMain
 executable = "counter_web_multi_frontend.js"
@@ -17,3 +16,4 @@ depends = base
         , json-simple
         , counter-web-multi-domain
         , emkit-wire
+        , emkit-frontend

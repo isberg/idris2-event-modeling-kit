@@ -7,7 +7,7 @@ import Domain
 import Domain.JSON.Simple
 import EmKit.Wire.Contracts
 import EmKit.Wire.JSON.Simple
-import FrontendSSE
+import EmKit.Frontend.SSE as FrontendSSE
 import JS.Util
 import JSON.Simple
 import Text.HTML.Attribute as HtmlAttr

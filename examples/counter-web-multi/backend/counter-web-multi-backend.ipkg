@@ -4,8 +4,7 @@ authors = ""
 
 sourcedir = "src"
 
-modules = BackendSSE
-        , BackendMain
+modules = BackendMain
 
 main = BackendMain
 executable = "counter_web_multi_backend"
@@ -24,4 +23,5 @@ depends = base
         , emkit-runtime
         , emkit-store
         , emkit-stream
+        , emkit-backend
         , emkit-wire
