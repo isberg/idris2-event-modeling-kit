@@ -1,0 +1,14 @@
+package counter-web-multi-domain
+version = 0.1.0
+authors = ""
+
+sourcedir = "src"
+
+modules = Domain
+        , Domain.JSON
+        , Domain.JSON.Simple
+
+depends = base
+        , emkit-sourcing
+        , json
+        , json-simple
