@@ -9,6 +9,9 @@ pack build
 cd "$repo_root/packages/emkit-modeling"
 pack build
 
+cd "$repo_root/packages/emkit-runtime"
+pack build
+
 cd "$repo_root/packages/emkit-stream"
 pack build
 

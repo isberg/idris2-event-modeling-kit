@@ -20,6 +20,14 @@ It must stay dependency-light and should depend on `base` only unless there is a
 
 It may depend on `emkit-sourcing`, but not on storage or web-adapter packages.
 
+`emkit-runtime` owns application runtime composition helpers:
+
+- load stream history as empty when a stream does not exist,
+- execute deciders against store-backed stream histories,
+- project views from stored stream histories.
+
+It may depend on `emkit-sourcing`, `emkit-modeling`, and `emkit-store`, but it must remain transport-neutral and framework-neutral.
+
 `emkit-stream` owns transport-neutral live-stream helpers:
 
 - stream version/cursor helpers,

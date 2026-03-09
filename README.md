@@ -10,6 +10,8 @@ This repository is not an application. It is a package workspace intended to sho
   Pure history, projection, and decider algebra.
 - `emkit-modeling`
   Event Modeling pattern helpers, screen contracts, and traceability helpers.
+- `emkit-runtime`
+  Shared application runtime bridge for store-backed command execution and view projection.
 - `emkit-stream`
   Stream version/cursor helpers and transport-neutral SSE framing helpers.
 - `emkit-store`
@@ -19,7 +21,12 @@ This repository is not an application. It is a package workspace intended to sho
 
 ## Planned Packages
 
-- template or example consumer app once the core package set stabilizes.
+- web-focused backend/frontend helper packages once the current runtime layer has been proven by more than one example.
+
+## Examples
+
+- `examples/counter-console`
+  Small console application that proves the current package stack and the first `emkit-runtime` extraction.
 
 ## Quickstart
 
@@ -31,6 +38,9 @@ Build a package from its package directory:
     cd ../emkit-modeling
     pack build
 
+    cd ../emkit-runtime
+    pack build
+
     cd ../emkit-stream
     pack build
 
@@ -39,6 +49,12 @@ Build a package from its package directory:
 
     cd ../emkit-wire
     pack build
+
+Build and smoke the first example:
+
+    cd examples/counter-console
+    pack build
+    ./scripts/smoke.sh
 
 ## Repository Rule
 

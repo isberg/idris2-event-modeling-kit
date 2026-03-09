@@ -8,6 +8,11 @@ type = "local"
 path = "packages/emkit-modeling"
 ipkg = "emkit-modeling.ipkg"
 
+[custom.all.emkit-runtime]
+type = "local"
+path = "packages/emkit-runtime"
+ipkg = "emkit-runtime.ipkg"
+
 [custom.all.emkit-stream]
 type = "local"
 path = "packages/emkit-stream"

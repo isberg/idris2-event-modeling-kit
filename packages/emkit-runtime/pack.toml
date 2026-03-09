@@ -1,0 +1,4 @@
+[custom.all.emkit-runtime]
+type = "local"
+path = "."
+ipkg = "emkit-runtime.ipkg"

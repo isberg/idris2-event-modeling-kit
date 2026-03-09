@@ -1,17 +1,12 @@
-package counter-console
+package emkit-runtime
 version = 0.1.0
 authors = ""
 
 sourcedir = "src"
 
-main = Main
-executable = "counter-console"
-
-modules = Domain
-        , Main
+modules = EmKit.Runtime.Execute
 
 depends = base
         , emkit-sourcing
         , emkit-modeling
-        , emkit-runtime
         , emkit-store

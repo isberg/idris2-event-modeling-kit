@@ -8,6 +8,7 @@ import Domain
 import EmKit.Modeling.Pattern.StateView
 import EmKit.Modeling.Screen.Actions
 import EmKit.Modeling.Screen.Contracts
+import EmKit.Runtime.Execute
 import EmKit.Sourcing.Decider
 import EmKit.Store.Core
 import EmKit.Store.Memory as Memory
@@ -26,44 +27,28 @@ renderAppendErr : AppendErr -> String
 renderAppendErr Conflict = "concurrency conflict while appending events."
 renderAppendErr IOAppendError = "store append failed."
 
-loadHistoryOrEmpty : Memory.App String CounterEvent (Either LoadErr (Nat, List CounterEvent))
-loadHistoryOrEmpty = do
-  result <- load streamId
-  pure $
-    case result of
-      Left NoStream => Right (0, [])
-      Left err => Left err
-      Right loaded => Right loaded
+renderRuntimeErr : RuntimeExecuteError Rejection -> String
+renderRuntimeErr (RuntimeLoadFailed err) = "Load failed: " ++ renderLoadErr err
+renderRuntimeErr (RuntimeRejected rejection) = "Rejected: " ++ renderRejection rejection
+renderRuntimeErr RuntimeConflict = "Append failed: " ++ renderAppendErr Conflict
+renderRuntimeErr (RuntimeAppendFailed err) = "Append failed: " ++ renderAppendErr err
 
-loadBundle : Memory.App String CounterEvent (Either String (Nat, CounterState, CounterView, CounterBundle))
+loadBundle : Memory.App String CounterEvent (Either String (Nat, CounterView, CounterBundle))
 loadBundle = do
-  result <- loadHistoryOrEmpty
+  result <- projectStreamView {m=ReaderT (Memory.Env String CounterEvent) IO} {stream=String} {event=CounterEvent} {view=CounterView} streamId
   pure $
     case result of
       Left err => Left ("Load failed: " ++ renderLoadErr err)
-      Right (version, history) =>
-        let state = hydrate {h=List} {event=CounterEvent} {state=CounterState} history
-            view = projectFromList history
-            bundle = bundleForView view
-         in Right (version, state, view, bundle)
+      Right (version, view) =>
+        Right (version, view, bundleForView view)
 
-executeCommandDirect : Command -> Memory.App String CounterEvent (Either String (Nat, List CounterEvent, CounterState))
-executeCommandDirect command = do
-  loaded <- loadHistoryOrEmpty
-  case loaded of
-    Left err => pure (Left ("Load failed: " ++ renderLoadErr err))
-    Right (version, history) =>
-      let state = hydrate {h=List} {event=CounterEvent} {state=CounterState} history in
-      case decideR {h=List} {command=Command} {rejection=Rejection} {event=CounterEvent} {state=CounterState} command state of
-        Left rejection => pure (Left ("Rejected: " ++ renderRejection rejection))
-        Right events => do
-          appended <- append streamId version events
-          pure $
-            case appended of
-              Left err => Left ("Append failed: " ++ renderAppendErr err)
-              Right newVersion =>
-                let nextState = replayFrom state events
-                 in Right (newVersion, events, nextState)
+executeCommandWithRuntime : Command -> Memory.App String CounterEvent (Either String (RuntimeExecuteSuccess CounterEvent CounterState))
+executeCommandWithRuntime command = do
+  result <- executeOnStream {m=ReaderT (Memory.Env String CounterEvent) IO} {stream=String} {command=Command} {rejection=Rejection} {event=CounterEvent} {state=CounterState} streamId command
+  pure $
+    case result of
+      Left err => Left (renderRuntimeErr err)
+      Right success => Right success
 
 renderEvents : List CounterEvent -> String
 renderEvents [] = "[]"
@@ -130,7 +115,7 @@ loop = do
   loaded <- loadBundle
   case loaded of
     Left message => lift (putStrLn message)
-    Right (version, _, view, bundle) => do
+    Right (version, view, bundle) => do
       let actions = availableScreenActions bundle CounterHome
       lift $ renderScreen version view actions
       lift $ putStr "> "
@@ -144,11 +129,19 @@ loop = do
               loop
             Just action => do
               command <- resolveIntent (intentForAction action)
-              outcome <- executeCommandDirect command
+              outcome <- executeCommandWithRuntime command
               case outcome of
                 Left message => lift $ putStrLn message
-                Right (newVersion, events, state) =>
-                  lift $ putStrLn ("Accepted at version " ++ show newVersion ++ " with events " ++ renderEvents events ++ "; state value=" ++ show (value state))
+                Right success =>
+                  lift $
+                    putStrLn
+                      ( "Accepted at version "
+                          ++ show (newVersion success)
+                          ++ " with events "
+                          ++ renderEvents (emittedEvents success)
+                          ++ "; state value="
+                          ++ show (value (resultingState success))
+                      )
               loop
 
 main : IO ()
