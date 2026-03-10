@@ -5,7 +5,11 @@ authors = ""
 sourcedir = "src"
 
 modules = EmKit.Frontend.SSE
+        , EmKit.Frontend.Execute
+        , EmKit.Frontend.Stream
 
 depends = base
         , contrib
         , dom-mvc
+        , json-simple
+        , emkit-wire

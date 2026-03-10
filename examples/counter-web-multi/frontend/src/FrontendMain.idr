@@ -5,9 +5,11 @@ import Data.Maybe
 import Data.SortedMap as SortedMap
 import Domain
 import Domain.JSON.Simple
+import EmKit.Frontend.Execute as FrontendExecute
+import EmKit.Frontend.SSE as FrontendSSE
+import EmKit.Frontend.Stream as FrontendStream
 import EmKit.Wire.Contracts
 import EmKit.Wire.JSON.Simple
-import EmKit.Frontend.SSE as FrontendSSE
 import JS.Util
 import JSON.Simple
 import Text.HTML.Attribute as HtmlAttr
@@ -51,7 +53,7 @@ data Msg : Type where
 
 httpErrorMessage : HTTPError -> String
 httpErrorMessage Timeout = "Request timed out."
-httpErrorMessage NetworkError = "Network error. Run ./scripts/run.sh and open http://127.0.0.1:3000/static/index.html"
+httpErrorMessage NetworkError = "Network error. Run ./scripts/run.sh and open /static/index.html on the configured port."
 httpErrorMessage (BadStatus code) = "Server returned status " ++ show code ++ "."
 httpErrorMessage (JSONError _ _) = "Failed to decode JSON response."
 
@@ -66,21 +68,19 @@ resyncUrl streamId = "/api/counter/resync/" ++ streamId
 
 subscribeStream : String -> String -> Cmd Msg
 subscribeStream streamId clientId =
-  FrontendSSE.subscribe (eventsUrl streamId clientId) (EventReceived streamId)
+  FrontendStream.subscribeStream eventsUrl streamId clientId (EventReceived streamId)
 
 subscribeAll : List String -> String -> Cmd Msg
 subscribeAll streamIds clientId =
-  batch (map (\streamId => subscribeStream streamId clientId) streamIds)
+  FrontendStream.subscribeMany eventsUrl streamIds clientId EventReceived
 
 postIncrement : String -> Nat -> Cmd Msg
 postIncrement streamId currentVersion =
-  post (executeUrl streamId)
-    (JSONBody (MkExecutePayload currentVersion Increment))
-    (ExpectAny (IncrementFinished streamId))
+  FrontendExecute.postExecute executeUrl IncrementFinished streamId currentVersion Increment
 
 getResync : String -> Cmd Msg
 getResync streamId =
-  get (resyncUrl streamId) (ExpectJSON (ResyncFinished streamId))
+  FrontendExecute.getResync resyncUrl ResyncFinished streamId
 
 sumCounts : SortedMap.SortedMap String StreamState -> Nat
 sumCounts streams = foldl (\acc, (_, st) => acc + count st) 0 (SortedMap.toList streams)
@@ -144,7 +144,7 @@ updateView : AppState -> Cmd Msg
 updateView s = children Ref.Body (viewNodes s)
 
 controller : Msg -> AppState -> (AppState, Cmd Msg)
-controller Initialized s = (s, batch [updateView s, requestClientId ClientIdReady])
+controller Initialized s = (s, batch [updateView s, FrontendSSE.requestClientId ClientIdReady])
 controller (ClientIdReady clientId) s =
   let s' = { clientId := Just clientId, status := "Connected. Waiting for stream replay..." } s in
   (s', batch [updateView s', subscribeAll (streamIds s) clientId])
