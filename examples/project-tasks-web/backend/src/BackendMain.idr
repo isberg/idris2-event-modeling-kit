@@ -1,12 +1,12 @@
 module BackendMain
 
 import Control.Monad.Reader
-import Control.Monad.Trans
 import Data.Buffer.Ext
 import Data.IORef as IORef
 import Data.List
 import Data.String
 import EmKit.Backend.SSE
+import EmKit.Backend.StoreApp
 import Domain.Automation as Automation
 import Domain.Event as Event
 import Domain.JSON
@@ -17,8 +17,6 @@ import EmKit.Runtime.Execute
 import EmKit.Runtime.Query
 import EmKit.Sourcing.Decider
 import EmKit.Store.Core
-import EmKit.Store.File as File
-import EmKit.Store.Memory as Memory
 import EmKit.Stream.SSE
 import EmKit.Wire.Contracts
 import EmKit.Wire.JSON
@@ -39,33 +37,8 @@ import TyTTP.URL
 %default covering
 %hide JSON.Parser.JSON
 
-data StorageMode = MemoryMode | FileMode String
-
-data StoreBackend ev = UseMemory (Memory.Env String ev) | UseFile (File.Env ev)
-
-record AppEnv ev where
-  constructor MkAppEnv
-  storageMode : StorageMode
-  store : StoreBackend ev
-
 ProjectTaskApp : Type -> Type -> Type
-ProjectTaskApp ev a = ReaderT (AppEnv ev) IO a
-
-findFileStorageArg : List String -> Maybe StorageMode
-findFileStorageArg [] = Nothing
-findFileStorageArg ("file" :: path :: _) = Just (FileMode path)
-findFileStorageArg (_ :: rest) = findFileStorageArg rest
-
-findPortArg : List String -> Maybe String
-findPortArg [] = Nothing
-findPortArg ("--port" :: value :: _) = Just value
-findPortArg (_ :: rest) = findPortArg rest
-
-parsePort : String -> Maybe Int
-parsePort raw =
-  case parseInteger (trim raw) of
-    Nothing => Nothing
-    Just n => if n <= 0 || n > 65535 then Nothing else Just (cast n)
+ProjectTaskApp ev a = ReaderT (StoreAppEnv ev) IO a
 
 isProjectStream : String -> Bool
 isProjectStream streamId = isPrefixOf (unpack Event.projectPrefix) (unpack streamId)
@@ -76,68 +49,6 @@ isTaskStream streamId = isPrefixOf (unpack Event.taskPrefix) (unpack streamId)
 isTaskForProject : String -> String -> Bool
 isTaskForProject projectId streamId =
   isPrefixOf (unpack (Task.taskPrefixForProject projectId)) (unpack streamId)
-
-runStore :
-  AppEnv ev ->
-  ReaderT (Memory.Env String ev) IO a ->
-  ReaderT (File.Env ev) IO a ->
-  IO a
-runStore env memAction fileAction =
-  case store env of
-    UseMemory memEnv => runReaderT memEnv memAction
-    UseFile fileEnv => runReaderT fileEnv fileAction
-
-public export
-implementation {ev : Type} -> (SimpleFromJSON.FromJSON ev, SimpleToJSON.ToJSON ev) => EventStore (ReaderT (AppEnv ev) IO) String ev where
-  load streamId = do
-    env <- ask
-    lift $ runStore env (load streamId) (load streamId)
-
-  loadFrom streamId from = do
-    env <- ask
-    lift $ runStore env (loadFrom streamId from) (loadFrom streamId from)
-
-  append streamId expected events = do
-    env <- ask
-    lift $ runStore env (append streamId expected events) (append streamId expected events)
-
-public export
-implementation {ev : Type} -> (SimpleFromJSON.FromJSON ev, SimpleToJSON.ToJSON ev) => Observable (ReaderT (AppEnv ev) IO) String ev where
-  subscribe streamId cb = do
-    env <- ask
-    case store env of
-      UseMemory memEnv => do
-        let wrapped : Nat -> List ev -> ReaderT (Memory.Env String ev) IO ()
-            wrapped from events = lift $ runReaderT env (cb from events)
-        unsub <- lift $ runReaderT memEnv (EmKit.Store.Core.subscribe {m=ReaderT (Memory.Env String ev) IO} {stream=String} {ev=ev} streamId wrapped)
-        pure (do _ <- ask; lift $ runReaderT memEnv unsub)
-      UseFile fileEnv => do
-        let wrapped : Nat -> List ev -> ReaderT (File.Env ev) IO ()
-            wrapped from events = lift $ runReaderT env (cb from events)
-        unsub <- lift $ runReaderT fileEnv (EmKit.Store.Core.subscribe {m=ReaderT (File.Env ev) IO} {stream=String} {ev=ev} streamId wrapped)
-        pure (do _ <- ask; lift $ runReaderT fileEnv unsub)
-
-public export
-implementation {ev : Type} -> (SimpleFromJSON.FromJSON ev, SimpleToJSON.ToJSON ev) => ObservableCategory (ReaderT (AppEnv ev) IO) String ev where
-  subscribeCategory matches cb = do
-    env <- ask
-    case store env of
-      UseMemory memEnv => do
-        let wrapped : String -> Nat -> List ev -> ReaderT (Memory.Env String ev) IO ()
-            wrapped streamId from events = lift $ runReaderT env (cb streamId from events)
-        unsub <- lift $ runReaderT memEnv (EmKit.Store.Core.subscribeCategory {m=ReaderT (Memory.Env String ev) IO} {stream=String} {ev=ev} matches wrapped)
-        pure (do _ <- ask; lift $ runReaderT memEnv unsub)
-      UseFile fileEnv => do
-        let wrapped : String -> Nat -> List ev -> ReaderT (File.Env ev) IO ()
-            wrapped streamId from events = lift $ runReaderT env (cb streamId from events)
-        unsub <- lift $ runReaderT fileEnv (EmKit.Store.Core.subscribeCategory {m=ReaderT (File.Env ev) IO} {stream=String} {ev=ev} matches wrapped)
-        pure (do _ <- ask; lift $ runReaderT fileEnv unsub)
-
-public export
-implementation {ev : Type} -> (SimpleFromJSON.FromJSON ev, SimpleToJSON.ToJSON ev) => StreamCatalog (ReaderT (AppEnv ev) IO) String where
-  listStreams = do
-    env <- ask
-    lift $ runStore env listStreams listStreams
 
 findHeader : String -> List (String, String) -> Maybe String
 findHeader _ [] = Nothing
@@ -202,7 +113,7 @@ listProjectSummariesInStore : ProjectTaskApp Event.StoredEvent (Either String (L
 listProjectSummariesInStore = do
   listed <-
     listMappedProjectedSummaries
-      {m=ReaderT (AppEnv Event.StoredEvent) IO}
+      {m=ReaderT (StoreAppEnv Event.StoredEvent) IO}
       {stream=String}
       {storedEvent=Event.StoredEvent}
       {localEvent=Event.ProjectEvent}
@@ -218,7 +129,7 @@ listProjectSummariesInStore = do
 
 projectResyncInStore : String -> ProjectTaskApp Event.StoredEvent (Either String (ResyncPayload Event.ProjectEvent))
 projectResyncInStore streamId = do
-  loaded <- loadMappedHistoryOrEmpty {m=ReaderT (AppEnv Event.StoredEvent) IO} {stream=String} {storedEvent=Event.StoredEvent} {localEvent=Event.ProjectEvent} projectEventFromStored streamId
+  loaded <- loadMappedHistoryOrEmpty {m=ReaderT (StoreAppEnv Event.StoredEvent) IO} {stream=String} {storedEvent=Event.StoredEvent} {localEvent=Event.ProjectEvent} projectEventFromStored streamId
   pure $ case loaded of
     Left err => Left (renderLoadErr err)
     Right (version, events) => Right (MkResyncPayload version events)
@@ -227,7 +138,7 @@ tasksForProjectInStore : String -> ProjectTaskApp Event.StoredEvent (Either Stri
 tasksForProjectInStore targetProjectId = do
   listed <-
     listMappedProjectedSummaries
-      {m=ReaderT (AppEnv Event.StoredEvent) IO}
+      {m=ReaderT (StoreAppEnv Event.StoredEvent) IO}
       {stream=String}
       {storedEvent=Event.StoredEvent}
       {localEvent=Event.TaskEvent}
@@ -243,14 +154,14 @@ tasksForProjectInStore targetProjectId = do
 
 taskResyncInStore : String -> ProjectTaskApp Event.StoredEvent (Either String (ResyncPayload Event.TaskEvent))
 taskResyncInStore streamId = do
-  loaded <- loadMappedHistoryOrEmpty {m=ReaderT (AppEnv Event.StoredEvent) IO} {stream=String} {storedEvent=Event.StoredEvent} {localEvent=Event.TaskEvent} taskEventFromStored streamId
+  loaded <- loadMappedHistoryOrEmpty {m=ReaderT (StoreAppEnv Event.StoredEvent) IO} {stream=String} {storedEvent=Event.StoredEvent} {localEvent=Event.TaskEvent} taskEventFromStored streamId
   pure $ case loaded of
     Left err => Left (renderLoadErr err)
     Right (version, events) => Right (MkResyncPayload version events)
 
 runProjectAutomation : String -> ProjectTaskApp Event.StoredEvent ()
 runProjectAutomation projectId = do
-  projectLoaded <- loadMappedHistoryOrEmpty {m=ReaderT (AppEnv Event.StoredEvent) IO} {stream=String} {storedEvent=Event.StoredEvent} {localEvent=Event.ProjectEvent} projectEventFromStored projectId
+  projectLoaded <- loadMappedHistoryOrEmpty {m=ReaderT (StoreAppEnv Event.StoredEvent) IO} {stream=String} {storedEvent=Event.StoredEvent} {localEvent=Event.ProjectEvent} projectEventFromStored projectId
   tasksLoaded <- tasksForProjectInStore projectId
   case (projectLoaded, tasksLoaded) of
     (Right (projectVersion, projectEvents), Right taskSummaries) =>
@@ -259,18 +170,18 @@ runProjectAutomation projectId = do
       in case Automation.automatedProjectCommand policyView of
           Nothing => pure ()
           Just cmd => do
-            _ <- executeMappedOnStreamExpected {m=ReaderT (AppEnv Event.StoredEvent) IO} {stream=String} {command=Project.ProjectCommand} {rejection=Project.ProjectRejection} {storedEvent=Event.StoredEvent} {localEvent=Event.ProjectEvent} {state=Project.ProjectModel} projectEventFromStored wrapProjectEvent projectId projectVersion cmd
+            _ <- executeMappedOnStreamExpected {m=ReaderT (StoreAppEnv Event.StoredEvent) IO} {stream=String} {command=Project.ProjectCommand} {rejection=Project.ProjectRejection} {storedEvent=Event.StoredEvent} {localEvent=Event.ProjectEvent} {state=Project.ProjectModel} projectEventFromStored wrapProjectEvent projectId projectVersion cmd
             pure ()
     _ => pure ()
 
 executeProjectCommandInStore : String -> ExecutePayload Project.ProjectCommand -> ProjectTaskApp Event.StoredEvent (Either (RuntimeExecuteError Project.ProjectRejection) Nat)
 executeProjectCommandInStore streamId payload = do
-  result <- executeMappedOnStreamExpected {m=ReaderT (AppEnv Event.StoredEvent) IO} {stream=String} {command=Project.ProjectCommand} {rejection=Project.ProjectRejection} {storedEvent=Event.StoredEvent} {localEvent=Event.ProjectEvent} {state=Project.ProjectModel} projectEventFromStored wrapProjectEvent streamId (expectedVersion payload) (command payload)
+  result <- executeMappedOnStreamExpected {m=ReaderT (StoreAppEnv Event.StoredEvent) IO} {stream=String} {command=Project.ProjectCommand} {rejection=Project.ProjectRejection} {storedEvent=Event.StoredEvent} {localEvent=Event.ProjectEvent} {state=Project.ProjectModel} projectEventFromStored wrapProjectEvent streamId (expectedVersion payload) (command payload)
   pure (map newVersion result)
 
 executeTaskCommandInStore : String -> ExecutePayload Task.TaskCommand -> ProjectTaskApp Event.StoredEvent (Either (RuntimeExecuteError Task.TaskRejection) Nat)
 executeTaskCommandInStore streamId payload = do
-  result <- executeMappedOnStreamExpected {m=ReaderT (AppEnv Event.StoredEvent) IO} {stream=String} {command=Task.TaskCommand} {rejection=Task.TaskRejection} {storedEvent=Event.StoredEvent} {localEvent=Event.TaskEvent} {state=Task.TaskModel} taskEventFromStored wrapTaskEvent streamId (expectedVersion payload) (command payload)
+  result <- executeMappedOnStreamExpected {m=ReaderT (StoreAppEnv Event.StoredEvent) IO} {stream=String} {command=Task.TaskCommand} {rejection=Task.TaskRejection} {storedEvent=Event.StoredEvent} {localEvent=Event.TaskEvent} {state=Task.TaskModel} taskEventFromStored wrapTaskEvent streamId (expectedVersion payload) (command payload)
   case result of
     Left err => pure (Left err)
     Right success => do
@@ -307,61 +218,54 @@ frameProjectTaskEvent streamId version event =
       frame = sseFrameText Nothing Nothing payload
   in fromString frame
 
-subscribeProjectOverview : AppEnv Event.StoredEvent -> IORef.IORef ClientUnsubs -> String -> Publisher IO e Buffer
+subscribeProjectOverview : StoreAppEnv Event.StoredEvent -> IORef.IORef ClientUnsubs -> String -> Publisher IO e Buffer
 subscribeProjectOverview env unsubsRef clientId =
   subscribeMappedCategoryLive env unsubsRef "project-overview" frameProjectOverviewEvent projectEventFromStored isProjectStream clientId
 
-subscribeProjectDetail : AppEnv Event.StoredEvent -> IORef.IORef ClientUnsubs -> String -> String -> Maybe Nat -> Publisher IO e Buffer
+subscribeProjectDetail : StoreAppEnv Event.StoredEvent -> IORef.IORef ClientUnsubs -> String -> String -> Maybe Nat -> Publisher IO e Buffer
 subscribeProjectDetail env unsubsRef projectId clientId maybeLastEventId =
   subscribeMappedStream env unsubsRef projectEventFromStored frameProjectDetailEvent projectId clientId maybeLastEventId
 
-subscribeProjectTasks : AppEnv Event.StoredEvent -> IORef.IORef ClientUnsubs -> String -> String -> Publisher IO e Buffer
+subscribeProjectTasks : StoreAppEnv Event.StoredEvent -> IORef.IORef ClientUnsubs -> String -> String -> Publisher IO e Buffer
 subscribeProjectTasks env unsubsRef projectId clientId =
   subscribeMappedCategoryLive env unsubsRef ("project-tasks:" ++ projectId) frameProjectTaskEvent taskEventFromStored (isTaskForProject projectId) clientId
 
-subscribeTaskDetail : AppEnv Event.StoredEvent -> IORef.IORef ClientUnsubs -> String -> String -> Maybe Nat -> Publisher IO e Buffer
+subscribeTaskDetail : StoreAppEnv Event.StoredEvent -> IORef.IORef ClientUnsubs -> String -> String -> Maybe Nat -> Publisher IO e Buffer
 subscribeTaskDetail env unsubsRef taskId clientId maybeLastEventId =
   subscribeMappedStream env unsubsRef taskEventFromStored frameTaskDetailEvent taskId clientId maybeLastEventId
 
-readProjectSummariesP : AppEnv Event.StoredEvent -> Promise Error IO (List Project.ProjectSummary)
+readProjectSummariesP : StoreAppEnv Event.StoredEvent -> Promise Error IO (List Project.ProjectSummary)
 readProjectSummariesP env = promise $ \resolve, _ => do
   result <- runReaderT env listProjectSummariesInStore
   case result of
     Left _ => resolve []
     Right summaries => resolve summaries
 
-runProjectResyncP : AppEnv Event.StoredEvent -> String -> Promise Error IO (Either String (ResyncPayload Event.ProjectEvent))
+runProjectResyncP : StoreAppEnv Event.StoredEvent -> String -> Promise Error IO (Either String (ResyncPayload Event.ProjectEvent))
 runProjectResyncP env streamId = promise $ \resolve, _ => do
   result <- runReaderT env (projectResyncInStore streamId)
   resolve result
 
-readProjectTasksP : AppEnv Event.StoredEvent -> String -> Promise Error IO (Either String (List Task.TaskSummary))
+readProjectTasksP : StoreAppEnv Event.StoredEvent -> String -> Promise Error IO (Either String (List Task.TaskSummary))
 readProjectTasksP env projectId = promise $ \resolve, _ => do
   result <- runReaderT env (tasksForProjectInStore projectId)
   resolve result
 
-runTaskResyncP : AppEnv Event.StoredEvent -> String -> Promise Error IO (Either String (ResyncPayload Event.TaskEvent))
+runTaskResyncP : StoreAppEnv Event.StoredEvent -> String -> Promise Error IO (Either String (ResyncPayload Event.TaskEvent))
 runTaskResyncP env streamId = promise $ \resolve, _ => do
   result <- runReaderT env (taskResyncInStore streamId)
   resolve result
 
-runProjectExecuteP : AppEnv Event.StoredEvent -> String -> ExecutePayload Project.ProjectCommand -> Promise Error IO (Either (RuntimeExecuteError Project.ProjectRejection) Nat)
+runProjectExecuteP : StoreAppEnv Event.StoredEvent -> String -> ExecutePayload Project.ProjectCommand -> Promise Error IO (Either (RuntimeExecuteError Project.ProjectRejection) Nat)
 runProjectExecuteP env streamId payload = promise $ \resolve, _ => do
   result <- runReaderT env (executeProjectCommandInStore streamId payload)
   resolve result
 
-runTaskExecuteP : AppEnv Event.StoredEvent -> String -> ExecutePayload Task.TaskCommand -> Promise Error IO (Either (RuntimeExecuteError Task.TaskRejection) Nat)
+runTaskExecuteP : StoreAppEnv Event.StoredEvent -> String -> ExecutePayload Task.TaskCommand -> Promise Error IO (Either (RuntimeExecuteError Task.TaskRejection) Nat)
 runTaskExecuteP env streamId payload = promise $ \resolve, _ => do
   result <- runReaderT env (executeTaskCommandInStore streamId payload)
   resolve result
 
-initAppEnv : StorageMode -> IO (AppEnv Event.StoredEvent)
-initAppEnv MemoryMode = do
-  memEnv <- Memory.mkEnv {stream=String} {ev=Event.StoredEvent}
-  pure (MkAppEnv MemoryMode (UseMemory memEnv))
-initAppEnv (FileMode path) = do
-  fileEnv <- File.mkEnv path
-  pure (MkAppEnv (FileMode path) (UseFile fileEnv))
 
 covering
 main : IO ()
@@ -379,7 +283,7 @@ main = do
   http <- HTTP.require
   current <- currentDir
   folder <- pure (maybe "." id current)
-  env <- initAppEnv storageMode
+  env <- initStoreAppEnv storageMode
   unsubsRef <- IORef.newIORef emptyClientUnsubs
   let options : TyTTP.Adapter.Node.HTTP.Options Error
       options = { listenOptions := { port := Just serverPort } Listen.defaultOptions } defaultOptions
