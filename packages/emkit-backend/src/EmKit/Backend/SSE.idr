@@ -3,7 +3,6 @@ module EmKit.Backend.SSE
 import Control.Monad.Reader
 import Data.Buffer.Ext
 import Data.IORef as IORef
-import Data.SortedMap as SortedMap
 import EmKit.Store.Core
 import EmKit.Stream.SSE
 import TyTTP
@@ -13,19 +12,31 @@ import TyTTP.HTTP
 
 public export
 ClientUnsubs : Type
-ClientUnsubs = SortedMap String (IO ())
+ClientUnsubs = List (String, IO ())
 
 public export
 emptyClientUnsubs : ClientUnsubs
-emptyClientUnsubs = SortedMap.empty
+emptyClientUnsubs = []
+
+findCleanup : String -> ClientUnsubs -> Maybe (IO ())
+findCleanup _ [] = Nothing
+findCleanup wanted ((key, cleanup) :: rest) =
+  if key == wanted then Just cleanup else findCleanup wanted rest
+
+replaceCleanup : String -> IO () -> ClientUnsubs -> ClientUnsubs
+replaceCleanup key cleanup [] = [(key, cleanup)]
+replaceCleanup key cleanup ((currentKey, currentCleanup) :: rest) =
+  if currentKey == key
+    then (key, cleanup) :: rest
+    else (currentKey, currentCleanup) :: replaceCleanup key cleanup rest
 
 registerCleanup : IORef.IORef ClientUnsubs -> String -> IO () -> IO ()
 registerCleanup ref key cleanup = do
   current <- IORef.readIORef ref
-  case SortedMap.lookup key current of
+  case findCleanup key current of
     Nothing => pure ()
     Just oldCleanup => oldCleanup
-  IORef.writeIORef ref (SortedMap.insert key cleanup current)
+  IORef.writeIORef ref (replaceCleanup key cleanup current)
 
 cleanupKey : String -> String -> String
 cleanupKey streamId clientId = streamId ++ "::" ++ clientId
