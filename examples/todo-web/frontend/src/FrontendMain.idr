@@ -8,7 +8,6 @@ import Domain
 import Domain.JSON.Simple
 import EmKit.Frontend.Execute as FrontendExecute
 import EmKit.Frontend.SSE as FrontendSSE
-import EmKit.Modeling.Pattern.StateView
 import EmKit.Modeling.Screen.Actions
 import EmKit.Modeling.Screen.Contracts
 import EmKit.Wire.Contracts
@@ -117,11 +116,8 @@ currentListId s = map listId (selectedDetail s)
 replaceSummary : TodoListSummary -> State -> State
 replaceSummary summary s = { summaries := SortedMap.insert (listId summary) summary (summaries s) } s
 
-detailToView : TodoListDetail -> TodoListView
-detailToView detail = MkTodoListView (exists detail) (title detail) (items detail) (openCount detail) (doneCount detail)
-
 updateSummaryFromDetail : TodoListDetail -> State -> State
-updateSummaryFromDetail detail s = replaceSummary (summaryFromView (listId detail) (version detail) (detailToView detail)) s
+updateSummaryFromDetail detail s = replaceSummary (summaryFromDetail detail) s
 
 actionsForCurrentScreen : State -> List Action
 actionsForCurrentScreen s = availableScreenActions (bundleForState s) (screen s)
@@ -150,18 +146,6 @@ applyOverviewEvent msg s =
   in case applySummaryEvent sid (streamVersion msg) (event msg) current of
        Left _ => s
        Right next => replaceSummary next s
-
-applyDetailEvent : StreamEvent TodoEvent -> TodoListDetail -> Either String TodoListDetail
-applyDetailEvent msg detail =
-  if version msg <= version detail then
-    Right detail
-  else
-    let expected = S (version detail) in
-    if version msg /= expected then
-      Left ("Detail stream version gap: expected v" ++ show expected ++ ", got v" ++ show (version msg) ++ ".")
-    else
-      let nextView = projectEvent (detailToView detail) (event msg)
-      in Right (detailFromView (listId detail) (version msg) nextView)
 
 nextListId : State -> String
 nextListId s = listPrefix ++ show (S (length (summaryList s)))
@@ -392,7 +376,7 @@ controller (DetailEventReceived streamId raw) s =
             let s' = { busy := True, status := "Detail feed decode failed. Resyncing..." } s in
             (s', batch [updateView s', getDetailResync streamId])
           Right msg =>
-            case applyDetailEvent msg detail of
+            case applyDetailEvent (version msg) (event msg) detail of
               Left err =>
                 let s' = { busy := True, status := err ++ " Resyncing..." } s in
                 (s', batch [updateView s', getDetailResync streamId])

@@ -6,6 +6,7 @@ import EmKit.Modeling.Pattern.StateView
 import EmKit.Modeling.Screen.Actions
 import EmKit.Modeling.Screen.Contracts
 import EmKit.Sourcing.Decider
+import EmKit.Stream.Version
 
 %default total
 
@@ -183,20 +184,56 @@ detailFromView listId version view =
   MkTodoListDetail listId version (exists view) (title view) (items view) (openCount view) (doneCount view)
 
 public export
+summaryFromDetail : TodoListDetail -> TodoListSummary
+summaryFromDetail detail =
+  MkTodoListSummary (listId detail) (version detail) (exists detail) (title detail) (openCount detail) (doneCount detail)
+
+public export
 applySummaryEvent : String -> Nat -> TodoEvent -> TodoListSummary -> Either String TodoListSummary
 applySummaryEvent listId streamVersion event summary =
-  if streamVersion <= version summary then
-    Right summary
-  else
-    let expected = S (version summary) in
-    if streamVersion /= expected then
-      Left ("Overview summary gap for " ++ listId ++ ": expected v" ++ show expected ++ ", got v" ++ show streamVersion ++ ".")
-    else
+  case applyVersionedUpdate listId (version summary) streamVersion step summary of
+    Left (VersionGap _ expected incoming) =>
+      Left ("Overview summary gap for " ++ listId ++ ": expected v" ++ show expected ++ ", got v" ++ show incoming ++ ".")
+    Right (IgnoredStale current) => Right current
+    Right (Applied next) => Right next
+  where
+    step : Nat -> TodoListSummary -> TodoListSummary
+    step nextVersion current =
       case event of
-        ListCreated title => Right (MkTodoListSummary listId streamVersion True title 0 0)
-        ItemAdded _ _ => Right ({ version := streamVersion, exists := True, openCount := S (openCount summary) } summary)
-        ItemCompleted _ => Right ({ version := streamVersion, openCount := decNat (openCount summary), doneCount := S (doneCount summary) } summary)
-        ItemReopened _ => Right ({ version := streamVersion, openCount := S (openCount summary), doneCount := decNat (doneCount summary) } summary)
+        ListCreated title => MkTodoListSummary listId nextVersion True title 0 0
+        ItemAdded _ _ => { version := nextVersion, exists := True, openCount := S (openCount current) } current
+        ItemCompleted _ => { version := nextVersion, openCount := decNat (openCount current), doneCount := S (doneCount current) } current
+        ItemReopened _ => { version := nextVersion, openCount := S (openCount current), doneCount := decNat (doneCount current) } current
+
+public export
+detailToView : TodoListDetail -> TodoListView
+detailToView detail =
+  MkTodoListView (exists detail) (title detail) (items detail) (openCount detail) (doneCount detail)
+
+public export
+applyDetailEvent : Nat -> TodoEvent -> TodoListDetail -> Either String TodoListDetail
+applyDetailEvent streamVersion event detail =
+  let lid = listId detail in
+  case applyVersionedUpdate lid (version detail) streamVersion step detail of
+    Left (VersionGap _ expected incoming) =>
+      Left ("Detail stream version gap: expected v" ++ show expected ++ ", got v" ++ show incoming ++ ".")
+    Right (IgnoredStale current) => Right current
+    Right (Applied next) => Right next
+  where
+    step : Nat -> TodoListDetail -> TodoListDetail
+    step nextVersion current =
+      case event of
+        ListCreated createdTitle =>
+          MkTodoListDetail (listId current) nextVersion True createdTitle [] 0 0
+        ItemAdded itemId text =>
+          let nextItems = items current ++ [MkTodoItem itemId text ItemOpen]
+          in MkTodoListDetail (listId current) nextVersion True (title current) nextItems (S (openCount current)) (doneCount current)
+        ItemCompleted itemId =>
+          let nextItems = setStatus itemId ItemDone (items current)
+          in MkTodoListDetail (listId current) nextVersion True (title current) nextItems (decNat (openCount current)) (S (doneCount current))
+        ItemReopened itemId =>
+          let nextItems = setStatus itemId ItemOpen (items current)
+          in MkTodoListDetail (listId current) nextVersion True (title current) nextItems (S (openCount current)) (decNat (doneCount current))
 
 public export
 emptySummary : String -> TodoListSummary

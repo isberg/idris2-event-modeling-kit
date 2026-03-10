@@ -12,5 +12,6 @@ depends = base
         , contrib
         , emkit-sourcing
         , emkit-modeling
+        , emkit-stream
         , json
         , json-simple
