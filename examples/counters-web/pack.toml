@@ -1,0 +1,54 @@
+[custom.all.counters-web-domain]
+type = "local"
+path = "domain"
+ipkg = "counters-web-domain.ipkg"
+
+[custom.all.counters-web-backend]
+type = "local"
+path = "backend"
+ipkg = "counters-web-backend.ipkg"
+
+[custom.all.counters-web-frontend]
+type = "local"
+path = "frontend"
+ipkg = "counters-web-frontend.ipkg"
+
+[custom.all.emkit-sourcing]
+type = "local"
+path = "../../packages/emkit-sourcing"
+ipkg = "emkit-sourcing.ipkg"
+
+[custom.all.emkit-modeling]
+type = "local"
+path = "../../packages/emkit-modeling"
+ipkg = "emkit-modeling.ipkg"
+
+[custom.all.emkit-runtime]
+type = "local"
+path = "../../packages/emkit-runtime"
+ipkg = "emkit-runtime.ipkg"
+
+[custom.all.emkit-stream]
+type = "local"
+path = "../../packages/emkit-stream"
+ipkg = "emkit-stream.ipkg"
+
+[custom.all.emkit-store]
+type = "local"
+path = "../../packages/emkit-store"
+ipkg = "emkit-store.ipkg"
+
+[custom.all.emkit-wire]
+type = "local"
+path = "../../packages/emkit-wire"
+ipkg = "emkit-wire.ipkg"
+
+[custom.all.emkit-backend]
+type = "local"
+path = "../../packages/emkit-backend"
+ipkg = "emkit-backend.ipkg"
+
+[custom.all.emkit-frontend]
+type = "local"
+path = "../../packages/emkit-frontend"
+ipkg = "emkit-frontend.ipkg"
