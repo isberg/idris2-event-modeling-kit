@@ -10,5 +10,6 @@ depends = base
         , contrib
         , node
         , tyttp
+        , emkit-runtime
         , emkit-store
         , emkit-stream

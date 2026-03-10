@@ -3,6 +3,7 @@ module EmKit.Backend.SSE
 import Control.Monad.Reader
 import Data.Buffer.Ext
 import Data.IORef as IORef
+import EmKit.Runtime.Execute
 import EmKit.Store.Core
 import EmKit.Stream.SSE
 import TyTTP
@@ -77,6 +78,32 @@ replayExisting env emit toBuffer streamId maybeLastEventId = do
     Left _ => pure ()
     Right (_, events) => emitBatch emit toBuffer (maybe 0 id maybeLastEventId) events
 
+replayMappedExisting :
+  {storedEvent, localEvent : Type} ->
+  {ctx : Type} ->
+  {auto es : EventStore (ReaderT ctx IO) String storedEvent} ->
+  ctx ->
+  (storedEvent -> Either LoadErr localEvent) ->
+  (Buffer -> IO ()) ->
+  (Nat -> localEvent -> Buffer) ->
+  String ->
+  Maybe Nat ->
+  IO ()
+replayMappedExisting env decode emit toBuffer streamId maybeLastEventId = do
+  let loadAction : ReaderT ctx IO (Either LoadErr (Nat, List storedEvent))
+      loadAction =
+        case maybeLastEventId of
+          Nothing => load {m=ReaderT ctx IO} {stream=String} {ev=storedEvent} streamId
+          Just lastSeen => loadFrom {m=ReaderT ctx IO} {stream=String} {ev=storedEvent} streamId lastSeen
+  loaded <- runReaderT env loadAction
+  case loaded of
+    Left NoStream => pure ()
+    Left _ => pure ()
+    Right (_, events) =>
+      case decodeStoredEvents decode events of
+        Left _ => pure ()
+        Right typedEvents => emitBatch emit toBuffer (maybe 0 id maybeLastEventId) typedEvents
+
 public export
 subscribeStream :
   {ev : Type} ->
@@ -102,6 +129,34 @@ subscribeStream env unsubsRef toBuffer streamId clientId maybeLastEventId =
     pure ()
 
 public export
+subscribeMappedStream :
+  {storedEvent, localEvent : Type} ->
+  {ctx : Type} ->
+  {auto es : EventStore (ReaderT ctx IO) String storedEvent} ->
+  {auto obs : Observable (ReaderT ctx IO) String storedEvent} ->
+  ctx ->
+  IORef.IORef ClientUnsubs ->
+  (storedEvent -> Either LoadErr localEvent) ->
+  (Nat -> localEvent -> Buffer) ->
+  String ->
+  String ->
+  Maybe Nat ->
+  Publisher IO e Buffer
+subscribeMappedStream env unsubsRef decode toBuffer streamId clientId maybeLastEventId =
+  MkPublisher $ \subscriber => do
+    subscriber.onNext (fromString sseConnectedCommentText)
+    replayMappedExisting env decode subscriber.onNext toBuffer streamId maybeLastEventId
+    unsub <- runReaderT env $
+      subscribe {m=ReaderT ctx IO} {stream=String} {ev=storedEvent} streamId $ \startVersion, events =>
+        liftIO $
+          case decodeStoredEvents decode events of
+            Left _ => pure ()
+            Right typedEvents => emitBatch subscriber.onNext toBuffer startVersion typedEvents
+    let cleanup = runReaderT env unsub
+    registerCleanup unsubsRef (cleanupKey streamId clientId) cleanup
+    pure ()
+
+public export
 subscribeCategoryLive :
   {ev : Type} ->
   {ctx : Type} ->
@@ -119,6 +174,32 @@ subscribeCategoryLive env unsubsRef scopeKey toBuffer matches clientId =
     unsub <- runReaderT env $
       subscribeCategory {m=ReaderT ctx IO} {stream=String} {ev=ev} matches $ \streamId, startVersion, events =>
         liftIO (emitCategoryBatch subscriber.onNext toBuffer streamId startVersion events)
+    let cleanup = runReaderT env unsub
+    registerCleanup unsubsRef (cleanupKey scopeKey clientId) cleanup
+    pure ()
+
+public export
+subscribeMappedCategoryLive :
+  {storedEvent, localEvent : Type} ->
+  {ctx : Type} ->
+  {auto obs : ObservableCategory (ReaderT ctx IO) String storedEvent} ->
+  ctx ->
+  IORef.IORef ClientUnsubs ->
+  String ->
+  (String -> Nat -> localEvent -> Buffer) ->
+  (storedEvent -> Either LoadErr localEvent) ->
+  (String -> Bool) ->
+  String ->
+  Publisher IO e Buffer
+subscribeMappedCategoryLive env unsubsRef scopeKey toBuffer decode matches clientId =
+  MkPublisher $ \subscriber => do
+    subscriber.onNext (fromString sseConnectedCommentText)
+    unsub <- runReaderT env $
+      subscribeCategory {m=ReaderT ctx IO} {stream=String} {ev=storedEvent} matches $ \streamId, startVersion, events =>
+        liftIO $
+          case decodeStoredEvents decode events of
+            Left _ => pure ()
+            Right typedEvents => emitCategoryBatch subscriber.onNext toBuffer streamId startVersion typedEvents
     let cleanup = runReaderT env unsub
     registerCleanup unsubsRef (cleanupKey scopeKey clientId) cleanup
     pure ()

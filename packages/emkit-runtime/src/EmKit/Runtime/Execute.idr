@@ -21,6 +21,21 @@ record RuntimeExecuteSuccess event state where
   resultingState : state
 
 public export
+decodeStoredEvents :
+  {storedEvent, localEvent : Type} ->
+  (storedEvent -> Either LoadErr localEvent) ->
+  List storedEvent ->
+  Either LoadErr (List localEvent)
+decodeStoredEvents decode [] = Right []
+decodeStoredEvents decode (stored :: rest) =
+  case decode stored of
+    Left err => Left err
+    Right event =>
+      case decodeStoredEvents decode rest of
+        Left err => Left err
+        Right events => Right (event :: events)
+
+public export
 loadHistoryOrEmpty :
   {m : Type -> Type} ->
   {stream, event : Type} ->
@@ -52,6 +67,25 @@ loadStateOrInitial streamId = do
       Left err => Left err
       Right (version, history) =>
         Right (version, project {h=List} {event=event} {model=state} history)
+
+public export
+loadMappedHistoryOrEmpty :
+  {m : Type -> Type} ->
+  {stream, storedEvent, localEvent : Type} ->
+  Monad m =>
+  EventStore m stream storedEvent =>
+  (storedEvent -> Either LoadErr localEvent) ->
+  stream ->
+  m (Either LoadErr (Nat, List localEvent))
+loadMappedHistoryOrEmpty decode streamId = do
+  loaded <- loadHistoryOrEmpty {m} {stream} {event=storedEvent} streamId
+  pure $
+    case loaded of
+      Left err => Left err
+      Right (version, history) =>
+        case decodeStoredEvents decode history of
+          Left err => Left err
+          Right typedHistory => Right (version, typedHistory)
 
 public export
 projectStreamModel :
@@ -131,3 +165,37 @@ mutual
         if expectedVersion == version
           then executeAgainstLoaded streamId version history cmd
           else pure (Left RuntimeConflict)
+
+public export
+executeMappedOnStreamExpected :
+  {m : Type -> Type} ->
+  {stream, command, rejection, storedEvent, localEvent, state : Type} ->
+  Monad m =>
+  EventStore m stream storedEvent =>
+  Decider List command rejection localEvent state =>
+  (storedEvent -> Either LoadErr localEvent) ->
+  (localEvent -> storedEvent) ->
+  stream ->
+  Nat ->
+  command ->
+  m (Either (RuntimeExecuteError rejection) (RuntimeExecuteSuccess localEvent state))
+executeMappedOnStreamExpected decode wrap streamId expectedVersion cmd = do
+  loaded <- loadMappedHistoryOrEmpty {m} {stream} {storedEvent} {localEvent} decode streamId
+  case loaded of
+    Left err => pure (Left (RuntimeLoadFailed err))
+    Right (version, history) =>
+      if expectedVersion == version
+        then do
+          let currentState = project {h=List} {event=localEvent} {model=state} history
+          case decideR {h=List} {command=command} {rejection=rejection} {event=localEvent} {state=state} cmd currentState of
+            Left domainRejection => pure (Left (RuntimeRejected domainRejection))
+            Right events => do
+              appended <- append streamId version (map wrap events)
+              pure $
+                case appended of
+                  Left Conflict => Left RuntimeConflict
+                  Left err => Left (RuntimeAppendFailed err)
+                  Right newVersion =>
+                    let nextState = projectFrom {h=List} {event=localEvent} {model=state} currentState events
+                     in Right (MkRuntimeExecuteSuccess version newVersion events nextState)
+        else pure (Left RuntimeConflict)
