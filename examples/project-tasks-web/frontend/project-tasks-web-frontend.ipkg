@@ -1,0 +1,20 @@
+package project-tasks-web-frontend
+version = 0.1.0
+authors = ""
+
+sourcedir = "src"
+
+modules = FrontendMain
+
+main = FrontendMain
+executable = "project_tasks_web_frontend.js"
+opts = "--codegen javascript"
+
+depends = base
+        , contrib
+        , dom-mvc
+        , json-simple
+        , project-tasks-web-domain
+        , emkit-modeling
+        , emkit-frontend
+        , emkit-wire
