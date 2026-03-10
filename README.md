@@ -13,7 +13,7 @@ This repository is not an application. It is a package workspace intended to sho
 - `emkit-runtime`
   Shared application runtime bridge for store-backed command execution and view projection.
 - `emkit-stream`
-  Stream version/cursor helpers and transport-neutral SSE framing helpers.
+  Stream version/cursor helpers, version-aware projection safety helpers, and transport-neutral SSE framing helpers.
 - `emkit-store`
   Persistence contracts plus memory/file adapters for event streams.
 - `emkit-wire`

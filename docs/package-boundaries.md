@@ -31,6 +31,7 @@ It may depend on `emkit-sourcing`, `emkit-modeling`, and `emkit-store`, but it m
 `emkit-stream` owns transport-neutral live-stream helpers:
 
 - stream version/cursor helpers,
+- version-aware projection safety helpers,
 - SSE text framing helpers.
 
 It should remain framework-neutral. It must not encode app-specific route naming, audience filtering, or DTO mapping rules.
@@ -115,3 +116,9 @@ Even after `todo-web` plus `counters-web`, a higher-level web app shell is still
 - overview/detail page rendering.
 
 The next extraction should therefore happen only if another example repeats one of those seams with materially similar behavior.
+
+After the `todo-web` and `counters-web` version-drift fix, one more low-level seam is now shared in `emkit-stream`:
+
+- stale/duplicate versus exact-next versus gap handling for versioned projection updates
+
+The package still does not own domain-specific projection rules. It owns only the cursor law that those projections depend on.
