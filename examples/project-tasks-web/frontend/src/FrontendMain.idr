@@ -11,6 +11,7 @@ import Domain.Screens as Screens
 import Domain.Task as Task
 import EmKit.Frontend.Execute as FrontendExecute
 import EmKit.Frontend.SSE as FrontendSSE
+import EmKit.Frontend.Stream as FrontendStream
 import EmKit.Modeling.Screen.Actions
 import EmKit.Modeling.Screen.Contracts
 import EmKit.Wire.Contracts
@@ -108,22 +109,22 @@ subscribeProjectsOverview : String -> Cmd Msg
 subscribeProjectsOverview clientId = FrontendSSE.subscribe (projectsOverviewEventsUrl clientId) ProjectsOverviewEventReceived
 
 subscribeProjectDetail : String -> String -> Cmd Msg
-subscribeProjectDetail projectId clientId = FrontendSSE.subscribe (projectEventsUrl projectId clientId) (ProjectEventReceived projectId)
+subscribeProjectDetail projectId clientId = FrontendStream.subscribeStream projectEventsUrl projectId clientId (ProjectEventReceived projectId)
 
 closeProjectDetail : String -> String -> Cmd Msg
-closeProjectDetail projectId clientId = FrontendSSE.close (projectEventsUrl projectId clientId)
+closeProjectDetail projectId clientId = FrontendStream.closeStream projectEventsUrl projectId clientId
 
 subscribeProjectTasks : String -> String -> Cmd Msg
-subscribeProjectTasks projectId clientId = FrontendSSE.subscribe (projectTasksEventsUrl projectId clientId) (ProjectTaskEventReceived projectId)
+subscribeProjectTasks projectId clientId = FrontendStream.subscribeStream projectTasksEventsUrl projectId clientId (ProjectTaskEventReceived projectId)
 
 closeProjectTasks : String -> String -> Cmd Msg
-closeProjectTasks projectId clientId = FrontendSSE.close (projectTasksEventsUrl projectId clientId)
+closeProjectTasks projectId clientId = FrontendStream.closeStream projectTasksEventsUrl projectId clientId
 
 subscribeTaskDetail : String -> String -> Cmd Msg
-subscribeTaskDetail taskId clientId = FrontendSSE.subscribe (taskEventsUrl taskId clientId) (TaskEventReceived taskId)
+subscribeTaskDetail taskId clientId = FrontendStream.subscribeStream taskEventsUrl taskId clientId (TaskEventReceived taskId)
 
 closeTaskDetail : String -> String -> Cmd Msg
-closeTaskDetail taskId clientId = FrontendSSE.close (taskEventsUrl taskId clientId)
+closeTaskDetail taskId clientId = FrontendStream.closeStream taskEventsUrl taskId clientId
 
 getProjectResync : String -> Cmd Msg
 getProjectResync projectId = FrontendExecute.getResync projectResyncUrl ProjectResyncFinished projectId
@@ -210,28 +211,20 @@ nextTaskId : Project.ProjectDetail -> State -> String
 nextTaskId detail s = Task.nextTaskIdFromSummaries (projectId detail) (projectTaskList s)
 
 closeCurrentProjectDetail : State -> List (Cmd Msg)
-closeCurrentProjectDetail s =
-  case (currentProjectId s, clientId s) of
-    (Just pid, Just cid) => [closeProjectDetail pid cid]
-    _ => []
+closeCurrentProjectDetail s = FrontendStream.closeCurrent (currentProjectId s) (clientId s) closeProjectDetail
 
 closeCurrentProjectTasks : State -> List (Cmd Msg)
-closeCurrentProjectTasks s =
-  case (currentProjectId s, clientId s) of
-    (Just pid, Just cid) => [closeProjectTasks pid cid]
-    _ => []
+closeCurrentProjectTasks s = FrontendStream.closeCurrent (currentProjectId s) (clientId s) closeProjectTasks
 
 closeCurrentTaskDetail : State -> List (Cmd Msg)
-closeCurrentTaskDetail s =
-  case (currentTaskId s, clientId s) of
-    (Just tid, Just cid) => [closeTaskDetail tid cid]
-    _ => []
+closeCurrentTaskDetail s = FrontendStream.closeCurrent (currentTaskId s) (clientId s) closeTaskDetail
 
 openProjectCommands : State -> String -> List (Cmd Msg)
 openProjectCommands s projectId =
-  case clientId s of
-    Nothing => [FrontendSSE.requestClientId ClientIdReady]
-    Just cid =>
+  FrontendStream.withClientId
+    (clientId s)
+    (FrontendSSE.requestClientId ClientIdReady)
+    (\cid =>
       closeCurrentTaskDetail s
         ++ closeCurrentProjectDetail s
         ++ closeCurrentProjectTasks s
@@ -239,13 +232,14 @@ openProjectCommands s projectId =
            , subscribeProjectTasks projectId cid
            , getProjectResync projectId
            , loadProjectTasks projectId
-           ]
+           ])
 
 openTaskCommands : State -> String -> List (Cmd Msg)
 openTaskCommands s taskId =
-  case clientId s of
-    Nothing => [FrontendSSE.requestClientId ClientIdReady]
-    Just cid => closeCurrentTaskDetail s ++ [subscribeTaskDetail taskId cid, getTaskResync taskId]
+  FrontendStream.withClientId
+    (clientId s)
+    (FrontendSSE.requestClientId ClientIdReady)
+    (\cid => closeCurrentTaskDetail s ++ [subscribeTaskDetail taskId cid, getTaskResync taskId])
 
 renderTaskEvent : Event.TaskEvent -> String
 renderTaskEvent (Event.TaskCreated projectId title) = "Created for " ++ projectId ++ ": " ++ title

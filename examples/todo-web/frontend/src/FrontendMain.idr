@@ -8,6 +8,7 @@ import Domain
 import Domain.JSON.Simple
 import EmKit.Frontend.Execute as FrontendExecute
 import EmKit.Frontend.SSE as FrontendSSE
+import EmKit.Frontend.Stream as FrontendStream
 import EmKit.Modeling.Screen.Actions
 import EmKit.Modeling.Screen.Contracts
 import EmKit.Wire.Contracts
@@ -77,10 +78,10 @@ subscribeOverview : String -> Cmd Msg
 subscribeOverview clientId = FrontendSSE.subscribe (overviewEventsUrl clientId) OverviewEventReceived
 
 subscribeDetail : String -> String -> Cmd Msg
-subscribeDetail listId clientId = FrontendSSE.subscribe (detailEventsUrl listId clientId) (DetailEventReceived listId)
+subscribeDetail listId clientId = FrontendStream.subscribeStream detailEventsUrl listId clientId (DetailEventReceived listId)
 
 closeDetail : String -> String -> Cmd Msg
-closeDetail listId clientId = FrontendSSE.close (detailEventsUrl listId clientId)
+closeDetail listId clientId = FrontendStream.closeStream detailEventsUrl listId clientId
 
 getDetailResync : String -> Cmd Msg
 getDetailResync listId = FrontendExecute.getResync resyncUrl DetailResyncFinished listId
@@ -154,16 +155,14 @@ nextItemId : TodoListDetail -> String
 nextItemId detail = nextItemIdFromItems (items detail)
 
 closeCurrentDetail : State -> List (Cmd Msg)
-closeCurrentDetail s =
-  case (currentListId s, clientId s) of
-    (Just current, Just cid) => [closeDetail current cid]
-    _ => []
+closeCurrentDetail s = FrontendStream.closeCurrent (currentListId s) (clientId s) closeDetail
 
 openDetailCommands : State -> String -> List (Cmd Msg)
 openDetailCommands s listId =
-  case clientId s of
-    Nothing => [FrontendSSE.requestClientId ClientIdReady]
-    Just cid => closeCurrentDetail s ++ [subscribeDetail listId cid, getDetailResync listId]
+  FrontendStream.withClientId
+    (clientId s)
+    (FrontendSSE.requestClientId ClientIdReady)
+    (\cid => closeCurrentDetail s ++ [subscribeDetail listId cid, getDetailResync listId])
 
 messageForAction : Action -> Msg
 messageForAction CreateListAction = CreateListClicked

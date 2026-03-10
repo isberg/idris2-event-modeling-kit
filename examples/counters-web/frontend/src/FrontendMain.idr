@@ -8,6 +8,7 @@ import Domain
 import Domain.JSON.Simple
 import EmKit.Frontend.Execute as FrontendExecute
 import EmKit.Frontend.SSE as FrontendSSE
+import EmKit.Frontend.Stream as FrontendStream
 import EmKit.Modeling.Screen.Actions
 import EmKit.Modeling.Screen.Contracts
 import EmKit.Wire.Contracts
@@ -75,10 +76,10 @@ subscribeOverview : String -> Cmd Msg
 subscribeOverview clientId = FrontendSSE.subscribe (overviewEventsUrl clientId) OverviewEventReceived
 
 subscribeDetail : String -> String -> Cmd Msg
-subscribeDetail counterId clientId = FrontendSSE.subscribe (detailEventsUrl counterId clientId) (DetailEventReceived counterId)
+subscribeDetail counterId clientId = FrontendStream.subscribeStream detailEventsUrl counterId clientId (DetailEventReceived counterId)
 
 closeDetail : String -> String -> Cmd Msg
-closeDetail counterId clientId = FrontendSSE.close (detailEventsUrl counterId clientId)
+closeDetail counterId clientId = FrontendStream.closeStream detailEventsUrl counterId clientId
 
 getDetailResync : String -> Cmd Msg
 getDetailResync counterId = FrontendExecute.getResync resyncUrl DetailResyncFinished counterId
@@ -149,16 +150,14 @@ nextCounterId : State -> String
 nextCounterId s = nextCounterIdFromSummaries (summaryList s)
 
 closeCurrentDetail : State -> List (Cmd Msg)
-closeCurrentDetail s =
-  case (currentCounterId s, clientId s) of
-    (Just current, Just cid) => [closeDetail current cid]
-    _ => []
+closeCurrentDetail s = FrontendStream.closeCurrent (currentCounterId s) (clientId s) closeDetail
 
 openDetailCommands : State -> String -> List (Cmd Msg)
 openDetailCommands s counterId =
-  case clientId s of
-    Nothing => [FrontendSSE.requestClientId ClientIdReady]
-    Just cid => closeCurrentDetail s ++ [subscribeDetail counterId cid, getDetailResync counterId]
+  FrontendStream.withClientId
+    (clientId s)
+    (FrontendSSE.requestClientId ClientIdReady)
+    (\cid => closeCurrentDetail s ++ [subscribeDetail counterId cid, getDetailResync counterId])
 
 messageForAction : Action -> Msg
 messageForAction CreateCounterAction = CreateCounterClicked
