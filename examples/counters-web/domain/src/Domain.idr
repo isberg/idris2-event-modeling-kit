@@ -5,6 +5,7 @@ import EmKit.Modeling.Pattern.StateView
 import EmKit.Modeling.Screen.Actions
 import EmKit.Modeling.Screen.Contracts
 import EmKit.Sourcing.Decider
+import EmKit.Stream.Version
 
 %default total
 
@@ -167,21 +168,45 @@ bundleForApp = MkAppBundle
 public export
 applySummaryEvent : String -> Nat -> CounterEvent -> CounterSummary -> Either String CounterSummary
 applySummaryEvent counterId streamVersion event summary =
-  if streamVersion <= version summary then
-    Right summary
-  else
-    let expected = S (version summary) in
-    if streamVersion /= expected then
-      Left ("Overview summary gap for " ++ counterId ++ ": expected v" ++ show expected ++ ", got v" ++ show streamVersion ++ ".")
-    else
+  case applyVersionedUpdate counterId (version summary) streamVersion step summary of
+    Left (VersionGap _ expected incoming) =>
+      Left ("Overview summary gap for " ++ counterId ++ ": expected v" ++ show expected ++ ", got v" ++ show incoming ++ ".")
+    Right (IgnoredStale current) => Right current
+    Right (Applied next) => Right next
+  where
+    step : Nat -> CounterSummary -> CounterSummary
+    step nextVersion current =
       case event of
-        Created counterName => Right (MkCounterSummary counterId streamVersion True counterName 0 "")
+        Created counterName => MkCounterSummary counterId nextVersion True counterName 0 ""
         Incremented =>
-          let next = S (value summary) in
-          Right (MkCounterSummary counterId streamVersion (exists summary) (name summary) next (romanDigit next))
+          let next = S (value current) in
+          MkCounterSummary counterId nextVersion (exists current) (name current) next (romanDigit next)
         Decremented =>
-          let next = decNat (value summary) in
-          Right (MkCounterSummary counterId streamVersion (exists summary) (name summary) next (romanDigit next))
+          let next = decNat (value current) in
+          MkCounterSummary counterId nextVersion (exists current) (name current) next (romanDigit next)
+
+public export
+applyDetailEvent : Nat -> CounterEvent -> CounterDetail -> Either String CounterDetail
+applyDetailEvent streamVersion event detail =
+  let cid = counterId detail in
+  case applyVersionedUpdate cid (version detail) streamVersion step detail of
+    Left (VersionGap _ expected incoming) =>
+      Left ("Detail stream version gap: expected v" ++ show expected ++ ", got v" ++ show incoming ++ ".")
+    Right (IgnoredStale current) => Right current
+    Right (Applied next) => Right next
+  where
+    step : Nat -> CounterDetail -> CounterDetail
+    step nextVersion current =
+      let nextHistory = history current ++ [event] in
+      case event of
+        Created counterName =>
+          MkCounterDetail (counterId current) nextVersion True counterName 0 "" nextHistory
+        Incremented =>
+          let next = S (value current) in
+          MkCounterDetail (counterId current) nextVersion (exists current) (name current) next (romanDigit next) nextHistory
+        Decremented =>
+          let next = decNat (value current) in
+          MkCounterDetail (counterId current) nextVersion (exists current) (name current) next (romanDigit next) nextHistory
 
 data CommandLegal : Command -> CounterState -> Type where
   CanCreateMissing :

@@ -145,18 +145,6 @@ applyOverviewEvent msg s =
        Left err => s
        Right next => replaceSummary next s
 
-applyDetailEvent : StreamEvent CounterEvent -> CounterDetail -> Either String CounterDetail
-applyDetailEvent msg detail =
-  if version msg <= version detail then
-    Right detail
-  else
-    let expected = S (version detail) in
-    if version msg /= expected then
-      Left ("Detail stream version gap: expected v" ++ show expected ++ ", got v" ++ show (version msg) ++ ".")
-    else
-      let nextHistory = history detail ++ [event msg]
-      in Right (detailFromEvents (counterId detail) (version msg) nextHistory)
-
 nextCounterId : State -> String
 nextCounterId s = counterPrefix ++ show (S (length (summaryList s)))
 
@@ -382,7 +370,7 @@ controller (DetailEventReceived streamId raw) s =
             let s' = { busy := True, status := "Detail feed decode failed. Resyncing..." } s in
             (s', batch [updateView s', getDetailResync streamId])
           Right msg =>
-            case applyDetailEvent msg detail of
+            case applyDetailEvent (version msg) (event msg) detail of
               Left err =>
                 let s' = { busy := True, status := err ++ " Resyncing..." } s in
                 (s', batch [updateView s', getDetailResync streamId])
