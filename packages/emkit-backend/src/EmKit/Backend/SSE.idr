@@ -13,7 +13,7 @@ import TyTTP.HTTP
 
 public export
 ClientUnsubs : Type
-ClientUnsubs = SortedMap.SortedMap String (IO ())
+ClientUnsubs = SortedMap String (IO ())
 
 public export
 emptyClientUnsubs : ClientUnsubs
@@ -36,6 +36,13 @@ emitBatch emit toBuffer version (event :: rest) = do
   let next = S version
   emit (toBuffer next event)
   emitBatch emit toBuffer next rest
+
+emitCategoryBatch : (Buffer -> IO ()) -> (String -> Nat -> ev -> Buffer) -> String -> Nat -> List ev -> IO ()
+emitCategoryBatch _ _ _ _ [] = pure ()
+emitCategoryBatch emit toBuffer streamId version (event :: rest) = do
+  let next = S version
+  emit (toBuffer streamId next event)
+  emitCategoryBatch emit toBuffer streamId next rest
 
 replayExisting :
   {ev : Type} ->
@@ -81,4 +88,26 @@ subscribeStream env unsubsRef toBuffer streamId clientId maybeLastEventId =
         liftIO (emitBatch subscriber.onNext toBuffer startVersion events)
     let cleanup = runReaderT env unsub
     registerCleanup unsubsRef (cleanupKey streamId clientId) cleanup
+    pure ()
+
+public export
+subscribeCategoryLive :
+  {ev : Type} ->
+  {ctx : Type} ->
+  {auto obs : ObservableCategory (ReaderT ctx IO) String ev} ->
+  ctx ->
+  IORef.IORef ClientUnsubs ->
+  String ->
+  (String -> Nat -> ev -> Buffer) ->
+  (String -> Bool) ->
+  String ->
+  Publisher IO e Buffer
+subscribeCategoryLive env unsubsRef scopeKey toBuffer matches clientId =
+  MkPublisher $ \subscriber => do
+    subscriber.onNext (fromString sseConnectedCommentText)
+    unsub <- runReaderT env $
+      subscribeCategory {m=ReaderT ctx IO} {stream=String} {ev=ev} matches $ \streamId, startVersion, events =>
+        liftIO (emitCategoryBatch subscriber.onNext toBuffer streamId startVersion events)
+    let cleanup = runReaderT env unsub
+    registerCleanup unsubsRef (cleanupKey scopeKey clientId) cleanup
     pure ()
