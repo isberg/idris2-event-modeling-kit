@@ -11,7 +11,7 @@ This repository is not an application. It is a package workspace intended to sho
 - `emkit-modeling`
   Event Modeling pattern helpers, screen contracts, and traceability helpers.
 - `emkit-runtime`
-  Shared application runtime bridge for store-backed command execution and view projection.
+  Shared application runtime bridge for store-backed command execution, view projection, and overview-query summary listing.
 - `emkit-stream`
   Stream version/cursor helpers, version-aware projection safety helpers, and transport-neutral SSE framing helpers.
 - `emkit-store`

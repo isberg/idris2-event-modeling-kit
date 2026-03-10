@@ -24,7 +24,8 @@ It may depend on `emkit-sourcing`, but not on storage or web-adapter packages.
 
 - load stream history as empty when a stream does not exist,
 - execute deciders against store-backed stream histories,
-- project views from stored stream histories.
+- project views from stored stream histories,
+- list projected summaries across stream catalogs for overview queries.
 
 It may depend on `emkit-sourcing`, `emkit-modeling`, and `emkit-store`, but it must remain transport-neutral and framework-neutral.
 
@@ -100,6 +101,12 @@ After `examples/todo-web`, the following additional seams are now clearer but st
 - one per-stream SSE feed with resume via `Last-Event-ID`,
 - typed execute and resync requests,
 - memory and file-store execution with restart persistence.
+
+After auditing `counter-web`, `counter-web-multi`, `todo-web`, and `counters-web`, one more repeated backend seam is now shared in `emkit-runtime`:
+
+- stream-catalog backed projected summary listing for overview queries
+
+This keeps route naming and endpoint layout local, but removes the repeated “list streams, load histories, project summaries, keep existing ones” block from multi-stream web backends.
 
 After `examples/counters-web`, one more backend seam is now proven enough to share:
 

@@ -5,6 +5,7 @@ Runtime helpers for applications built on `emkit`.
 ## Canonical Modules
 
 - `EmKit.Runtime.Execute`
+- `EmKit.Runtime.Query`
 
 ## Boundary Rule
 
@@ -14,7 +15,8 @@ Runtime helpers for applications built on `emkit`.
 - hydrate state from stored events,
 - run a decider against the current state,
 - append produced events,
-- project a view from stored history.
+- project a view from stored history,
+- list stream-backed projected summaries for overview queries.
 
 It does not own:
 
