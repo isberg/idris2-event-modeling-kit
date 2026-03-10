@@ -135,9 +135,19 @@ After `examples/project-tasks-web`, the current shared stack is now also proven 
 - one category-wide overview feed for `project-*`,
 - one project-scoped category feed over `task-*`,
 - one per-stream task detail feed with replay/resume,
-- separate aggregate deciders inside one shared `DomainEvent` transport shape.
+- separate aggregate deciders over aggregate-local event types,
+- one app-local stored-event wrapper for the single event store.
 
-That run did not justify a new package extraction on its own. It did confirm two structural choices:
+That run did not justify a new shared extraction on its own. It did confirm three structural choices:
 
 - split the domain by category early when there are multiple aggregates,
+- keep aggregate-local `Decider`, `Projection`, and `StateView` instances on aggregate-local event types,
 - keep backend and frontend consolidated until repeated cross-category ceremony becomes clearer than the domain policy.
+
+The same run also proved one first automation slice without introducing a background worker:
+
+- task events update projected task summaries for a project,
+- a pure policy evaluates project detail plus projected task state,
+- the backend may issue `CompleteProject` automatically.
+
+That automation policy remains intentionally app-local. The shared packages still do not own cross-category policy loops, command routing policy, or automation idempotency strategy.
