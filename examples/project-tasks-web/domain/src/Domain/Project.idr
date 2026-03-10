@@ -2,7 +2,7 @@ module Domain.Project
 
 import Data.String
 import Domain.Event
-import EmKit.Modeling.Pattern.StateView
+import EmKit.Sourcing.Projection
 import EmKit.Sourcing.Decider
 import EmKit.Stream.Version
 
@@ -198,15 +198,15 @@ implementation Decider List ProjectCommand ProjectRejection ProjectEvent Project
   decide CompleteProject state CanCompleteProject = [ProjectCompleted]
 
 public export
-implementation StateView ProjectEvent ProjectView where
-  initialView = MkProjectView False "" False
-  projectEvent _ (ProjectCreated projectTitle) = MkProjectView True projectTitle False
-  projectEvent view ProjectCompleted = { completed := True } view
+implementation Projection ProjectEvent ProjectView where
+  initial = MkProjectView False "" False
+  evolve _ (ProjectCreated projectTitle) = MkProjectView True projectTitle False
+  evolve view ProjectCompleted = { completed := True } view
 
 public export
 summaryFromEvents : String -> Nat -> List ProjectEvent -> ProjectSummary
-summaryFromEvents projectId streamVersion events = summaryFromView projectId streamVersion (projectFromList events)
+summaryFromEvents projectId streamVersion events = summaryFromView projectId streamVersion (project events)
 
 public export
 detailFromEvents : String -> Nat -> List ProjectEvent -> ProjectDetail
-detailFromEvents projectId streamVersion events = detailFromView projectId streamVersion (projectFromList events)
+detailFromEvents projectId streamVersion events = detailFromView projectId streamVersion (project events)

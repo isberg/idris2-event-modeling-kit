@@ -17,7 +17,7 @@ currentState :
   CommandStateChange h command rejection event state =>
   h event ->
   state
-currentState = hydrate
+currentState = project
 
 public export
 applyCommand :

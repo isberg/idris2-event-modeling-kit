@@ -2,7 +2,7 @@ module Domain
 
 import Data.List
 import Data.String
-import EmKit.Modeling.Pattern.StateView
+import EmKit.Sourcing.Projection
 import EmKit.Modeling.Screen.Actions
 import EmKit.Modeling.Screen.Contracts
 import EmKit.Sourcing.Decider
@@ -373,26 +373,26 @@ implementation Decider List Command Rejection TodoEvent TodoListState where
   decide (ToggleItem itemId) state CanToggleDoneItem = [ItemReopened itemId]
 
 public export
-implementation StateView TodoEvent TodoListView where
-  initialView = MkTodoListView False "" [] 0 0
-  projectEvent _ (ListCreated createdTitle) = MkTodoListView True createdTitle [] 0 0
-  projectEvent view (ItemAdded newItemId newText) =
+implementation Projection TodoEvent TodoListView where
+  initial = MkTodoListView False "" [] 0 0
+  evolve _ (ListCreated createdTitle) = MkTodoListView True createdTitle [] 0 0
+  evolve view (ItemAdded newItemId newText) =
     let nextItems = items view ++ [MkTodoItem newItemId newText ItemOpen]
      in MkTodoListView True (title view) nextItems (S (openCount view)) (doneCount view)
-  projectEvent view (ItemCompleted targetItemId) =
+  evolve view (ItemCompleted targetItemId) =
     let nextItems = setStatus targetItemId ItemDone (items view)
      in MkTodoListView True (title view) nextItems (decNat (openCount view)) (S (doneCount view))
-  projectEvent view (ItemReopened targetItemId) =
+  evolve view (ItemReopened targetItemId) =
     let nextItems = setStatus targetItemId ItemOpen (items view)
      in MkTodoListView True (title view) nextItems (S (openCount view)) (decNat (doneCount view))
 
 public export
 summaryFromEvents : String -> Nat -> List TodoEvent -> TodoListSummary
-summaryFromEvents listId streamVersion events = summaryFromView listId streamVersion (projectFromList events)
+summaryFromEvents listId streamVersion events = summaryFromView listId streamVersion (project events)
 
 public export
 detailFromEvents : String -> Nat -> List TodoEvent -> TodoListDetail
-detailFromEvents listId version events = detailFromView listId version (projectFromList events)
+detailFromEvents listId version events = detailFromView listId version (project events)
 
 public export
 implementation ScreenCatalog Screen AppBundle where

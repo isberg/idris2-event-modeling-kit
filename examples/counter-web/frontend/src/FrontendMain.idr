@@ -3,7 +3,7 @@ module FrontendMain
 import Data.List
 import Data.String
 import Domain
-import EmKit.Modeling.Pattern.StateView
+import EmKit.Sourcing.Projection
 import EmKit.Frontend.SSE as FrontendSSE
 import JS.Util
 import JSON.Simple
@@ -101,7 +101,7 @@ applyLiveEvent dto s =
       case decodeLiveEvent dto of
         Left err => Left err
         Right event =>
-          let nextView = projectEvent (view s) event
+          let nextView = evolve (view s) event
               nextHistory = history s ++ [MkEventHistoryDto (streamVersion dto) (eventType dto) (detail dto)] in
             Right ({ version := streamVersion dto, view := nextView, history := nextHistory, busy := False, status := "Live event: " ++ eventType dto ++ "." } s)
 

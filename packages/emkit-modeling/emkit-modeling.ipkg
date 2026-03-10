@@ -5,7 +5,6 @@ authors = ""
 sourcedir = "src"
 
 modules = EmKit.Modeling.Pattern.CommandStateChange
-        , EmKit.Modeling.Pattern.StateView
         , EmKit.Modeling.Pattern.Automation
         , EmKit.Modeling.Pattern.Translation
         , EmKit.Modeling.Screen.Contracts

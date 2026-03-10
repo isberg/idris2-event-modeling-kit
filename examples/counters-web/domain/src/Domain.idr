@@ -1,7 +1,7 @@
 module Domain
 
 import Data.String
-import EmKit.Modeling.Pattern.StateView
+import EmKit.Sourcing.Projection
 import EmKit.Modeling.Screen.Actions
 import EmKit.Modeling.Screen.Contracts
 import EmKit.Sourcing.Decider
@@ -323,23 +323,23 @@ implementation Decider List Command Rejection CounterEvent CounterState where
   decide Decrement _ CanDecrementPositive = [Decremented]
 
 public export
-implementation StateView CounterEvent CounterView where
-  initialView = MkCounterView False "" 0 ""
-  projectEvent _ (Created counterName) = MkCounterView True counterName 0 ""
-  projectEvent view Incremented =
+implementation Projection CounterEvent CounterView where
+  initial = MkCounterView False "" 0 ""
+  evolve _ (Created counterName) = MkCounterView True counterName 0 ""
+  evolve view Incremented =
     let next = S (value view) in
       MkCounterView (exists view) (name view) next (romanDigit next)
-  projectEvent view Decremented =
+  evolve view Decremented =
     let next = decNat (value view) in
       MkCounterView (exists view) (name view) next (romanDigit next)
 
 public export
 summaryFromEvents : String -> Nat -> List CounterEvent -> CounterSummary
-summaryFromEvents counterId streamVersion events = summaryFromView counterId streamVersion (projectFromList events)
+summaryFromEvents counterId streamVersion events = summaryFromView counterId streamVersion (project events)
 
 public export
 detailFromEvents : String -> Nat -> List CounterEvent -> CounterDetail
-detailFromEvents counterId version history = detailFromView counterId version history (projectFromList history)
+detailFromEvents counterId version history = detailFromView counterId version history (project history)
 
 canIncrement : CounterDetail -> Bool
 canIncrement detail = exists detail && value detail < maxValue

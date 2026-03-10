@@ -1,6 +1,6 @@
 module Domain
 
-import EmKit.Modeling.Pattern.StateView
+import EmKit.Sourcing.Projection
 import EmKit.Modeling.Screen.Actions
 import EmKit.Modeling.Screen.Contracts
 import EmKit.Sourcing.Decider
@@ -169,13 +169,13 @@ implementation Decider List Command Rejection CounterEvent CounterState where
   decide Decrement _ CanDecrementPositive = [Decremented]
 
 public export
-implementation StateView CounterEvent CounterView where
-  initialView = MkCounterView "(unnamed)" 0 "" False
-  projectEvent _ (Created title) = MkCounterView title 0 "" True
-  projectEvent view Incremented =
+implementation Projection CounterEvent CounterView where
+  initial = MkCounterView "(unnamed)" 0 "" False
+  evolve _ (Created title) = MkCounterView title 0 "" True
+  evolve view Incremented =
     let next = S (value view) in
       MkCounterView (label view) next (romanDigit next) True
-  projectEvent view Decremented =
+  evolve view Decremented =
     let next = decrementNat (value view) in
       MkCounterView (label view) next (romanDigit next) True
 

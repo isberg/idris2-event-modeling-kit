@@ -2,7 +2,7 @@ module Domain.Task
 
 import Data.String
 import Domain.Event
-import EmKit.Modeling.Pattern.StateView
+import EmKit.Sourcing.Projection
 import EmKit.Sourcing.Decider
 import EmKit.Stream.Version
 
@@ -231,20 +231,20 @@ implementation Decider List TaskCommand TaskRejection TaskEvent TaskState where
   decide CompleteTask state CanCompleteTask = [TaskCompleted]
 
 public export
-implementation StateView TaskEvent TaskView where
-  initialView = MkTaskView False "" "" TaskTodo
-  projectEvent _ (TaskCreated projectId taskTitle) = MkTaskView True projectId taskTitle TaskTodo
-  projectEvent view TaskStarted = { status := TaskInProgress } view
-  projectEvent view TaskCompleted = { status := TaskDone } view
+implementation Projection TaskEvent TaskView where
+  initial = MkTaskView False "" "" TaskTodo
+  evolve _ (TaskCreated projectId taskTitle) = MkTaskView True projectId taskTitle TaskTodo
+  evolve view TaskStarted = { status := TaskInProgress } view
+  evolve view TaskCompleted = { status := TaskDone } view
 
 public export
 summaryFromEvents : String -> Nat -> List TaskEvent -> TaskSummary
-summaryFromEvents taskId streamVersion events = summaryFromView taskId streamVersion (projectFromList events)
+summaryFromEvents taskId streamVersion events = summaryFromView taskId streamVersion (project events)
 
 public export
 detailFromEvents : String -> Nat -> List TaskEvent -> TaskDetail
 detailFromEvents taskId streamVersion events =
-  detailFromView taskId streamVersion events (projectFromList events)
+  detailFromView taskId streamVersion events (project events)
 
 public export
 canStart : TaskDetail -> Bool

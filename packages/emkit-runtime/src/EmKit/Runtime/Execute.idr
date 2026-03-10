@@ -1,6 +1,5 @@
 module EmKit.Runtime.Execute
 
-import EmKit.Modeling.Pattern.StateView
 import EmKit.Sourcing.Decider
 import EmKit.Store.Core
 
@@ -52,23 +51,23 @@ loadStateOrInitial streamId = do
     case loaded of
       Left err => Left err
       Right (version, history) =>
-        Right (version, hydrate {h=List} {event=event} {state=state} history)
+        Right (version, project {h=List} {event=event} {model=state} history)
 
 public export
-projectStreamView :
+projectStreamModel :
   {m : Type -> Type} ->
-  {stream, event, view : Type} ->
+  {stream, event, model : Type} ->
   Monad m =>
   EventStore m stream event =>
-  StateView event view =>
+  Projection event model =>
   stream ->
-  m (Either LoadErr (Nat, view))
-projectStreamView streamId = do
+  m (Either LoadErr (Nat, model))
+projectStreamModel streamId = do
   loaded <- loadHistoryOrEmpty {m} {stream} {event} streamId
   pure $
     case loaded of
       Left err => Left err
-      Right (version, history) => Right (version, projectFromList history)
+      Right (version, history) => Right (version, project history)
 
 mutual
   public export
@@ -100,7 +99,7 @@ mutual
     command ->
     m (Either (RuntimeExecuteError rejection) (RuntimeExecuteSuccess event state))
   executeAgainstLoaded streamId version history cmd = do
-    let currentState = hydrate {h=List} {event=event} {state=state} history
+    let currentState = project {h=List} {event=event} {model=state} history
     case decideR {h=List} {command=command} {rejection=rejection} {event=event} {state=state} cmd currentState of
       Left domainRejection => pure (Left (RuntimeRejected domainRejection))
       Right events => do
@@ -110,7 +109,7 @@ mutual
             Left Conflict => Left RuntimeConflict
             Left err => Left (RuntimeAppendFailed err)
             Right newVersion =>
-              let nextState = replayFrom currentState events
+              let nextState = projectFrom {h=List} {event=event} {model=state} currentState events
                in Right (MkRuntimeExecuteSuccess version newVersion events nextState)
 
   public export

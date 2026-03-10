@@ -5,6 +5,7 @@ authors = ""
 sourcedir = "src"
 
 modules = EmKit.Sourcing.History
+        , EmKit.Sourcing.Projection
         , EmKit.Sourcing.Decider
 
 depends = base

@@ -1,34 +1,8 @@
 module EmKit.Sourcing.Decider
 
-import public EmKit.Sourcing.History
+import public EmKit.Sourcing.Projection
 
 %default total
-
-public export
-interface Projection (event, state : Type) where
-  initial : state
-  evolve : state -> event -> state
-
-public export
-replayFrom :
-  {h : Type -> Type} ->
-  History h =>
-  {event, state : Type} ->
-  Projection event state =>
-  state ->
-  h event ->
-  state
-replayFrom start events = replay evolve start events
-
-public export
-hydrate :
-  {h : Type -> Type} ->
-  History h =>
-  {event, state : Type} ->
-  Projection event state =>
-  h event ->
-  state
-hydrate = replayFrom (initial {event=event})
 
 public export
 interface (History h, Projection event state) =>
@@ -61,7 +35,7 @@ update :
 update cmd st =
   case decideR {h} {command} {rejection} {event} {state} cmd st of
     Left rej => Left rej
-    Right evs => Right (replayFrom st evs, evs)
+    Right evs => Right (projectFrom st evs, evs)
 
 public export
 execute :
@@ -72,4 +46,4 @@ execute :
   command ->
   Either rejection (h event)
 execute history cmd =
-  decideR {h} {command} {rejection} {event} {state} cmd (hydrate history)
+  decideR {h} {command} {rejection} {event} {state} cmd (project history)

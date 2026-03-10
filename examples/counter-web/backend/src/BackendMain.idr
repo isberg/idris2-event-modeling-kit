@@ -8,7 +8,7 @@ import Data.SortedMap
 import Data.String
 import Domain
 import EmKit.Backend.SSE
-import EmKit.Modeling.Pattern.StateView
+import EmKit.Sourcing.Projection
 import EmKit.Runtime.Execute
 import EmKit.Sourcing.Decider
 import EmKit.Store.Core
@@ -90,7 +90,7 @@ snapshotFromStore = do
     case loaded of
       Left err => Left (renderLoadErr err)
       Right (version, history) =>
-        let view = projectFromList {event=CounterEvent} {view=CounterView} history in
+        let view = project {event=CounterEvent} {model=CounterView} history in
           Right (toSnapshot version view history)
 
 executeCommandInStore : Command -> Memory.App String CounterEvent CommandResponseDto
@@ -111,7 +111,7 @@ readSnapshotP : Memory.Env String CounterEvent -> Promise Error IO CounterSnapsh
 readSnapshotP env = promise $ \resolve, _ => do
   result <- runReaderT env snapshotFromStore
   case result of
-    Left _ => resolve (toSnapshot 0 (initialView {event=CounterEvent} {view=CounterView}) [])
+    Left _ => resolve (toSnapshot 0 (initial {event=CounterEvent} {model=CounterView}) [])
     Right snapshot => resolve snapshot
 
 runCommandP : Memory.Env String CounterEvent -> Command -> Promise Error IO CommandResponseDto

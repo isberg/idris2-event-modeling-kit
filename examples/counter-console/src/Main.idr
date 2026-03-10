@@ -5,7 +5,7 @@ import Control.Monad.Trans
 import Data.List
 import Data.String
 import Domain
-import EmKit.Modeling.Pattern.StateView
+import EmKit.Sourcing.Projection
 import EmKit.Modeling.Screen.Actions
 import EmKit.Modeling.Screen.Contracts
 import EmKit.Runtime.Execute
@@ -35,7 +35,7 @@ renderRuntimeErr (RuntimeAppendFailed err) = "Append failed: " ++ renderAppendEr
 
 loadBundle : Memory.App String CounterEvent (Either String (Nat, CounterView, CounterBundle))
 loadBundle = do
-  result <- projectStreamView {m=ReaderT (Memory.Env String CounterEvent) IO} {stream=String} {event=CounterEvent} {view=CounterView} streamId
+  result <- projectStreamModel {m=ReaderT (Memory.Env String CounterEvent) IO} {stream=String} {event=CounterEvent} {model=CounterView} streamId
   pure $
     case result of
       Left err => Left ("Load failed: " ++ renderLoadErr err)

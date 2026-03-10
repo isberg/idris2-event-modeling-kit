@@ -273,7 +273,7 @@ executeTypedOnStoredExpected unwrap wrap streamId expectedVersion cmd = do
     Right (version, history) =>
       if expectedVersion == version
         then do
-          let currentState = hydrate {h=List} {event=localEvent} {state=state} history
+          let currentState = project {h=List} {event=localEvent} {model=state} history
           case decideR {h=List} {command=command} {rejection=rejection} {event=localEvent} {state=state} cmd currentState of
             Left domainRejection => pure (Left (RuntimeRejected domainRejection))
             Right events => do
@@ -282,7 +282,7 @@ executeTypedOnStoredExpected unwrap wrap streamId expectedVersion cmd = do
                 Left Conflict => Left RuntimeConflict
                 Left err => Left (RuntimeAppendFailed err)
                 Right newVersion =>
-                  let nextState = replayFrom {h=List} {event=localEvent} {state=state} currentState events
+                  let nextState = projectFrom {h=List} {event=localEvent} {model=state} currentState events
                    in Right (MkRuntimeExecuteSuccess version newVersion events nextState)
         else pure (Left RuntimeConflict)
 
