@@ -63,9 +63,10 @@ It may depend on `emkit-store` and `emkit-stream`, but it must not own route nam
 `emkit-frontend` owns shared frontend web adapters:
 
 - browser EventSource lifecycle helpers,
-- client id generation for live subscriptions.
+- client id generation for live subscriptions,
 - typed execute and resync request helpers,
-- minimal multi-stream subscribe helpers.
+- minimal multi-stream subscribe helpers,
+- small stream lifecycle helpers for "close current if present" and "open commands only when a client id exists".
 
 It should remain route-neutral. Higher-level stream controllers, page navigation helpers, and domain-specific retry policy should be added only when more than one local example truly needs them.
 
@@ -92,7 +93,7 @@ After `examples/counter-web-multi`, two seams remain intentionally local:
 - command route conventions for app-specific APIs
 - higher-level stream endpoint/controller helpers with unsubscribe or stream switching semantics
 
-The low-level SSE seam, typed execute/resync helpers, and minimal subscribe helpers are now shared in `emkit-backend` and `emkit-frontend`. Richer stream lifecycle helpers still remain deferred until another example proves unsubscribe or stream-switching behavior without app-local assumptions.
+The low-level SSE seam, typed execute/resync helpers, minimal subscribe helpers, and the small open/close lifecycle branch are now shared in `emkit-backend` and `emkit-frontend`. The richer recovery logic for decode failure, gap handling, resync policy, and page-state transitions still remains app-local.
 
 After `examples/todo-web`, the following additional seams are now clearer but still intentionally local:
 

@@ -21,7 +21,7 @@ This repository is not an application. It is a package workspace intended to sho
 - `emkit-backend`
   Shared backend store-app shell plus SSE replay/live adapter helpers, including mapped per-stream replay/live subscriptions and mapped live category-feed subscriptions.
 - `emkit-frontend`
-  Shared frontend EventSource lifecycle helpers, typed execute/resync helpers, and minimal multi-stream subscribe helpers.
+  Shared frontend EventSource lifecycle helpers, typed execute/resync helpers, minimal stream subscribe helpers, and small client-id-gated open/close lifecycle helpers.
 
 ## Examples
 
