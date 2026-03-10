@@ -12,6 +12,11 @@ data StreamVersionAdvance stream
   | Advanced (List (stream, Nat))
 
 public export
+data VersionedUpdate state
+  = IgnoredStale state
+  | Applied state
+
+public export
 streamKnownVersion : Eq stream => stream -> List (stream, Nat) -> Nat
 streamKnownVersion _ [] = 0
 streamKnownVersion streamId ((existing, known) :: rest) =
@@ -42,6 +47,21 @@ advanceStreamVersion streamId incoming knownVersions =
       Right (Advanced (upsertStreamVersion streamId incoming knownVersions))
     else
       Left (VersionGap streamId expected incoming)
+
+public export
+applyVersionedUpdate :
+  Eq stream =>
+  stream ->
+  Nat ->
+  Nat ->
+  (Nat -> state -> state) ->
+  state ->
+  Either (StreamVersionAdvanceError stream) (VersionedUpdate state)
+applyVersionedUpdate streamId currentVersion incomingVersion step state =
+  case advanceStreamVersion streamId incomingVersion [(streamId, currentVersion)] of
+    Left err => Left err
+    Right DuplicateOrOld => Right (IgnoredStale state)
+    Right (Advanced _) => Right (Applied (step incomingVersion state))
 
 public export
 formatAdvanceError : (stream -> String) -> StreamVersionAdvanceError stream -> String
