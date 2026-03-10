@@ -6,6 +6,7 @@ import Data.Buffer.Ext
 import Data.IORef as IORef
 import Data.List
 import Data.String
+import EmKit.Backend.SSE
 import Domain.Automation as Automation
 import Domain.Event as Event
 import Domain.JSON
@@ -13,6 +14,7 @@ import Domain.JSON.Simple
 import Domain.Project as Project
 import Domain.Task as Task
 import EmKit.Runtime.Execute
+import EmKit.Runtime.Query
 import EmKit.Sourcing.Decider
 import EmKit.Store.Core
 import EmKit.Store.File as File
@@ -48,35 +50,6 @@ record AppEnv ev where
 
 ProjectTaskApp : Type -> Type -> Type
 ProjectTaskApp ev a = ReaderT (AppEnv ev) IO a
-
-ClientUnsubs : Type
-ClientUnsubs = List (String, IO ())
-
-emptyClientUnsubs : ClientUnsubs
-emptyClientUnsubs = []
-
-findCleanup : String -> ClientUnsubs -> Maybe (IO ())
-findCleanup _ [] = Nothing
-findCleanup wanted ((key, cleanup) :: rest) =
-  if key == wanted then Just cleanup else findCleanup wanted rest
-
-replaceCleanup : String -> IO () -> ClientUnsubs -> ClientUnsubs
-replaceCleanup key cleanup [] = [(key, cleanup)]
-replaceCleanup key cleanup ((currentKey, currentCleanup) :: rest) =
-  if key == currentKey
-    then (key, cleanup) :: rest
-    else (currentKey, currentCleanup) :: replaceCleanup key cleanup rest
-
-registerCleanup : IORef.IORef ClientUnsubs -> String -> IO () -> IO ()
-registerCleanup ref key cleanup = do
-  current <- IORef.readIORef ref
-  case findCleanup key current of
-    Nothing => pure ()
-    Just oldCleanup => oldCleanup
-  IORef.writeIORef ref (replaceCleanup key cleanup current)
-
-cleanupKey : String -> String -> String
-cleanupKey scopeKey clientId = scopeKey ++ "::" ++ clientId
 
 findFileStorageArg : List String -> Maybe StorageMode
 findFileStorageArg [] = Nothing
@@ -195,6 +168,10 @@ renderAppendErr IOAppendError = "File error while appending events."
 renderListStreamsErr : ListStreamsErr -> String
 renderListStreamsErr IOListStreamsError = "File error while listing streams."
 
+renderProjectedSummaryErr : ProjectedSummaryError -> String
+renderProjectedSummaryErr (ProjectedSummaryListFailed err) = renderListStreamsErr err
+renderProjectedSummaryErr (ProjectedSummaryLoadFailed err) = renderLoadErr err
+
 renderRuntimeErr : (rejection -> String) -> RuntimeExecuteError rejection -> String
 renderRuntimeErr renderRejection (RuntimeRejected rejection) = renderRejection rejection
 renderRuntimeErr _ RuntimeConflict = renderAppendErr Conflict
@@ -206,16 +183,6 @@ runtimeStatus RuntimeConflict = CONFLICT
 runtimeStatus (RuntimeRejected _) = BAD_REQUEST
 runtimeStatus (RuntimeLoadFailed _) = INTERNAL_SERVER_ERROR
 runtimeStatus (RuntimeAppendFailed _) = INTERNAL_SERVER_ERROR
-
-decodeStoredEvents : (Event.StoredEvent -> Either LoadErr localEvent) -> List Event.StoredEvent -> Either LoadErr (List localEvent)
-decodeStoredEvents decode [] = Right []
-decodeStoredEvents decode (stored :: rest) =
-  case decode stored of
-    Left err => Left err
-    Right event =>
-      case decodeStoredEvents decode rest of
-        Left err => Left err
-        Right events => Right (event :: events)
 
 projectEventFromStored : Event.StoredEvent -> Either LoadErr Event.ProjectEvent
 projectEventFromStored (Event.StoredProject event) = Right event
@@ -231,118 +198,59 @@ wrapProjectEvent = Event.StoredProject
 wrapTaskEvent : Event.TaskEvent -> Event.StoredEvent
 wrapTaskEvent = Event.StoredTask
 
-loadTypedHistoryOrEmpty :
-  (Event.StoredEvent -> Either LoadErr localEvent) ->
-  String ->
-  ProjectTaskApp Event.StoredEvent (Either LoadErr (Nat, List localEvent))
-loadTypedHistoryOrEmpty decode streamId = do
-  loaded <- loadHistoryOrEmpty {m=ReaderT (AppEnv Event.StoredEvent) IO} {stream=String} {event=Event.StoredEvent} streamId
-  pure $ case loaded of
-    Left err => Left err
-    Right (version, history) =>
-      case decodeStoredEvents decode history of
-        Left err => Left err
-        Right typedHistory => Right (version, typedHistory)
-
-sequenceEither : {err : Type} -> {value : Type} -> List (Either err value) -> Either err (List value)
-sequenceEither [] = Right []
-sequenceEither (Left err :: _) = Left err
-sequenceEither (Right value :: rest) =
-  case sequenceEither rest of
-    Left err => Left err
-    Right values => Right (value :: values)
-
-keepJusts : {value : Type} -> List (Maybe value) -> List value
-keepJusts [] = []
-keepJusts (Nothing :: rest) = keepJusts rest
-keepJusts (Just value :: rest) = value :: keepJusts rest
-
-executeTypedOnStoredExpected :
-  {command, rejection, localEvent, state : Type} ->
-  Decider List command rejection localEvent state =>
-  (Event.StoredEvent -> Either LoadErr localEvent) ->
-  (localEvent -> Event.StoredEvent) ->
-  String ->
-  Nat ->
-  command ->
-  ProjectTaskApp Event.StoredEvent (Either (RuntimeExecuteError rejection) (RuntimeExecuteSuccess localEvent state))
-executeTypedOnStoredExpected unwrap wrap streamId expectedVersion cmd = do
-  loaded <- loadTypedHistoryOrEmpty unwrap streamId
-  case loaded of
-    Left err => pure (Left (RuntimeLoadFailed err))
-    Right (version, history) =>
-      if expectedVersion == version
-        then do
-          let currentState = project {h=List} {event=localEvent} {model=state} history
-          case decideR {h=List} {command=command} {rejection=rejection} {event=localEvent} {state=state} cmd currentState of
-            Left domainRejection => pure (Left (RuntimeRejected domainRejection))
-            Right events => do
-              appended <- append streamId version (map wrap events)
-              pure $ case appended of
-                Left Conflict => Left RuntimeConflict
-                Left err => Left (RuntimeAppendFailed err)
-                Right newVersion =>
-                  let nextState = projectFrom {h=List} {event=localEvent} {model=state} currentState events
-                   in Right (MkRuntimeExecuteSuccess version newVersion events nextState)
-        else pure (Left RuntimeConflict)
-
 listProjectSummariesInStore : ProjectTaskApp Event.StoredEvent (Either String (List Project.ProjectSummary))
 listProjectSummariesInStore = do
-  listed <- listStreams
-  case listed of
-    Left err => pure (Left (renderListStreamsErr err))
-    Right streamIds => do
-      results <- traverse loadSummary (filter isProjectStream streamIds)
-      pure $ case sequenceEither results of
-        Left err => Left err
-        Right summaries => Right (keepJusts summaries)
-  where
-    loadSummary : String -> ProjectTaskApp Event.StoredEvent (Either String (Maybe Project.ProjectSummary))
-    loadSummary streamId = do
-      loaded <- loadTypedHistoryOrEmpty projectEventFromStored streamId
-      pure $ case loaded of
-        Left err => Left (renderLoadErr err)
-        Right (streamVersion, history) =>
-          let summary = Project.summaryFromEvents streamId streamVersion history in
-          if exists summary then Right (Just summary) else Right Nothing
+  listed <-
+    listMappedProjectedSummaries
+      {m=ReaderT (AppEnv Event.StoredEvent) IO}
+      {stream=String}
+      {storedEvent=Event.StoredEvent}
+      {localEvent=Event.ProjectEvent}
+      {summary=Project.ProjectSummary}
+      projectEventFromStored
+      isProjectStream
+      Project.summaryFromEvents
+      exists
+  pure $
+    case listed of
+      Left err => Left (renderProjectedSummaryErr err)
+      Right summaries => Right summaries
 
 projectResyncInStore : String -> ProjectTaskApp Event.StoredEvent (Either String (ResyncPayload Event.ProjectEvent))
 projectResyncInStore streamId = do
-  loaded <- loadTypedHistoryOrEmpty projectEventFromStored streamId
+  loaded <- loadMappedHistoryOrEmpty {m=ReaderT (AppEnv Event.StoredEvent) IO} {stream=String} {storedEvent=Event.StoredEvent} {localEvent=Event.ProjectEvent} projectEventFromStored streamId
   pure $ case loaded of
     Left err => Left (renderLoadErr err)
     Right (version, events) => Right (MkResyncPayload version events)
 
 tasksForProjectInStore : String -> ProjectTaskApp Event.StoredEvent (Either String (List Task.TaskSummary))
 tasksForProjectInStore targetProjectId = do
-  listed <- listStreams
-  case listed of
-    Left err => pure (Left (renderListStreamsErr err))
-    Right streamIds => do
-      results <- traverse loadSummary (filter (isTaskForProject targetProjectId) streamIds)
-      pure $ case sequenceEither results of
-        Left err => Left err
-        Right summaries => Right (keepJusts summaries)
-  where
-    loadSummary : String -> ProjectTaskApp Event.StoredEvent (Either String (Maybe Task.TaskSummary))
-    loadSummary streamId = do
-      loaded <- loadTypedHistoryOrEmpty taskEventFromStored streamId
-      pure $ case loaded of
-        Left err => Left (renderLoadErr err)
-        Right (streamVersion, history) =>
-          let summary = Task.summaryFromEvents streamId streamVersion history in
-          if exists summary then Right (Just summary) else Right Nothing
+  listed <-
+    listMappedProjectedSummaries
+      {m=ReaderT (AppEnv Event.StoredEvent) IO}
+      {stream=String}
+      {storedEvent=Event.StoredEvent}
+      {localEvent=Event.TaskEvent}
+      {summary=Task.TaskSummary}
+      taskEventFromStored
+      (isTaskForProject targetProjectId)
+      Task.summaryFromEvents
+      exists
+  pure $
+    case listed of
+      Left err => Left (renderProjectedSummaryErr err)
+      Right summaries => Right summaries
 
 taskResyncInStore : String -> ProjectTaskApp Event.StoredEvent (Either String (ResyncPayload Event.TaskEvent))
 taskResyncInStore streamId = do
-  loaded <- loadTypedHistoryOrEmpty taskEventFromStored streamId
+  loaded <- loadMappedHistoryOrEmpty {m=ReaderT (AppEnv Event.StoredEvent) IO} {stream=String} {storedEvent=Event.StoredEvent} {localEvent=Event.TaskEvent} taskEventFromStored streamId
   pure $ case loaded of
     Left err => Left (renderLoadErr err)
     Right (version, events) => Right (MkResyncPayload version events)
 
 runProjectAutomation : String -> ProjectTaskApp Event.StoredEvent ()
 runProjectAutomation projectId = do
-  projectLoaded <- loadTypedHistoryOrEmpty projectEventFromStored projectId
+  projectLoaded <- loadMappedHistoryOrEmpty {m=ReaderT (AppEnv Event.StoredEvent) IO} {stream=String} {storedEvent=Event.StoredEvent} {localEvent=Event.ProjectEvent} projectEventFromStored projectId
   tasksLoaded <- tasksForProjectInStore projectId
   case (projectLoaded, tasksLoaded) of
     (Right (projectVersion, projectEvents), Right taskSummaries) =>
@@ -351,18 +259,18 @@ runProjectAutomation projectId = do
       in case Automation.automatedProjectCommand policyView of
           Nothing => pure ()
           Just cmd => do
-            _ <- executeTypedOnStoredExpected {command=Project.ProjectCommand} {rejection=Project.ProjectRejection} {localEvent=Event.ProjectEvent} {state=Project.ProjectModel} projectEventFromStored wrapProjectEvent projectId projectVersion cmd
+            _ <- executeMappedOnStreamExpected {m=ReaderT (AppEnv Event.StoredEvent) IO} {stream=String} {command=Project.ProjectCommand} {rejection=Project.ProjectRejection} {storedEvent=Event.StoredEvent} {localEvent=Event.ProjectEvent} {state=Project.ProjectModel} projectEventFromStored wrapProjectEvent projectId projectVersion cmd
             pure ()
     _ => pure ()
 
 executeProjectCommandInStore : String -> ExecutePayload Project.ProjectCommand -> ProjectTaskApp Event.StoredEvent (Either (RuntimeExecuteError Project.ProjectRejection) Nat)
 executeProjectCommandInStore streamId payload = do
-  result <- executeTypedOnStoredExpected projectEventFromStored wrapProjectEvent streamId (expectedVersion payload) (command payload)
+  result <- executeMappedOnStreamExpected {m=ReaderT (AppEnv Event.StoredEvent) IO} {stream=String} {command=Project.ProjectCommand} {rejection=Project.ProjectRejection} {storedEvent=Event.StoredEvent} {localEvent=Event.ProjectEvent} {state=Project.ProjectModel} projectEventFromStored wrapProjectEvent streamId (expectedVersion payload) (command payload)
   pure (map newVersion result)
 
 executeTaskCommandInStore : String -> ExecutePayload Task.TaskCommand -> ProjectTaskApp Event.StoredEvent (Either (RuntimeExecuteError Task.TaskRejection) Nat)
 executeTaskCommandInStore streamId payload = do
-  result <- executeTypedOnStoredExpected taskEventFromStored wrapTaskEvent streamId (expectedVersion payload) (command payload)
+  result <- executeMappedOnStreamExpected {m=ReaderT (AppEnv Event.StoredEvent) IO} {stream=String} {command=Task.TaskCommand} {rejection=Task.TaskRejection} {storedEvent=Event.StoredEvent} {localEvent=Event.TaskEvent} {state=Task.TaskModel} taskEventFromStored wrapTaskEvent streamId (expectedVersion payload) (command payload)
   case result of
     Left err => pure (Left err)
     Right success => do
@@ -374,85 +282,6 @@ executeTaskCommandInStore streamId payload = do
             Task.MkTaskModel True projectId _ _ => runProjectAutomation projectId
             _ => pure ()
       pure (Right (newVersion success))
-
-emitBatch : (Buffer -> IO ()) -> (Nat -> localEvent -> Buffer) -> Nat -> List localEvent -> IO ()
-emitBatch _ _ _ [] = pure ()
-emitBatch emit toBuffer version (event :: rest) = do
-  let next = S version
-  emit (toBuffer next event)
-  emitBatch emit toBuffer next rest
-
-emitCategoryBatch : (Buffer -> IO ()) -> (String -> Nat -> localEvent -> Buffer) -> String -> Nat -> List localEvent -> IO ()
-emitCategoryBatch _ _ _ _ [] = pure ()
-emitCategoryBatch emit toBuffer streamId version (event :: rest) = do
-  let next = S version
-  emit (toBuffer streamId next event)
-  emitCategoryBatch emit toBuffer streamId next rest
-
-replayTypedExisting :
-  (Buffer -> IO ()) ->
-  (Nat -> localEvent -> Buffer) ->
-  (Event.StoredEvent -> Either LoadErr localEvent) ->
-  AppEnv Event.StoredEvent ->
-  String ->
-  Maybe Nat ->
-  IO ()
-replayTypedExisting emit toBuffer decode env streamId maybeLastEventId = do
-  let loadAction : ReaderT (AppEnv Event.StoredEvent) IO (Either LoadErr (Nat, List Event.StoredEvent))
-      loadAction =
-        case maybeLastEventId of
-          Nothing => load {m=ReaderT (AppEnv Event.StoredEvent) IO} {stream=String} {ev=Event.StoredEvent} streamId
-          Just lastSeen => loadFrom {m=ReaderT (AppEnv Event.StoredEvent) IO} {stream=String} {ev=Event.StoredEvent} streamId lastSeen
-  loaded <- runReaderT env loadAction
-  case loaded of
-    Left _ => pure ()
-    Right (_, storedEvents) =>
-      case decodeStoredEvents decode storedEvents of
-        Left _ => pure ()
-        Right events => emitBatch emit toBuffer (maybe 0 id maybeLastEventId) events
-
-subscribeTypedStream :
-  IORef.IORef ClientUnsubs ->
-  AppEnv Event.StoredEvent ->
-  (Nat -> localEvent -> Buffer) ->
-  (Event.StoredEvent -> Either LoadErr localEvent) ->
-  String ->
-  String ->
-  Maybe Nat ->
-  Publisher IO e Buffer
-subscribeTypedStream unsubsRef env toBuffer decode streamId clientId maybeLastEventId =
-  MkPublisher $ \subscriber => do
-    subscriber.onNext (fromString sseConnectedCommentText)
-    replayTypedExisting subscriber.onNext toBuffer decode env streamId maybeLastEventId
-    unsub <- runReaderT env $
-      subscribe {m=ReaderT (AppEnv Event.StoredEvent) IO} {stream=String} {ev=Event.StoredEvent} streamId $ \startVersion, events =>
-        liftIO $ case decodeStoredEvents decode events of
-          Left _ => pure ()
-          Right typedEvents => emitBatch subscriber.onNext toBuffer startVersion typedEvents
-    let cleanup = runReaderT env unsub
-    registerCleanup unsubsRef (cleanupKey streamId clientId) cleanup
-    pure ()
-
-subscribeTypedCategoryLive :
-  IORef.IORef ClientUnsubs ->
-  AppEnv Event.StoredEvent ->
-  String ->
-  (String -> Nat -> localEvent -> Buffer) ->
-  (Event.StoredEvent -> Either LoadErr localEvent) ->
-  (String -> Bool) ->
-  String ->
-  Publisher IO e Buffer
-subscribeTypedCategoryLive unsubsRef env scopeKey toBuffer decode matches clientId =
-  MkPublisher $ \subscriber => do
-    subscriber.onNext (fromString sseConnectedCommentText)
-    unsub <- runReaderT env $
-      subscribeCategory {m=ReaderT (AppEnv Event.StoredEvent) IO} {stream=String} {ev=Event.StoredEvent} matches $ \streamId, startVersion, events =>
-        liftIO $ case decodeStoredEvents decode events of
-          Left _ => pure ()
-          Right typedEvents => emitCategoryBatch subscriber.onNext toBuffer streamId startVersion typedEvents
-    let cleanup = runReaderT env unsub
-    registerCleanup unsubsRef (cleanupKey scopeKey clientId) cleanup
-    pure ()
 
 frameProjectDetailEvent : Nat -> Event.ProjectEvent -> Buffer
 frameProjectDetailEvent version event =
@@ -480,19 +309,19 @@ frameProjectTaskEvent streamId version event =
 
 subscribeProjectOverview : AppEnv Event.StoredEvent -> IORef.IORef ClientUnsubs -> String -> Publisher IO e Buffer
 subscribeProjectOverview env unsubsRef clientId =
-  subscribeTypedCategoryLive unsubsRef env "project-overview" frameProjectOverviewEvent projectEventFromStored isProjectStream clientId
+  subscribeMappedCategoryLive env unsubsRef "project-overview" frameProjectOverviewEvent projectEventFromStored isProjectStream clientId
 
 subscribeProjectDetail : AppEnv Event.StoredEvent -> IORef.IORef ClientUnsubs -> String -> String -> Maybe Nat -> Publisher IO e Buffer
 subscribeProjectDetail env unsubsRef projectId clientId maybeLastEventId =
-  subscribeTypedStream unsubsRef env frameProjectDetailEvent projectEventFromStored projectId clientId maybeLastEventId
+  subscribeMappedStream env unsubsRef projectEventFromStored frameProjectDetailEvent projectId clientId maybeLastEventId
 
 subscribeProjectTasks : AppEnv Event.StoredEvent -> IORef.IORef ClientUnsubs -> String -> String -> Publisher IO e Buffer
 subscribeProjectTasks env unsubsRef projectId clientId =
-  subscribeTypedCategoryLive unsubsRef env ("project-tasks:" ++ projectId) frameProjectTaskEvent taskEventFromStored (isTaskForProject projectId) clientId
+  subscribeMappedCategoryLive env unsubsRef ("project-tasks:" ++ projectId) frameProjectTaskEvent taskEventFromStored (isTaskForProject projectId) clientId
 
 subscribeTaskDetail : AppEnv Event.StoredEvent -> IORef.IORef ClientUnsubs -> String -> String -> Maybe Nat -> Publisher IO e Buffer
 subscribeTaskDetail env unsubsRef taskId clientId maybeLastEventId =
-  subscribeTypedStream unsubsRef env frameTaskDetailEvent taskEventFromStored taskId clientId maybeLastEventId
+  subscribeMappedStream env unsubsRef taskEventFromStored frameTaskDetailEvent taskId clientId maybeLastEventId
 
 readProjectSummariesP : AppEnv Event.StoredEvent -> Promise Error IO (List Project.ProjectSummary)
 readProjectSummariesP env = promise $ \resolve, _ => do
