@@ -141,8 +141,9 @@ applyOverviewEvent : MultiplexedStreamEvent String CounterEvent -> State -> Stat
 applyOverviewEvent msg s =
   let sid = streamId msg
       current = fromMaybe (emptySummary sid) (SortedMap.lookup sid (summaries s))
-      next = applySummaryEvent sid (event msg) current
-  in replaceSummary next s
+  in case applySummaryEvent sid (streamVersion msg) (event msg) current of
+       Left err => s
+       Right next => replaceSummary next s
 
 applyDetailEvent : StreamEvent CounterEvent -> CounterDetail -> Either String CounterDetail
 applyDetailEvent msg detail =
@@ -325,8 +326,16 @@ controller (OverviewEventReceived raw) s =
       let s' = { busy := True, status := "Overview feed decode failed. Reloading counters..." } s in
       (s', batch [updateView s', loadSummaries])
     Right msg =>
-      let s' = { busy := False, status := "Overview updated from " ++ streamId msg ++ "." } (applyOverviewEvent msg s) in
-      (s', updateView s')
+      case applySummaryEvent (streamId msg)
+             (streamVersion msg)
+             (event msg)
+             (fromMaybe (emptySummary (streamId msg)) (SortedMap.lookup (streamId msg) (summaries s))) of
+        Left err =>
+          let s' = { busy := True, status := err ++ " Reloading counters..." } s in
+          (s', batch [updateView s', loadSummaries])
+        Right nextSummary =>
+          let s' = { busy := False, status := "Overview updated from " ++ streamId msg ++ "." } (replaceSummary nextSummary s) in
+          (s', updateView s')
 
 controller (CreateNameChanged value) s = ({ createName := value } s, Cmd.noAction)
 

@@ -121,7 +121,7 @@ detailToView : TodoListDetail -> TodoListView
 detailToView detail = MkTodoListView (exists detail) (title detail) (items detail) (openCount detail) (doneCount detail)
 
 updateSummaryFromDetail : TodoListDetail -> State -> State
-updateSummaryFromDetail detail s = replaceSummary (summaryFromView (listId detail) (detailToView detail)) s
+updateSummaryFromDetail detail s = replaceSummary (summaryFromView (listId detail) (version detail) (detailToView detail)) s
 
 actionsForCurrentScreen : State -> List Action
 actionsForCurrentScreen s = availableScreenActions (bundleForState s) (screen s)
@@ -147,8 +147,9 @@ applyOverviewEvent : MultiplexedStreamEvent String TodoEvent -> State -> State
 applyOverviewEvent msg s =
   let sid = streamId msg
       current = fromMaybe (emptySummary sid) (SortedMap.lookup sid (summaries s))
-      next = applySummaryEvent sid (event msg) current
-  in replaceSummary next s
+  in case applySummaryEvent sid (streamVersion msg) (event msg) current of
+       Left _ => s
+       Right next => replaceSummary next s
 
 applyDetailEvent : StreamEvent TodoEvent -> TodoListDetail -> Either String TodoListDetail
 applyDetailEvent msg detail =
@@ -335,8 +336,16 @@ controller (OverviewEventReceived raw) s =
       let s' = { busy := True, status := "Overview feed decode failed. Reloading lists..." } s in
       (s', batch [updateView s', loadSummaries])
     Right msg =>
-      let s' = { busy := False, status := "Overview updated from " ++ streamId msg ++ "." } (applyOverviewEvent msg s) in
-      (s', updateView s')
+      case applySummaryEvent (streamId msg)
+             (streamVersion msg)
+             (event msg)
+             (fromMaybe (emptySummary (streamId msg)) (SortedMap.lookup (streamId msg) (summaries s))) of
+        Left err =>
+          let s' = { busy := True, status := err ++ " Reloading lists..." } s in
+          (s', batch [updateView s', loadSummaries])
+        Right nextSummary =>
+          let s' = { busy := False, status := "Overview updated from " ++ streamId msg ++ "." } (replaceSummary nextSummary s) in
+          (s', updateView s')
 
 controller (CreateTitleChanged value) s = ({ createTitle := value } s, Cmd.noAction)
 

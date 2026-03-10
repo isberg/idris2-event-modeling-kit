@@ -53,6 +53,7 @@ public export
 record TodoListSummary where
   constructor MkTodoListSummary
   listId : String
+  version : Nat
   exists : Bool
   title : String
   openCount : Nat
@@ -172,9 +173,9 @@ countDone (item :: rest) =
     ItemDone => S (countDone rest)
 
 public export
-summaryFromView : String -> TodoListView -> TodoListSummary
-summaryFromView listId view =
-  MkTodoListSummary listId (exists view) (title view) (openCount view) (doneCount view)
+summaryFromView : String -> Nat -> TodoListView -> TodoListSummary
+summaryFromView listId streamVersion view =
+  MkTodoListSummary listId streamVersion (exists view) (title view) (openCount view) (doneCount view)
 
 public export
 detailFromView : String -> Nat -> TodoListView -> TodoListDetail
@@ -182,17 +183,24 @@ detailFromView listId version view =
   MkTodoListDetail listId version (exists view) (title view) (items view) (openCount view) (doneCount view)
 
 public export
-applySummaryEvent : String -> TodoEvent -> TodoListSummary -> TodoListSummary
-applySummaryEvent listId event summary =
-  case event of
-    ListCreated title => MkTodoListSummary listId True title 0 0
-    ItemAdded _ _ => { exists := True, openCount := S (openCount summary) } summary
-    ItemCompleted _ => { openCount := decNat (openCount summary), doneCount := S (doneCount summary) } summary
-    ItemReopened _ => { openCount := S (openCount summary), doneCount := decNat (doneCount summary) } summary
+applySummaryEvent : String -> Nat -> TodoEvent -> TodoListSummary -> Either String TodoListSummary
+applySummaryEvent listId streamVersion event summary =
+  if streamVersion <= version summary then
+    Right summary
+  else
+    let expected = S (version summary) in
+    if streamVersion /= expected then
+      Left ("Overview summary gap for " ++ listId ++ ": expected v" ++ show expected ++ ", got v" ++ show streamVersion ++ ".")
+    else
+      case event of
+        ListCreated title => Right (MkTodoListSummary listId streamVersion True title 0 0)
+        ItemAdded _ _ => Right ({ version := streamVersion, exists := True, openCount := S (openCount summary) } summary)
+        ItemCompleted _ => Right ({ version := streamVersion, openCount := decNat (openCount summary), doneCount := S (doneCount summary) } summary)
+        ItemReopened _ => Right ({ version := streamVersion, openCount := S (openCount summary), doneCount := decNat (doneCount summary) } summary)
 
 public export
 emptySummary : String -> TodoListSummary
-emptySummary listId = MkTodoListSummary listId False "" 0 0
+emptySummary listId = MkTodoListSummary listId 0 False "" 0 0
 
 public export
 bundleForApp : List TodoListSummary -> Maybe TodoListDetail -> AppBundle
@@ -282,8 +290,8 @@ implementation StateView TodoEvent TodoListView where
      in MkTodoListView True (title view) nextItems (S (openCount view)) (decNat (doneCount view))
 
 public export
-summaryFromEvents : String -> List TodoEvent -> TodoListSummary
-summaryFromEvents listId events = summaryFromView listId (projectFromList events)
+summaryFromEvents : String -> Nat -> List TodoEvent -> TodoListSummary
+summaryFromEvents listId streamVersion events = summaryFromView listId streamVersion (projectFromList events)
 
 public export
 detailFromEvents : String -> Nat -> List TodoEvent -> TodoListDetail

@@ -202,8 +202,8 @@ listSummariesInStore = do
       loaded <- loadHistoryOrEmpty {m=ReaderT (AppEnv TodoEvent) IO} {stream=String} {event=TodoEvent} streamId
       pure $ case loaded of
         Left _ => Nothing
-        Right (_, history) =>
-          let summary = summaryFromEvents streamId history in
+        Right (streamVersion, history) =>
+          let summary = summaryFromEvents streamId streamVersion history in
             if exists summary then Just summary else Nothing
 
 detailResyncInStore : String -> TodoApp TodoEvent (Either String (ResyncPayload TodoEvent))

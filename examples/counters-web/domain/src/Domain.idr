@@ -54,6 +54,7 @@ public export
 record CounterSummary where
   constructor MkCounterSummary
   counterId : String
+  version : Nat
   exists : Bool
   name : String
   value : Nat
@@ -141,9 +142,9 @@ data BelowMax : Nat -> Type where
   Below9 : BelowMax 9
 
 public export
-summaryFromView : String -> CounterView -> CounterSummary
-summaryFromView counterId view =
-  MkCounterSummary counterId (exists view) (name view) (value view) (roman view)
+summaryFromView : String -> Nat -> CounterView -> CounterSummary
+summaryFromView counterId streamVersion view =
+  MkCounterSummary counterId streamVersion (exists view) (name view) (value view) (roman view)
 
 public export
 detailFromView : String -> Nat -> List CounterEvent -> CounterView -> CounterDetail
@@ -153,27 +154,34 @@ detailFromView counterId version history view =
 public export
 summaryFromDetail : CounterDetail -> CounterSummary
 summaryFromDetail detail =
-  MkCounterSummary (counterId detail) (exists detail) (name detail) (value detail) (roman detail)
+  MkCounterSummary (counterId detail) (version detail) (exists detail) (name detail) (value detail) (roman detail)
 
 public export
 emptySummary : String -> CounterSummary
-emptySummary counterId = MkCounterSummary counterId False "" 0 ""
+emptySummary counterId = MkCounterSummary counterId 0 False "" 0 ""
 
 public export
 bundleForApp : List CounterSummary -> Maybe CounterDetail -> AppBundle
 bundleForApp = MkAppBundle
 
 public export
-applySummaryEvent : String -> CounterEvent -> CounterSummary -> CounterSummary
-applySummaryEvent counterId event summary =
-  case event of
-    Created counterName => MkCounterSummary counterId True counterName 0 ""
-    Incremented =>
-      let next = S (value summary) in
-      MkCounterSummary counterId (exists summary) (name summary) next (romanDigit next)
-    Decremented =>
-      let next = decNat (value summary) in
-      MkCounterSummary counterId (exists summary) (name summary) next (romanDigit next)
+applySummaryEvent : String -> Nat -> CounterEvent -> CounterSummary -> Either String CounterSummary
+applySummaryEvent counterId streamVersion event summary =
+  if streamVersion <= version summary then
+    Right summary
+  else
+    let expected = S (version summary) in
+    if streamVersion /= expected then
+      Left ("Overview summary gap for " ++ counterId ++ ": expected v" ++ show expected ++ ", got v" ++ show streamVersion ++ ".")
+    else
+      case event of
+        Created counterName => Right (MkCounterSummary counterId streamVersion True counterName 0 "")
+        Incremented =>
+          let next = S (value summary) in
+          Right (MkCounterSummary counterId streamVersion (exists summary) (name summary) next (romanDigit next))
+        Decremented =>
+          let next = decNat (value summary) in
+          Right (MkCounterSummary counterId streamVersion (exists summary) (name summary) next (romanDigit next))
 
 data CommandLegal : Command -> CounterState -> Type where
   CanCreateMissing :
@@ -248,8 +256,8 @@ implementation StateView CounterEvent CounterView where
       MkCounterView (exists view) (name view) next (romanDigit next)
 
 public export
-summaryFromEvents : String -> List CounterEvent -> CounterSummary
-summaryFromEvents counterId events = summaryFromView counterId (projectFromList events)
+summaryFromEvents : String -> Nat -> List CounterEvent -> CounterSummary
+summaryFromEvents counterId streamVersion events = summaryFromView counterId streamVersion (projectFromList events)
 
 public export
 detailFromEvents : String -> Nat -> List CounterEvent -> CounterDetail
