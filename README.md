@@ -31,6 +31,8 @@ This repository is not an application. It is a package workspace intended to sho
   Small SSE-first web application with one fixed stream and one screen. It proves shared backend/frontend SSE helpers while keeping its app-specific command API and snapshot logic local.
 - `examples/counter-web-multi`
   Multi-stream SSE-first web application with typed execute and resync payloads. It proves the wire codecs, shared frontend execute/subscribe helpers, and the multi-stream cleanup fix in the shared backend SSE adapter.
+- `examples/todo-web`
+  Multi-screen SSE-first web application with dynamic per-list streams, a category overview feed, per-stream detail feeds, typed execute/resync payloads, and both memory/file store smoke paths. It pressure-tests stream catalog usage, screen switching, and the split between overview and detail subscriptions.
 
 ## Quickstart
 
@@ -76,8 +78,13 @@ Build and smoke the web examples:
     ./scripts/build.sh
     ./scripts/smoke.sh --port 3011
 
+    cd ../todo-web
+    ./scripts/build.sh
+    ./scripts/smoke.sh --port 3012
+    ./scripts/smoke.sh --port 3013 --skip-build --file-store "$(mktemp -d)"
+
 ## Repository Rule
 
 Application policy stays out of shared packages. Audience filtering, route naming, DTO mapping, and domain-specific automation remain app-local unless repeated evidence justifies extraction.
 
-The current `counter-web` example intentionally keeps its app-specific command API and snapshot DTO mapping local. The current `counter-web-multi` example intentionally keeps its domain routing and page-specific view/controller logic local. Shared packages should only absorb behavior that is proven by more than one example or that sits below domain policy boundaries.
+The current `counter-web` example intentionally keeps its app-specific command API and snapshot DTO mapping local. The current `counter-web-multi` example intentionally keeps its domain routing and page-specific view/controller logic local. The current `todo-web` example intentionally keeps its route naming, overview/detail page composition, and dynamic stream naming policy local. Shared packages should only absorb behavior that is proven by more than one example or that sits below domain policy boundaries.

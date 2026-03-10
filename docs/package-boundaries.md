@@ -85,3 +85,18 @@ After `examples/counter-web-multi`, two seams remain intentionally local:
 - higher-level stream endpoint/controller helpers with unsubscribe or stream switching semantics
 
 The low-level SSE seam, typed execute/resync helpers, and minimal subscribe helpers are now shared in `emkit-backend` and `emkit-frontend`. Richer stream lifecycle helpers still remain deferred until another example proves unsubscribe or stream-switching behavior without app-local assumptions.
+
+After `examples/todo-web`, the following additional seams are now clearer but still intentionally local:
+
+- overview-versus-detail subscription policy for multi-screen apps
+- dynamic stream id generation and navigation policy
+- page/controller composition for screen catalogs that mix category feeds with per-stream detail feeds
+
+`todo-web` proves that the shared backend/frontend layers are sufficient for:
+
+- one category-wide SSE feed,
+- one per-stream SSE feed with resume via `Last-Event-ID`,
+- typed execute and resync requests,
+- memory and file-store execution with restart persistence.
+
+It does not yet justify extracting a higher-level web app shell. The next extraction should only happen if another example repeats the same route/controller composition with materially similar behavior.
