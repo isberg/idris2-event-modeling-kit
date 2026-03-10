@@ -139,6 +139,66 @@ decNat : Nat -> Nat
 decNat Z = Z
 decNat (S k) = k
 
+dropPrefixChars : List Char -> List Char -> Maybe (List Char)
+dropPrefixChars [] xs = Just xs
+dropPrefixChars (_ :: _) [] = Nothing
+dropPrefixChars (p :: ps) (x :: xs) =
+  if p == x
+    then dropPrefixChars ps xs
+    else Nothing
+
+digitNat : Char -> Maybe Nat
+digitNat '0' = Just 0
+digitNat '1' = Just 1
+digitNat '2' = Just 2
+digitNat '3' = Just 3
+digitNat '4' = Just 4
+digitNat '5' = Just 5
+digitNat '6' = Just 6
+digitNat '7' = Just 7
+digitNat '8' = Just 8
+digitNat '9' = Just 9
+digitNat _ = Nothing
+
+parseNatDigits : List Char -> Nat -> Maybe Nat
+parseNatDigits [] acc = Just acc
+parseNatDigits (c :: cs) acc =
+  case digitNat c of
+    Nothing => Nothing
+    Just d => parseNatDigits cs (acc * 10 + d)
+
+suffixNat : String -> String -> Maybe Nat
+suffixNat idPrefix raw =
+  case dropPrefixChars (unpack idPrefix) (unpack raw) of
+    Nothing => Nothing
+    Just [] => Nothing
+    Just digits => parseNatDigits digits 0
+
+maxNat : Nat -> Nat -> Nat
+maxNat x y = if x < y then y else x
+
+maxSuffixFor : String -> List String -> Nat
+maxSuffixFor idPrefix [] = 0
+maxSuffixFor idPrefix (raw :: rest) =
+  let tailMax = maxSuffixFor idPrefix rest in
+  case suffixNat idPrefix raw of
+    Nothing => tailMax
+    Just n => maxNat n tailMax
+
+public export
+nextListIdFromSummaries : List TodoListSummary -> String
+nextListIdFromSummaries summaries =
+  let ids = map listId summaries
+      next = S (maxSuffixFor listPrefix ids)
+  in listPrefix ++ show next
+
+public export
+nextItemIdFromItems : List TodoItem -> String
+nextItemIdFromItems items =
+  let ids = map itemId items
+      next = S (maxSuffixFor itemPrefix ids)
+  in itemPrefix ++ show next
+
 findItemById : String -> List TodoItem -> Maybe TodoItem
 findItemById _ [] = Nothing
 findItemById wanted (item :: rest) =

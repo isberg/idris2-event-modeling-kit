@@ -148,10 +148,10 @@ applyOverviewEvent msg s =
        Right next => replaceSummary next s
 
 nextListId : State -> String
-nextListId s = listPrefix ++ show (S (length (summaryList s)))
+nextListId s = nextListIdFromSummaries (summaryList s)
 
 nextItemId : TodoListDetail -> String
-nextItemId detail = itemPrefix ++ show (S (length (items detail)))
+nextItemId detail = nextItemIdFromItems (items detail)
 
 closeCurrentDetail : State -> List (Cmd Msg)
 closeCurrentDetail s =

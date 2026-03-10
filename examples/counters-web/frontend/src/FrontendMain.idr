@@ -146,7 +146,7 @@ applyOverviewEvent msg s =
        Right next => replaceSummary next s
 
 nextCounterId : State -> String
-nextCounterId s = counterPrefix ++ show (S (length (summaryList s)))
+nextCounterId s = nextCounterIdFromSummaries (summaryList s)
 
 closeCurrentDetail : State -> List (Cmd Msg)
 closeCurrentDetail s =
