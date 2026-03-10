@@ -48,7 +48,8 @@ data Msg : Type where
   CreateProjectClicked : Msg
   CreateProjectFinished : String -> Either HTTPError () -> Msg
   OpenProjectClicked : String -> Msg
-  ProjectResyncFinished : String -> Either HTTPError (ResyncPayload Event.DomainEvent) -> Msg
+  ProjectResyncFinished : String -> Either HTTPError (ResyncPayload Event.ProjectEvent) -> Msg
+  ProjectEventReceived : String -> String -> Msg
   ProjectTasksLoaded : String -> Either HTTPError (List Task.TaskSummary) -> Msg
   ProjectTaskEventReceived : String -> String -> Msg
   BackToProjectsClicked : Msg
@@ -56,7 +57,7 @@ data Msg : Type where
   CreateTaskClicked : Msg
   CreateTaskFinished : String -> Either HTTPError () -> Msg
   OpenTaskClicked : String -> Msg
-  TaskResyncFinished : String -> Either HTTPError (ResyncPayload Event.DomainEvent) -> Msg
+  TaskResyncFinished : String -> Either HTTPError (ResyncPayload Event.TaskEvent) -> Msg
   TaskEventReceived : String -> String -> Msg
   BackToProjectClicked : Msg
   StartTaskClicked : Msg
@@ -75,6 +76,9 @@ projectsOverviewEventsUrl clientId = "/api/projects/overview-events/" ++ clientI
 
 projectResyncUrl : String -> String
 projectResyncUrl projectId = "/api/projects/resync/" ++ projectId
+
+projectEventsUrl : String -> String -> String
+projectEventsUrl projectId clientId = "/api/projects/events/" ++ projectId ++ "/" ++ clientId
 
 projectExecuteUrl : String -> String
 projectExecuteUrl projectId = "/api/projects/execute/" ++ projectId
@@ -102,6 +106,12 @@ loadProjectTasks projectId = get (projectTasksUrl projectId) (ExpectJSON (Projec
 
 subscribeProjectsOverview : String -> Cmd Msg
 subscribeProjectsOverview clientId = FrontendSSE.subscribe (projectsOverviewEventsUrl clientId) ProjectsOverviewEventReceived
+
+subscribeProjectDetail : String -> String -> Cmd Msg
+subscribeProjectDetail projectId clientId = FrontendSSE.subscribe (projectEventsUrl projectId clientId) (ProjectEventReceived projectId)
+
+closeProjectDetail : String -> String -> Cmd Msg
+closeProjectDetail projectId clientId = FrontendSSE.close (projectEventsUrl projectId clientId)
 
 subscribeProjectTasks : String -> String -> Cmd Msg
 subscribeProjectTasks projectId clientId = FrontendSSE.subscribe (projectTasksEventsUrl projectId clientId) (ProjectTaskEventReceived projectId)
@@ -177,7 +187,7 @@ updateProjectSummaryFromDetail detail s = replaceProjectSummary (Project.summary
 updateTaskSummaryFromDetail : Task.TaskDetail -> State -> State
 updateTaskSummaryFromDetail detail s = replaceTaskSummary (Task.summaryFromDetail detail) s
 
-applyProjectsOverviewEvent : MultiplexedStreamEvent String Event.DomainEvent -> State -> Either String State
+applyProjectsOverviewEvent : MultiplexedStreamEvent String Event.ProjectEvent -> State -> Either String State
 applyProjectsOverviewEvent msg s =
   let sid = streamId msg
       current = fromMaybe (Project.emptyProjectSummary sid) (SortedMap.lookup sid (projectSummaries s))
@@ -185,7 +195,7 @@ applyProjectsOverviewEvent msg s =
        Left err => Left err
        Right next => Right (replaceProjectSummary next s)
 
-applyProjectTaskEvent : MultiplexedStreamEvent String Event.DomainEvent -> State -> Either String State
+applyProjectTaskEvent : MultiplexedStreamEvent String Event.TaskEvent -> State -> Either String State
 applyProjectTaskEvent msg s =
   let sid = streamId msg
       current = fromMaybe (Task.emptyTaskSummary sid) (SortedMap.lookup sid (projectTasks s))
@@ -198,6 +208,12 @@ nextProjectId s = Project.nextProjectIdFromSummaries (projectSummaryList s)
 
 nextTaskId : Project.ProjectDetail -> State -> String
 nextTaskId detail s = Task.nextTaskIdFromSummaries (projectId detail) (projectTaskList s)
+
+closeCurrentProjectDetail : State -> List (Cmd Msg)
+closeCurrentProjectDetail s =
+  case (currentProjectId s, clientId s) of
+    (Just pid, Just cid) => [closeProjectDetail pid cid]
+    _ => []
 
 closeCurrentProjectTasks : State -> List (Cmd Msg)
 closeCurrentProjectTasks s =
@@ -215,7 +231,15 @@ openProjectCommands : State -> String -> List (Cmd Msg)
 openProjectCommands s projectId =
   case clientId s of
     Nothing => [FrontendSSE.requestClientId ClientIdReady]
-    Just cid => closeCurrentTaskDetail s ++ closeCurrentProjectTasks s ++ [subscribeProjectTasks projectId cid, getProjectResync projectId, loadProjectTasks projectId]
+    Just cid =>
+      closeCurrentTaskDetail s
+        ++ closeCurrentProjectDetail s
+        ++ closeCurrentProjectTasks s
+        ++ [ subscribeProjectDetail projectId cid
+           , subscribeProjectTasks projectId cid
+           , getProjectResync projectId
+           , loadProjectTasks projectId
+           ]
 
 openTaskCommands : State -> String -> List (Cmd Msg)
 openTaskCommands s taskId =
@@ -223,10 +247,13 @@ openTaskCommands s taskId =
     Nothing => [FrontendSSE.requestClientId ClientIdReady]
     Just cid => closeCurrentTaskDetail s ++ [subscribeTaskDetail taskId cid, getTaskResync taskId]
 
-renderTaskEvent : TaskEvent -> String
-renderTaskEvent (TaskCreated projectId title) = "Created for " ++ projectId ++ ": " ++ title
-renderTaskEvent TaskStarted = "Started"
-renderTaskEvent TaskCompleted = "Completed"
+renderTaskEvent : Event.TaskEvent -> String
+renderTaskEvent (Event.TaskCreated projectId title) = "Created for " ++ projectId ++ ": " ++ title
+renderTaskEvent Event.TaskStarted = "Started"
+renderTaskEvent Event.TaskCompleted = "Completed"
+
+projectStatusLabel : Bool -> String
+projectStatusLabel = Event.renderProjectStatus
 
 messageForAction : Action -> Msg
 messageForAction CreateProjectAction = CreateProjectClicked
@@ -252,7 +279,7 @@ projectCard s summary =
   div [ style "background:#ffffffd9; border:1px solid #ced8e2; border-radius:18px; padding:18px; min-width:220px; flex:1;" ]
     [ div [ style "font-size:12px; opacity:0.65; text-transform:uppercase; letter-spacing:1px;" ] [ Text (projectId summary) ]
     , h3 [ style "margin:8px 0 8px 0; font-size:26px;" ] [ Text (title summary) ]
-    , div [ style "font-size:13px; opacity:0.78; margin:8px 0 14px 0;" ] [ Text "Project stream" ]
+    , div [ style "font-size:13px; opacity:0.78; margin:8px 0 14px 0;" ] [ Text (projectStatusLabel (completed summary)) ]
     , actionButton (busy s) (OpenProjectAction (projectId summary))
     ]
 
@@ -291,6 +318,7 @@ projectDetailSection s detail =
         [ div []
             [ div [ style "font-size:12px; opacity:0.65; text-transform:uppercase; letter-spacing:1px;" ] [ Text (screenPolicyText ProjectDetailScreen ++ " · " ++ projectId detail) ]
             , h2 [ style "margin:6px 0 0 0; font-size:30px;" ] [ Text (title detail) ]
+            , div [ style "font-size:13px; opacity:0.78; margin-top:6px;" ] [ Text (projectStatusLabel (completed detail)) ]
             ]
         , actionButton (busy s) BackToProjectsAction
         ]
@@ -310,7 +338,7 @@ projectDetailSection s detail =
         ]
     ]
 
-historyRow : Nat -> TaskEvent -> Node Msg
+historyRow : Nat -> Event.TaskEvent -> Node Msg
 historyRow version event =
   div [ style "display:flex; gap:12px; padding:8px 0; border-top:1px solid #e4e9ee;" ]
     [ div [ style "font-size:12px; opacity:0.65; min-width:44px;" ] [ Text ("v" ++ show version) ]
@@ -324,12 +352,15 @@ taskDetailSection s detail =
           :: (if Task.canStart detail then [StartTaskAction] else [])
           ++ (if Task.canComplete detail then [CompleteTaskAction] else [])
       rows = zipWith historyRow [1 .. length (history detail)] (history detail)
+      projectLine = case selectedProject s of
+        Nothing => projectId detail
+        Just projectDetail => projectId detail ++ " · project " ++ projectStatusLabel (completed projectDetail)
   in div []
       [ div [ style "display:flex; justify-content:space-between; align-items:end; gap:14px; flex-wrap:wrap; margin-bottom:18px;" ]
           [ div []
               [ div [ style "font-size:12px; opacity:0.65; text-transform:uppercase; letter-spacing:1px;" ] [ Text (screenPolicyText TaskDetailScreen ++ " · " ++ taskId detail) ]
               , h2 [ style "margin:6px 0 0 0; font-size:30px;" ] [ Text (title detail) ]
-              , div [ style "font-size:13px; opacity:0.78; margin-top:6px;" ] [ Text (projectId detail ++ " · " ++ renderTaskStatus (status detail)) ]
+              , div [ style "font-size:13px; opacity:0.78; margin-top:6px;" ] [ Text (projectLine ++ " · " ++ renderTaskStatus (status detail)) ]
               ]
           , div [ style "display:flex; gap:10px; flex-wrap:wrap;" ] (map (actionButton (busy s)) actions)
           ]
@@ -399,7 +430,7 @@ controller (ProjectsLoaded (Right loaded)) s =
   (s', updateView s')
 
 controller (ProjectsOverviewEventReceived raw) s =
-  case decode {a=MultiplexedStreamEvent String Event.DomainEvent} raw of
+  case decode {a=MultiplexedStreamEvent String Event.ProjectEvent} raw of
     Left _ =>
       let s' = { busy := True, status := "Overview feed decode failed. Reloading projects..." } s in
       (s', batch [updateView s', loadProjects])
@@ -451,6 +482,26 @@ controller (ProjectResyncFinished projectId (Right payload)) s =
         s' = updateProjectSummaryFromDetail detail ({ selectedProject := Just detail, busy := False, status := "Project synced: " ++ projectId } s) in
     (s', updateView s')
 
+controller (ProjectEventReceived projectStreamId raw) s =
+  case selectedProject s of
+    Nothing => (s, Cmd.noAction)
+    Just detail =>
+      if projectStreamId /= projectId detail then
+        (s, Cmd.noAction)
+      else
+        case decode {a=StreamEvent Event.ProjectEvent} raw of
+          Left _ =>
+            let s' = { busy := True, status := "Project feed decode failed. Resyncing..." } s in
+            (s', batch [updateView s', getProjectResync projectStreamId])
+          Right msg =>
+            case Project.applyProjectDetailEvent (version msg) (event msg) detail of
+              Left err =>
+                let s' = { busy := True, status := err ++ " Resyncing project..." } s in
+                (s', batch [updateView s', getProjectResync projectStreamId])
+              Right nextDetail =>
+                let s' = updateProjectSummaryFromDetail nextDetail ({ selectedProject := Just nextDetail, busy := False, status := "Project updated from live stream." } s) in
+                (s', updateView s')
+
 controller (ProjectTasksLoaded projectId (Left err)) s =
   if currentProjectId s /= Just projectId then
     (s, Cmd.noAction)
@@ -469,7 +520,7 @@ controller (ProjectTaskEventReceived projectId raw) s =
   if currentProjectId s /= Just projectId then
     (s, Cmd.noAction)
   else
-    case decode {a=MultiplexedStreamEvent String Event.DomainEvent} raw of
+    case decode {a=MultiplexedStreamEvent String Event.TaskEvent} raw of
       Left _ =>
         let s' = { busy := True, status := "Project task feed decode failed. Reloading tasks..." } s in
         (s', batch [updateView s', loadProjectTasks projectId])
@@ -484,7 +535,7 @@ controller (ProjectTaskEventReceived projectId raw) s =
 
 controller BackToProjectsClicked s =
   let s' = { screen := ProjectsOverview, selectedProject := Nothing, selectedTask := Nothing, projectTasks := SortedMap.empty, busy := False, status := "Back on project overview." } s in
-  (s', batch (updateView s' :: closeCurrentTaskDetail s ++ closeCurrentProjectTasks s))
+  (s', batch (updateView s' :: closeCurrentTaskDetail s ++ closeCurrentProjectDetail s ++ closeCurrentProjectTasks s))
 
 controller (CreateTaskTitleChanged value) s = ({ createTaskTitle := value } s, Cmd.noAction)
 
@@ -535,7 +586,7 @@ controller (TaskEventReceived streamId raw) s =
       if streamId /= taskId detail then
         (s, Cmd.noAction)
       else
-        case decode {a=StreamEvent Event.DomainEvent} raw of
+        case decode {a=StreamEvent Event.TaskEvent} raw of
           Left _ =>
             let s' = { busy := True, status := "Task feed decode failed. Resyncing..." } s in
             (s', batch [updateView s', getTaskResync streamId])

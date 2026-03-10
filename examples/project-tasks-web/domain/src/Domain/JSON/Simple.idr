@@ -11,7 +11,7 @@ import JSON.Simple.Derive
 %runElab derive "Domain.Event.ProjectEvent" [ToJSON, FromJSON]
 %runElab derive "Domain.Event.TaskStatus" [ToJSON, FromJSON]
 %runElab derive "Domain.Event.TaskEvent" [ToJSON, FromJSON]
-%runElab derive "Domain.Event.DomainEvent" [ToJSON, FromJSON]
+%runElab derive "Domain.Event.StoredEvent" [ToJSON, FromJSON]
 %runElab derive "Domain.Project.ProjectCommand" [ToJSON, FromJSON]
 %runElab derive "Domain.Task.TaskCommand" [ToJSON, FromJSON]
 %runElab derive "Domain.Project.ProjectSummary" [ToJSON, FromJSON]

@@ -13,6 +13,7 @@ taskPrefix = "task-"
 public export
 data ProjectEvent
   = ProjectCreated String
+  | ProjectCompleted
 
 public export
 data TaskStatus = TaskTodo | TaskInProgress | TaskDone
@@ -31,12 +32,17 @@ data TaskEvent
   | TaskCompleted
 
 public export
-data DomainEvent
-  = ProjectEventRaised ProjectEvent
-  | TaskEventRaised TaskEvent
+data StoredEvent
+  = StoredProject ProjectEvent
+  | StoredTask TaskEvent
 
 public export
 renderTaskStatus : TaskStatus -> String
 renderTaskStatus TaskTodo = "Todo"
 renderTaskStatus TaskInProgress = "In Progress"
 renderTaskStatus TaskDone = "Done"
+
+public export
+renderProjectStatus : Bool -> String
+renderProjectStatus False = "Open"
+renderProjectStatus True = "Completed"

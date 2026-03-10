@@ -9,24 +9,30 @@ import EmKit.Stream.Version
 %default total
 
 public export
-data ProjectCommand = CreateProject String
+data ProjectCommand
+  = CreateProject String
+  | CompleteProject
 
 public export
 data ProjectRejection
   = ProjectAlreadyCreated
   | EmptyProjectTitle
+  | ProjectMissing
+  | ProjectAlreadyCompleted
 
 public export
 record ProjectState where
   constructor MkProjectState
   exists : Bool
   title : String
+  completed : Bool
 
 public export
 record ProjectView where
   constructor MkProjectView
   exists : Bool
   title : String
+  completed : Bool
 
 public export
 record ProjectSummary where
@@ -35,6 +41,7 @@ record ProjectSummary where
   version : Nat
   exists : Bool
   title : String
+  completed : Bool
 
 public export
 record ProjectDetail where
@@ -43,11 +50,14 @@ record ProjectDetail where
   version : Nat
   exists : Bool
   title : String
+  completed : Bool
 
 public export
 renderProjectRejection : ProjectRejection -> String
 renderProjectRejection ProjectAlreadyCreated = "project already exists."
 renderProjectRejection EmptyProjectTitle = "project title is required."
+renderProjectRejection ProjectMissing = "project does not exist yet."
+renderProjectRejection ProjectAlreadyCompleted = "project is already completed."
 
 dropPrefixChars : List Char -> List Char -> Maybe (List Char)
 dropPrefixChars [] xs = Just xs
@@ -103,92 +113,100 @@ nextProjectIdFromSummaries summaries =
 public export
 summaryFromView : String -> Nat -> ProjectView -> ProjectSummary
 summaryFromView projectId streamVersion view =
-  MkProjectSummary projectId streamVersion (exists view) (title view)
+  MkProjectSummary projectId streamVersion (exists view) (title view) (completed view)
 
 public export
 detailFromView : String -> Nat -> ProjectView -> ProjectDetail
 detailFromView projectId streamVersion view =
-  MkProjectDetail projectId streamVersion (exists view) (title view)
+  MkProjectDetail projectId streamVersion (exists view) (title view) (completed view)
 
 public export
 summaryFromDetail : ProjectDetail -> ProjectSummary
 summaryFromDetail detail =
-  MkProjectSummary (projectId detail) (version detail) (exists detail) (title detail)
+  MkProjectSummary (projectId detail) (version detail) (exists detail) (title detail) (completed detail)
 
 public export
 emptyProjectSummary : String -> ProjectSummary
-emptyProjectSummary projectId = MkProjectSummary projectId 0 False ""
+emptyProjectSummary projectId = MkProjectSummary projectId 0 False "" False
 
 applyProjectSummaryStep : String -> ProjectEvent -> Nat -> ProjectSummary -> ProjectSummary
 applyProjectSummaryStep projectId (ProjectCreated projectTitle) nextVersion current =
-  MkProjectSummary projectId nextVersion True projectTitle
+  MkProjectSummary projectId nextVersion True projectTitle False
+applyProjectSummaryStep projectId ProjectCompleted nextVersion current =
+  { version := nextVersion, completed := True } current
 
 public export
-applyProjectSummaryEvent : String -> Nat -> DomainEvent -> ProjectSummary -> Either String ProjectSummary
-applyProjectSummaryEvent projectId streamVersion (ProjectEventRaised event) summary =
+applyProjectSummaryEvent : String -> Nat -> ProjectEvent -> ProjectSummary -> Either String ProjectSummary
+applyProjectSummaryEvent projectId streamVersion event summary =
   case applyVersionedUpdate projectId (version summary) streamVersion (applyProjectSummaryStep projectId event) summary of
     Left (VersionGap _ expected incoming) =>
       Left ("Project overview gap for " ++ projectId ++ ": expected v" ++ show expected ++ ", got v" ++ show incoming ++ ".")
     Right (IgnoredStale current) => Right current
     Right (Applied next) => Right next
-applyProjectSummaryEvent projectId streamVersion (TaskEventRaised _) summary =
-  Left ("Unexpected task event on project stream: " ++ projectId ++ ".")
 
 applyProjectDetailStep : String -> ProjectEvent -> Nat -> ProjectDetail -> ProjectDetail
 applyProjectDetailStep projectId (ProjectCreated projectTitle) nextVersion current =
-  MkProjectDetail projectId nextVersion True projectTitle
+  MkProjectDetail projectId nextVersion True projectTitle False
+applyProjectDetailStep projectId ProjectCompleted nextVersion current =
+  { version := nextVersion, completed := True } current
 
 public export
-applyProjectDetailEvent : Nat -> DomainEvent -> ProjectDetail -> Either String ProjectDetail
-applyProjectDetailEvent streamVersion (ProjectEventRaised event) detail =
+applyProjectDetailEvent : Nat -> ProjectEvent -> ProjectDetail -> Either String ProjectDetail
+applyProjectDetailEvent streamVersion event detail =
   let pid = projectId detail in
   case applyVersionedUpdate pid (version detail) streamVersion (applyProjectDetailStep pid event) detail of
     Left (VersionGap _ expected incoming) =>
       Left ("Project detail gap for " ++ pid ++ ": expected v" ++ show expected ++ ", got v" ++ show incoming ++ ".")
     Right (IgnoredStale current) => Right current
     Right (Applied next) => Right next
-applyProjectDetailEvent streamVersion (TaskEventRaised _) detail =
-  Left ("Unexpected task event on project stream: " ++ projectId detail ++ ".")
 
 data ProjectLegal : ProjectCommand -> ProjectState -> Type where
   CanCreateProject :
     {rawTitle : String} ->
     (cleanTitle : String) ->
     ProjectLegal (CreateProject rawTitle) state
+  CanCompleteProject : ProjectLegal CompleteProject state
 
 createLegal : (rawTitle : String) -> ProjectState -> Either ProjectRejection (ProjectLegal (CreateProject rawTitle) state)
-createLegal rawTitle (MkProjectState False currentTitle) =
+createLegal rawTitle (MkProjectState False _ _) =
   let cleanTitle = trim rawTitle in
     if cleanTitle == ""
       then Left EmptyProjectTitle
       else Right (CanCreateProject cleanTitle)
-createLegal _ (MkProjectState True _) = Left ProjectAlreadyCreated
+createLegal _ (MkProjectState True _ _) = Left ProjectAlreadyCreated
+
+completeLegal : ProjectState -> Either ProjectRejection (ProjectLegal CompleteProject state)
+completeLegal (MkProjectState False _ _) = Left ProjectMissing
+completeLegal (MkProjectState True _ True) = Left ProjectAlreadyCompleted
+completeLegal (MkProjectState True _ False) = Right CanCompleteProject
 
 public export
-implementation Projection DomainEvent ProjectState where
-  initial = MkProjectState False ""
-  evolve state (ProjectEventRaised (ProjectCreated projectTitle)) = MkProjectState True projectTitle
-  evolve state (TaskEventRaised _) = state
+implementation Projection ProjectEvent ProjectState where
+  initial = MkProjectState False "" False
+  evolve _ (ProjectCreated projectTitle) = MkProjectState True projectTitle False
+  evolve state ProjectCompleted = { completed := True } state
 
 public export
-implementation Decider List ProjectCommand ProjectRejection DomainEvent ProjectState where
+implementation Decider List ProjectCommand ProjectRejection ProjectEvent ProjectState where
   Legal = ProjectLegal
 
   legal (CreateProject rawTitle) state = createLegal rawTitle state
+  legal CompleteProject state = completeLegal state
 
   decide (CreateProject rawTitle) state (CanCreateProject cleanTitle) =
-    [ProjectEventRaised (ProjectCreated cleanTitle)]
+    [ProjectCreated cleanTitle]
+  decide CompleteProject state CanCompleteProject = [ProjectCompleted]
 
 public export
-implementation StateView DomainEvent ProjectView where
-  initialView = MkProjectView False ""
-  projectEvent _ (ProjectEventRaised (ProjectCreated projectTitle)) = MkProjectView True projectTitle
-  projectEvent view (TaskEventRaised _) = view
+implementation StateView ProjectEvent ProjectView where
+  initialView = MkProjectView False "" False
+  projectEvent _ (ProjectCreated projectTitle) = MkProjectView True projectTitle False
+  projectEvent view ProjectCompleted = { completed := True } view
 
 public export
-summaryFromEvents : String -> Nat -> List DomainEvent -> ProjectSummary
+summaryFromEvents : String -> Nat -> List ProjectEvent -> ProjectSummary
 summaryFromEvents projectId streamVersion events = summaryFromView projectId streamVersion (projectFromList events)
 
 public export
-detailFromEvents : String -> Nat -> List DomainEvent -> ProjectDetail
+detailFromEvents : String -> Nat -> List ProjectEvent -> ProjectDetail
 detailFromEvents projectId streamVersion events = detailFromView projectId streamVersion (projectFromList events)

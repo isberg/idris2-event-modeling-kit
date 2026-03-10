@@ -8,6 +8,7 @@ modules = Domain
         , Domain.Event
         , Domain.Project
         , Domain.Task
+        , Domain.Automation
         , Domain.Screens
         , Domain.JSON
         , Domain.JSON.Simple

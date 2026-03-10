@@ -143,11 +143,6 @@ public export
 emptyTaskSummary : String -> TaskSummary
 emptyTaskSummary taskId = MkTaskSummary taskId 0 False "" "" TaskTodo
 
-taskEventHistory : List DomainEvent -> List TaskEvent
-taskEventHistory [] = []
-taskEventHistory (ProjectEventRaised _ :: rest) = taskEventHistory rest
-taskEventHistory (TaskEventRaised event :: rest) = event :: taskEventHistory rest
-
 applyTaskSummaryStep : String -> TaskEvent -> Nat -> TaskSummary -> TaskSummary
 applyTaskSummaryStep taskId (TaskCreated projectId taskTitle) nextVersion current =
   MkTaskSummary taskId nextVersion True projectId taskTitle TaskTodo
@@ -157,15 +152,13 @@ applyTaskSummaryStep taskId TaskCompleted nextVersion current =
   { version := nextVersion, status := TaskDone } current
 
 public export
-applyTaskSummaryEvent : String -> Nat -> DomainEvent -> TaskSummary -> Either String TaskSummary
-applyTaskSummaryEvent taskId streamVersion (TaskEventRaised event) summary =
+applyTaskSummaryEvent : String -> Nat -> TaskEvent -> TaskSummary -> Either String TaskSummary
+applyTaskSummaryEvent taskId streamVersion event summary =
   case applyVersionedUpdate taskId (version summary) streamVersion (applyTaskSummaryStep taskId event) summary of
     Left (VersionGap _ expected incoming) =>
       Left ("Task summary gap for " ++ taskId ++ ": expected v" ++ show expected ++ ", got v" ++ show incoming ++ ".")
     Right (IgnoredStale current) => Right current
     Right (Applied next) => Right next
-applyTaskSummaryEvent taskId streamVersion (ProjectEventRaised _) summary =
-  Left ("Unexpected project event on task stream: " ++ taskId ++ ".")
 
 applyTaskDetailStep : String -> TaskEvent -> Nat -> TaskDetail -> TaskDetail
 applyTaskDetailStep taskId (TaskCreated projectId taskTitle) nextVersion current =
@@ -179,16 +172,14 @@ applyTaskDetailStep taskId TaskCompleted nextVersion current =
   in MkTaskDetail taskId nextVersion (exists current) (projectId current) (title current) TaskDone nextHistory
 
 public export
-applyTaskDetailEvent : Nat -> DomainEvent -> TaskDetail -> Either String TaskDetail
-applyTaskDetailEvent streamVersion (TaskEventRaised event) detail =
+applyTaskDetailEvent : Nat -> TaskEvent -> TaskDetail -> Either String TaskDetail
+applyTaskDetailEvent streamVersion event detail =
   let tid = taskId detail in
   case applyVersionedUpdate tid (version detail) streamVersion (applyTaskDetailStep tid event) detail of
     Left (VersionGap _ expected incoming) =>
       Left ("Task detail gap for " ++ tid ++ ": expected v" ++ show expected ++ ", got v" ++ show incoming ++ ".")
     Right (IgnoredStale current) => Right current
     Right (Applied next) => Right next
-applyTaskDetailEvent streamVersion (ProjectEventRaised _) detail =
-  Left ("Unexpected project event on task stream: " ++ taskId detail ++ ".")
 
 data TaskLegal : TaskCommand -> TaskState -> Type where
   CanCreateTask :
@@ -200,7 +191,7 @@ data TaskLegal : TaskCommand -> TaskState -> Type where
   CanCompleteTask : TaskLegal CompleteTask state
 
 createLegal : (projectId : String) -> (rawTitle : String) -> TaskState -> Either TaskRejection (TaskLegal (CreateTask projectId rawTitle) state)
-createLegal projectId rawTitle (MkTaskState False currentProjectId currentTitle currentStatus) =
+createLegal projectId rawTitle (MkTaskState False _ _ _) =
   let cleanTitle = trim rawTitle in
     if cleanTitle == ""
       then Left EmptyTaskTitle
@@ -220,15 +211,14 @@ completeLegal (MkTaskState True _ _ TaskInProgress) = Right CanCompleteTask
 completeLegal (MkTaskState True _ _ TaskDone) = Left TaskAlreadyDone
 
 public export
-implementation Projection DomainEvent TaskState where
+implementation Projection TaskEvent TaskState where
   initial = MkTaskState False "" "" TaskTodo
-  evolve state (ProjectEventRaised _) = state
-  evolve state (TaskEventRaised (TaskCreated projectId taskTitle)) = MkTaskState True projectId taskTitle TaskTodo
-  evolve state (TaskEventRaised TaskStarted) = { status := TaskInProgress } state
-  evolve state (TaskEventRaised TaskCompleted) = { status := TaskDone } state
+  evolve _ (TaskCreated projectId taskTitle) = MkTaskState True projectId taskTitle TaskTodo
+  evolve state TaskStarted = { status := TaskInProgress } state
+  evolve state TaskCompleted = { status := TaskDone } state
 
 public export
-implementation Decider List TaskCommand TaskRejection DomainEvent TaskState where
+implementation Decider List TaskCommand TaskRejection TaskEvent TaskState where
   Legal = TaskLegal
 
   legal (CreateTask projectId rawTitle) state = createLegal projectId rawTitle state
@@ -236,26 +226,25 @@ implementation Decider List TaskCommand TaskRejection DomainEvent TaskState wher
   legal CompleteTask state = completeLegal state
 
   decide (CreateTask projectId rawTitle) state (CanCreateTask cleanTitle) =
-    [TaskEventRaised (TaskCreated projectId cleanTitle)]
-  decide StartTask state CanStartTask = [TaskEventRaised TaskStarted]
-  decide CompleteTask state CanCompleteTask = [TaskEventRaised TaskCompleted]
+    [TaskCreated projectId cleanTitle]
+  decide StartTask state CanStartTask = [TaskStarted]
+  decide CompleteTask state CanCompleteTask = [TaskCompleted]
 
 public export
-implementation StateView DomainEvent TaskView where
+implementation StateView TaskEvent TaskView where
   initialView = MkTaskView False "" "" TaskTodo
-  projectEvent view (ProjectEventRaised _) = view
-  projectEvent view (TaskEventRaised (TaskCreated projectId taskTitle)) = MkTaskView True projectId taskTitle TaskTodo
-  projectEvent view (TaskEventRaised TaskStarted) = { status := TaskInProgress } view
-  projectEvent view (TaskEventRaised TaskCompleted) = { status := TaskDone } view
+  projectEvent _ (TaskCreated projectId taskTitle) = MkTaskView True projectId taskTitle TaskTodo
+  projectEvent view TaskStarted = { status := TaskInProgress } view
+  projectEvent view TaskCompleted = { status := TaskDone } view
 
 public export
-summaryFromEvents : String -> Nat -> List DomainEvent -> TaskSummary
+summaryFromEvents : String -> Nat -> List TaskEvent -> TaskSummary
 summaryFromEvents taskId streamVersion events = summaryFromView taskId streamVersion (projectFromList events)
 
 public export
-detailFromEvents : String -> Nat -> List DomainEvent -> TaskDetail
+detailFromEvents : String -> Nat -> List TaskEvent -> TaskDetail
 detailFromEvents taskId streamVersion events =
-  detailFromView taskId streamVersion (taskEventHistory events) (projectFromList events)
+  detailFromView taskId streamVersion events (projectFromList events)
 
 public export
 canStart : TaskDetail -> Bool

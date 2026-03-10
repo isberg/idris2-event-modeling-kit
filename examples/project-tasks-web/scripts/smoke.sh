@@ -43,7 +43,7 @@ BASE_URL="http://127.0.0.1:${PORT}"
 TMP_DIR="$(mktemp -d)"
 BACKEND_PID=""
 cleanup() {
-  for pid_var in OVERVIEW_PID PROJECT_TASKS_PID TASK_PID RESUME_PID BACKEND_PID; do
+  for pid_var in OVERVIEW_PID PROJECT_DETAIL_PID PROJECT_TASKS_PID TASK_PID RESUME_PID BACKEND_PID; do
     pid="${!pid_var:-}"
     if [[ -n "$pid" ]] && kill -0 "$pid" >/dev/null 2>&1; then
       kill "$pid" >/dev/null 2>&1 || true
@@ -121,19 +121,27 @@ wait_for_event "Overview connected" '^: connected' "$OVERVIEW_FILE"
 
 create_project_code=$(curl -sS -o "$TMP_DIR/create-project.txt" -w '%{http_code}' -X POST "$BASE_URL/api/projects/execute/project-1" \
   -H 'Content-Type: application/json' \
-  -d '{"expectedVersion":0,"command":"Alpha"}')
+  -d '{"expectedVersion":0,"command":{"tag":"CreateProject","contents":"Alpha"}}')
 echo "$create_project_code" | ${grep_cmd} '^200$'
 wait_for_event "Project created event" '"streamId":"project-1"' "$OVERVIEW_FILE"
-wait_for_event "Project created envelope" '"tag":"ProjectEventRaised"' "$OVERVIEW_FILE"
+wait_for_event "Project created tag" '"tag":"ProjectCreated"' "$OVERVIEW_FILE"
 wait_for_event "Project created contents" '"contents":"Alpha"' "$OVERVIEW_FILE"
 
 curl -fsS "$BASE_URL/api/projects" | ${grep_cmd} '"projectId":"project-1"'
 curl -fsS "$BASE_URL/api/projects" | ${grep_cmd} '"title":"Alpha"'
+curl -fsS "$BASE_URL/api/projects" | ${grep_cmd} '"completed":false'
 
-project_resync=$(curl -fsS "$BASE_URL/api/projects/resync/project-1")
-echo "$project_resync" | ${grep_cmd} '"version":1'
-echo "$project_resync" | ${grep_cmd} '"tag":"ProjectEventRaised"'
-echo "$project_resync" | ${grep_cmd} '"contents":"Alpha"'
+project_resync_one=$(curl -fsS "$BASE_URL/api/projects/resync/project-1")
+echo "$project_resync_one" | ${grep_cmd} '"version":1'
+echo "$project_resync_one" | ${grep_cmd} '"tag":"ProjectCreated"'
+echo "$project_resync_one" | ${grep_cmd} '"contents":"Alpha"'
+
+PROJECT_DETAIL_FILE="$TMP_DIR/project-detail.log"
+curl -N -sS "$BASE_URL/api/projects/events/project-1/smoke-project-detail" >"$PROJECT_DETAIL_FILE" 2>"$TMP_DIR/project-detail.err" &
+PROJECT_DETAIL_PID=$!
+wait_for_event "Project detail connected" '^: connected' "$PROJECT_DETAIL_FILE"
+wait_for_event "Project detail replayed create" '"version":1' "$PROJECT_DETAIL_FILE"
+wait_for_event "Project detail replayed create tag" '"tag":"ProjectCreated"' "$PROJECT_DETAIL_FILE"
 
 curl -fsS "$BASE_URL/api/projects/tasks/project-1" | ${grep_cmd} '^\[\]$'
 
@@ -147,7 +155,7 @@ create_task_code=$(curl -sS -o "$TMP_DIR/create-task.txt" -w '%{http_code}' -X P
   -d '{"expectedVersion":0,"command":{"tag":"CreateTask","contents":["project-1","First task"]}}')
 echo "$create_task_code" | ${grep_cmd} '^200$'
 wait_for_event "Task created in project feed" '"streamId":"task-project-1-1"' "$PROJECT_TASKS_FILE"
-wait_for_event "Task created tag" 'TaskCreated' "$PROJECT_TASKS_FILE"
+wait_for_event "Task created tag" '"tag":"TaskCreated"' "$PROJECT_TASKS_FILE"
 
 curl -fsS "$BASE_URL/api/projects/tasks/project-1" | ${grep_cmd} '"taskId":"task-project-1-1"'
 curl -fsS "$BASE_URL/api/projects/tasks/project-1" | ${grep_cmd} '"projectId":"project-1"'
@@ -161,14 +169,14 @@ wait_for_event "Task connected" '^: connected' "$TASK_FILE"
 
 task_resync_one=$(curl -fsS "$BASE_URL/api/tasks/resync/task-project-1-1")
 echo "$task_resync_one" | ${grep_cmd} '"version":1'
-echo "$task_resync_one" | ${grep_cmd} 'TaskCreated'
+echo "$task_resync_one" | ${grep_cmd} '"tag":"TaskCreated"'
 
 start_task_code=$(curl -sS -o "$TMP_DIR/start-task.txt" -w '%{http_code}' -X POST "$BASE_URL/api/tasks/execute/task-project-1-1" \
   -H 'Content-Type: application/json' \
   -d '{"expectedVersion":1,"command":"StartTask"}')
 echo "$start_task_code" | ${grep_cmd} '^200$'
 wait_for_event "Task started detail" '"version":2' "$TASK_FILE"
-wait_for_event "Task started tag" 'TaskStarted' "$TASK_FILE"
+wait_for_event "Task started tag" '"StartTask"|"TaskStarted"' "$TASK_FILE"
 wait_for_event "Task started project feed" '"streamVersion":2' "$PROJECT_TASKS_FILE"
 
 complete_task_code=$(curl -sS -o "$TMP_DIR/complete-task.txt" -w '%{http_code}' -X POST "$BASE_URL/api/tasks/execute/task-project-1-1" \
@@ -176,12 +184,24 @@ complete_task_code=$(curl -sS -o "$TMP_DIR/complete-task.txt" -w '%{http_code}' 
   -d '{"expectedVersion":2,"command":"CompleteTask"}')
 echo "$complete_task_code" | ${grep_cmd} '^200$'
 wait_for_event "Task completed detail" '"version":3' "$TASK_FILE"
-wait_for_event "Task completed tag" 'TaskCompleted' "$TASK_FILE"
+wait_for_event "Task completed tag" '"CompleteTask"|"TaskCompleted"' "$TASK_FILE"
 wait_for_event "Task completed project feed" '"streamVersion":3' "$PROJECT_TASKS_FILE"
+
+wait_for_event "Project automation detail" '"version":2' "$PROJECT_DETAIL_FILE"
+wait_for_event "Project automation tag" '"ProjectCompleted"' "$PROJECT_DETAIL_FILE"
+wait_for_event "Project automation overview" '"streamVersion":2' "$OVERVIEW_FILE"
+wait_for_event "Project automation overview tag" '"ProjectCompleted"' "$OVERVIEW_FILE"
 
 TASK_LIST_AFTER_COMPLETE="$TMP_DIR/project-tasks-after-complete.json"
 curl -fsS "$BASE_URL/api/projects/tasks/project-1" -o "$TASK_LIST_AFTER_COMPLETE"
 ${grep_cmd} '"status":"TaskDone"' "$TASK_LIST_AFTER_COMPLETE"
+
+project_resync_two=$(curl -fsS "$BASE_URL/api/projects/resync/project-1")
+echo "$project_resync_two" | ${grep_cmd} '"version":2'
+echo "$project_resync_two" | ${grep_cmd} '"ProjectCompleted"'
+
+curl -fsS "$BASE_URL/api/projects" | ${grep_cmd} '"projectId":"project-1"'
+curl -fsS "$BASE_URL/api/projects" | ${grep_cmd} '"completed":true'
 
 task_resync_two=$(curl -fsS "$BASE_URL/api/tasks/resync/task-project-1-1")
 echo "$task_resync_two" | ${grep_cmd} '"version":3'
@@ -212,8 +232,12 @@ if [[ -n "$STORE_DIR" ]]; then
   stop_backend
   start_backend
   curl -fsS "$BASE_URL/api/projects" | ${grep_cmd} '"projectId":"project-1"'
+  curl -fsS "$BASE_URL/api/projects" | ${grep_cmd} '"completed":true'
   curl -fsS "$BASE_URL/api/projects/tasks/project-1" | ${grep_cmd} '"taskId":"task-project-1-1"'
   curl -fsS "$BASE_URL/api/projects/tasks/project-1" | ${grep_cmd} '"status":"TaskDone"'
+  persisted_project_resync=$(curl -fsS "$BASE_URL/api/projects/resync/project-1")
+  echo "$persisted_project_resync" | ${grep_cmd} '"version":2'
+  echo "$persisted_project_resync" | ${grep_cmd} 'ProjectCompleted'
   persisted_task_resync=$(curl -fsS "$BASE_URL/api/tasks/resync/task-project-1-1")
   echo "$persisted_task_resync" | ${grep_cmd} '"version":3'
   echo "$persisted_task_resync" | ${grep_cmd} 'TaskCompleted'
