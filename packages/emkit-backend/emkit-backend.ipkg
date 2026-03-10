@@ -5,6 +5,7 @@ authors = ""
 sourcedir = "src"
 
 modules = EmKit.Backend.SSE
+        , EmKit.Backend.StoreApp
 
 depends = base
         , contrib
