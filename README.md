@@ -35,6 +35,8 @@ This repository is not an application. It is a package workspace intended to sho
   Multi-screen SSE-first web application with dynamic per-list streams, a category overview feed, per-stream detail feeds, typed execute/resync payloads, and both memory/file store smoke paths. It pressure-tests stream catalog usage, screen switching, and the split between overview and detail subscriptions.
 - `examples/counters-web`
   Multi-screen SSE-first web application with dynamic per-counter streams, a category overview feed, per-stream detail feeds, typed execute/resync payloads, and both memory/file store smoke paths. It repeats the same web-app shell as `todo-web` with a smaller domain and helped justify a shared backend category-feed helper.
+- `examples/project-tasks-web`
+  Multi-category SSE-first web application with `project-*` and `task-*` streams, a project overview feed, project-scoped task category feeds, per-task detail feeds, typed execute/resync payloads, and both memory/file store smoke paths. It pressure-tests the stack beyond single-category apps without adding auth.
 
 ## Notes
 
@@ -97,8 +99,13 @@ Build and smoke the web examples:
     ./scripts/smoke.sh --port 3014
     ./scripts/smoke.sh --port 3015 --skip-build --file-store "$(mktemp -d)"
 
+    cd ../project-tasks-web
+    ./scripts/build.sh
+    ./scripts/smoke.sh --port 3016
+    ./scripts/smoke.sh --port 3017 --skip-build --file-store "$(mktemp -d)"
+
 ## Repository Rule
 
 Application policy stays out of shared packages. Audience filtering, route naming, DTO mapping, and domain-specific automation remain app-local unless repeated evidence justifies extraction.
 
-The current `counter-web` example intentionally keeps its app-specific command API and snapshot DTO mapping local. The current `counter-web-multi` example intentionally keeps its domain routing and page-specific view/controller logic local. The current `todo-web` and `counters-web` examples intentionally keep their route naming, overview/detail page composition, and dynamic stream naming policy local. Shared packages should only absorb behavior that is proven by more than one example or that sits below domain policy boundaries.
+The current `counter-web` example intentionally keeps its app-specific command API and snapshot DTO mapping local. The current `counter-web-multi` example intentionally keeps its domain routing and page-specific view/controller logic local. The current `todo-web`, `counters-web`, and `project-tasks-web` examples intentionally keep their route naming, overview/detail page composition, and dynamic stream naming policy local. Shared packages should only absorb behavior that is proven by more than one example or that sits below domain policy boundaries.

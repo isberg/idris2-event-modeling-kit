@@ -129,3 +129,15 @@ After the `todo-web` and `counters-web` version-drift fix, one more low-level se
 - stale/duplicate versus exact-next versus gap handling for versioned projection updates
 
 The package still does not own domain-specific projection rules. It owns only the cursor law that those projections depend on.
+
+After `examples/project-tasks-web`, the current shared stack is now also proven against a small multi-category app:
+
+- one category-wide overview feed for `project-*`,
+- one project-scoped category feed over `task-*`,
+- one per-stream task detail feed with replay/resume,
+- separate aggregate deciders inside one shared `DomainEvent` transport shape.
+
+That run did not justify a new package extraction on its own. It did confirm two structural choices:
+
+- split the domain by category early when there are multiple aggregates,
+- keep backend and frontend consolidated until repeated cross-category ceremony becomes clearer than the domain policy.

@@ -41,3 +41,6 @@ cd "$repo_root/examples/todo-web"
 
 cd "$repo_root/examples/counters-web"
 ./scripts/build.sh
+
+cd "$repo_root/examples/project-tasks-web"
+./scripts/build.sh
