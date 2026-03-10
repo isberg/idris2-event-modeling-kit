@@ -48,6 +48,7 @@ It should remain contract-focused. Domain route naming, JSON codec policy, and t
 `emkit-backend` owns shared backend web adapters:
 
 - SSE replay plus live subscription helpers,
+- live category-feed subscription helpers,
 - per-stream subscription cleanup discipline.
 
 It may depend on `emkit-store` and `emkit-stream`, but it must not own route naming, auth, or domain-specific DTO policy.
@@ -99,4 +100,18 @@ After `examples/todo-web`, the following additional seams are now clearer but st
 - typed execute and resync requests,
 - memory and file-store execution with restart persistence.
 
-It does not yet justify extracting a higher-level web app shell. The next extraction should only happen if another example repeats the same route/controller composition with materially similar behavior.
+After `examples/counters-web`, one more backend seam is now proven enough to share:
+
+- a live category-feed subscription helper with cleanup registration
+
+That helper now lives in `emkit-backend` alongside the per-stream SSE helper.
+
+Even after `todo-web` plus `counters-web`, a higher-level web app shell is still not justified. The following seams remain too application-shaped:
+
+- route naming and endpoint layout,
+- screen-specific controller state,
+- navigation policy,
+- dynamic stream-id generation policy,
+- overview/detail page rendering.
+
+The next extraction should therefore happen only if another example repeats one of those seams with materially similar behavior.

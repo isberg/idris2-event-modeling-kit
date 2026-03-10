@@ -45,8 +45,8 @@ record AppEnv ev where
   storageMode : StorageMode
   store : StoreBackend ev
 
-TodoApp : Type -> Type -> Type
-TodoApp ev a = ReaderT (AppEnv ev) IO a
+CounterApp : Type -> Type -> Type
+CounterApp ev a = ReaderT (AppEnv ev) IO a
 
 findFileStorageArg : List String -> Maybe StorageMode
 findFileStorageArg [] = Nothing
@@ -67,8 +67,8 @@ parsePort raw =
         then Nothing
         else Just (cast n)
 
-isTodoStream : String -> Bool
-isTodoStream streamId = isPrefixOf (unpack listPrefix) (unpack streamId)
+isCounterStream : String -> Bool
+isCounterStream streamId = isPrefixOf (unpack counterPrefix) (unpack streamId)
 
 runStore :
   AppEnv ev ->
@@ -188,72 +188,72 @@ keepJusts [] = []
 keepJusts (Nothing :: rest) = keepJusts rest
 keepJusts (Just value :: rest) = value :: keepJusts rest
 
-listSummariesInStore : TodoApp TodoEvent (Either String (List TodoListSummary))
+listSummariesInStore : CounterApp CounterEvent (Either String (List CounterSummary))
 listSummariesInStore = do
-  listed <- listStreams {m=ReaderT (AppEnv TodoEvent) IO} {stream=String}
+  listed <- listStreams {m=ReaderT (AppEnv CounterEvent) IO} {stream=String}
   case listed of
     Left err => pure (Left (renderListStreamsErr err))
     Right streamIds => do
-      summaries <- traverse loadSummary (filter isTodoStream streamIds)
+      summaries <- traverse loadSummary (filter isCounterStream streamIds)
       pure (Right (keepJusts summaries))
   where
-    loadSummary : String -> TodoApp TodoEvent (Maybe TodoListSummary)
+    loadSummary : String -> CounterApp CounterEvent (Maybe CounterSummary)
     loadSummary streamId = do
-      loaded <- loadHistoryOrEmpty {m=ReaderT (AppEnv TodoEvent) IO} {stream=String} {event=TodoEvent} streamId
+      loaded <- loadHistoryOrEmpty {m=ReaderT (AppEnv CounterEvent) IO} {stream=String} {event=CounterEvent} streamId
       pure $ case loaded of
         Left _ => Nothing
         Right (_, history) =>
           let summary = summaryFromEvents streamId history in
             if exists summary then Just summary else Nothing
 
-detailResyncInStore : String -> TodoApp TodoEvent (Either String (ResyncPayload TodoEvent))
+detailResyncInStore : String -> CounterApp CounterEvent (Either String (ResyncPayload CounterEvent))
 detailResyncInStore streamId = do
-  loaded <- loadHistoryOrEmpty {m=ReaderT (AppEnv TodoEvent) IO} {stream=String} {event=TodoEvent} streamId
+  loaded <- loadHistoryOrEmpty {m=ReaderT (AppEnv CounterEvent) IO} {stream=String} {event=CounterEvent} streamId
   pure $ case loaded of
     Left err => Left (renderLoadErr err)
     Right (version, events) => Right (MkResyncPayload version events)
 
-executeCommandInStore : String -> ExecutePayload Command -> TodoApp TodoEvent (Either (RuntimeExecuteError Rejection) Nat)
+executeCommandInStore : String -> ExecutePayload Command -> CounterApp CounterEvent (Either (RuntimeExecuteError Rejection) Nat)
 executeCommandInStore streamId payload = do
-  result <- executeOnStreamExpected {m=ReaderT (AppEnv TodoEvent) IO} {stream=String} {command=Command} {rejection=Rejection} {event=TodoEvent} {state=TodoListState} streamId (expectedVersion payload) (command payload)
+  result <- executeOnStreamExpected {m=ReaderT (AppEnv CounterEvent) IO} {stream=String} {command=Command} {rejection=Rejection} {event=CounterEvent} {state=CounterState} streamId (expectedVersion payload) (command payload)
   pure (map newVersion result)
 
-frameDetailEvent : Nat -> TodoEvent -> Buffer
+frameDetailEvent : Nat -> CounterEvent -> Buffer
 frameDetailEvent version event =
-  let payload = SimpleToJSON.encode (the (StreamEvent TodoEvent) (MkStreamEvent version event))
+  let payload = SimpleToJSON.encode (the (StreamEvent CounterEvent) (MkStreamEvent version event))
       frame = sseFrameText (Just (show version)) Nothing payload
    in fromString frame
 
-frameOverviewEvent : String -> Nat -> TodoEvent -> Buffer
+frameOverviewEvent : String -> Nat -> CounterEvent -> Buffer
 frameOverviewEvent streamId version event =
-  let payload = SimpleToJSON.encode (the (MultiplexedStreamEvent String TodoEvent) (MkMultiplexedStreamEvent streamId version event))
+  let payload = SimpleToJSON.encode (the (MultiplexedStreamEvent String CounterEvent) (MkMultiplexedStreamEvent streamId version event))
       frame = sseFrameText Nothing Nothing payload
    in fromString frame
 
-subscribeOverview : AppEnv TodoEvent -> IORef.IORef ClientUnsubs -> String -> Publisher IO e Buffer
+subscribeOverview : AppEnv CounterEvent -> IORef.IORef ClientUnsubs -> String -> Publisher IO e Buffer
 subscribeOverview env unsubsRef clientId =
-  subscribeCategoryLive env unsubsRef "overview" frameOverviewEvent isTodoStream clientId
+  subscribeCategoryLive env unsubsRef "overview" frameOverviewEvent isCounterStream clientId
 
-readSummariesP : AppEnv TodoEvent -> Promise Error IO (List TodoListSummary)
+readSummariesP : AppEnv CounterEvent -> Promise Error IO (List CounterSummary)
 readSummariesP env = promise $ \resolve, _ => do
   result <- runReaderT env listSummariesInStore
   case result of
     Left _ => resolve []
     Right summaries => resolve summaries
 
-runResyncP : AppEnv TodoEvent -> String -> Promise Error IO (Either String (ResyncPayload TodoEvent))
+runResyncP : AppEnv CounterEvent -> String -> Promise Error IO (Either String (ResyncPayload CounterEvent))
 runResyncP env streamId = promise $ \resolve, _ => do
   result <- runReaderT env (detailResyncInStore streamId)
   resolve result
 
-runExecuteP : AppEnv TodoEvent -> String -> ExecutePayload Command -> Promise Error IO (Either (RuntimeExecuteError Rejection) Nat)
+runExecuteP : AppEnv CounterEvent -> String -> ExecutePayload Command -> Promise Error IO (Either (RuntimeExecuteError Rejection) Nat)
 runExecuteP env streamId payload = promise $ \resolve, _ => do
   result <- runReaderT env (executeCommandInStore streamId payload)
   resolve result
 
-initAppEnv : StorageMode -> IO (AppEnv TodoEvent)
+initAppEnv : StorageMode -> IO (AppEnv CounterEvent)
 initAppEnv MemoryMode = do
-  memEnv <- Memory.mkEnv {stream=String} {ev=TodoEvent}
+  memEnv <- Memory.mkEnv {stream=String} {ev=CounterEvent}
   pure (MkAppEnv MemoryMode (UseMemory memEnv))
 initAppEnv (FileMode path) = do
   fileEnv <- File.mkEnv path
@@ -296,50 +296,50 @@ main = do
               sendText "File error while serving static content." ctx >>= status INTERNAL_SERVER_ERROR
             NotAFile path =>
               sendText ("Could not find file: " ++ path) ctx >>= status NOT_FOUND
-      , get $ pattern "/api/todo/lists" $ \ctx => do
+      , get $ pattern "/api/counters" $ \ctx => do
           summaries <- liftPromise $ readSummariesP env
           sendText (SimpleToJSON.encode summaries) ctx >>= status OK
-      , get $ pattern "/api/todo/overview-events/{clientId}" $ \ctx =>
+      , get $ pattern "/api/counters/overview-events/{clientId}" $ \ctx =>
           case lookup "clientId" ctx.request.url.path.params of
             Nothing => sendText "Missing clientId." ctx >>= status BAD_REQUEST
             Just clientId =>
               pure $ MkContext ctx.request (MkResponse OK sseHeaders (subscribeOverview env unsubsRef clientId))
-      , get $ pattern "/api/todo/events/{listId}/{clientId}" $ \ctx =>
-          case (lookup "listId" ctx.request.url.path.params, lookup "clientId" ctx.request.url.path.params) of
-            (Just listId, Just clientId) =>
-              if isTodoStream listId
+      , get $ pattern "/api/counters/events/{counterId}/{clientId}" $ \ctx =>
+          case (lookup "counterId" ctx.request.url.path.params, lookup "clientId" ctx.request.url.path.params) of
+            (Just counterId, Just clientId) =>
+              if isCounterStream counterId
                 then
-                  let stream = subscribeStream env unsubsRef frameDetailEvent listId clientId (lastEventIdFromHeaders ctx.request.headers)
+                  let stream = subscribeStream env unsubsRef frameDetailEvent counterId clientId (lastEventIdFromHeaders ctx.request.headers)
                    in pure $ MkContext ctx.request (MkResponse OK sseHeaders stream)
-                else sendText ("Unknown stream: " ++ listId) ctx >>= status BAD_REQUEST
-            _ => sendText "Missing listId or clientId." ctx >>= status BAD_REQUEST
-      , get $ pattern "/api/todo/resync/{listId}" $ \ctx =>
-          case lookup "listId" ctx.request.url.path.params of
-            Nothing => sendText "Missing listId." ctx >>= status BAD_REQUEST
-            Just listId =>
-              if isTodoStream listId
+                else sendText ("Unknown stream: " ++ counterId) ctx >>= status BAD_REQUEST
+            _ => sendText "Missing counterId or clientId." ctx >>= status BAD_REQUEST
+      , get $ pattern "/api/counters/resync/{counterId}" $ \ctx =>
+          case lookup "counterId" ctx.request.url.path.params of
+            Nothing => sendText "Missing counterId." ctx >>= status BAD_REQUEST
+            Just counterId =>
+              if isCounterStream counterId
                 then do
-                  result <- liftPromise $ runResyncP env listId
+                  result <- liftPromise $ runResyncP env counterId
                   case result of
                     Left err => sendText err ctx >>= status INTERNAL_SERVER_ERROR
                     Right payload => sendText (SimpleToJSON.encode payload) ctx >>= status OK
-                else sendText ("Unknown stream: " ++ listId) ctx >>= status BAD_REQUEST
+                else sendText ("Unknown stream: " ++ counterId) ctx >>= status BAD_REQUEST
       , post
-          $ pattern "/api/todo/execute/{listId}"
+          $ pattern "/api/counters/execute/{counterId}"
           $ consumes' [JSON] {a = ExecutePayload Command}
               (\ctx => sendText "Content cannot be parsed." ctx >>= status BAD_REQUEST)
               (\ctx =>
-                case lookup "listId" ctx.request.url.path.params of
-                  Nothing => sendText "Missing listId." ctx >>= status BAD_REQUEST
-                  Just listId =>
-                    if isTodoStream listId
+                case lookup "counterId" ctx.request.url.path.params of
+                  Nothing => sendText "Missing counterId." ctx >>= status BAD_REQUEST
+                  Just counterId =>
+                    if isCounterStream counterId
                       then do
-                        result <- liftPromise $ runExecuteP env listId ctx.request.body
+                        result <- liftPromise $ runExecuteP env counterId ctx.request.body
                         case result of
                           Left err => sendText (renderRuntimeErr err) ctx >>= status (runtimeStatus err)
                           Right _ => sendText "OK" ctx >>= status OK
-                      else sendText ("Unknown stream: " ++ listId) ctx >>= status BAD_REQUEST)
+                      else sendText ("Unknown stream: " ++ counterId) ctx >>= status BAD_REQUEST)
       ]
   case storageMode of
-    MemoryMode => putStrLn ("Todo web backend online at port " ++ show serverPort ++ " (memory mode).")
-    FileMode path => putStrLn ("Todo web backend online at port " ++ show serverPort ++ " (file mode: " ++ path ++ ").")
+    MemoryMode => putStrLn ("Counters web backend online at port " ++ show serverPort ++ " (memory mode).")
+    FileMode path => putStrLn ("Counters web backend online at port " ++ show serverPort ++ " (file mode: " ++ path ++ ").")

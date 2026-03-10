@@ -38,3 +38,6 @@ cd "$repo_root/examples/counter-web-multi"
 
 cd "$repo_root/examples/todo-web"
 ./scripts/build.sh
+
+cd "$repo_root/examples/counters-web"
+./scripts/build.sh
