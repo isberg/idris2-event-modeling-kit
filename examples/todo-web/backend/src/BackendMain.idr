@@ -12,6 +12,7 @@ import Domain.JSON
 import Domain.JSON.Simple
 import EmKit.Backend.SSE
 import EmKit.Runtime.Execute
+import EmKit.Runtime.Query
 import EmKit.Sourcing.Decider
 import EmKit.Store.Core
 import EmKit.Store.File as File
@@ -183,28 +184,21 @@ runtimeStatus (RuntimeRejected _) = BAD_REQUEST
 runtimeStatus (RuntimeLoadFailed _) = INTERNAL_SERVER_ERROR
 runtimeStatus (RuntimeAppendFailed _) = INTERNAL_SERVER_ERROR
 
-keepJusts : List (Maybe a) -> List a
-keepJusts [] = []
-keepJusts (Nothing :: rest) = keepJusts rest
-keepJusts (Just value :: rest) = value :: keepJusts rest
-
 listSummariesInStore : TodoApp TodoEvent (Either String (List TodoListSummary))
 listSummariesInStore = do
-  listed <- listStreams {m=ReaderT (AppEnv TodoEvent) IO} {stream=String}
-  case listed of
-    Left err => pure (Left (renderListStreamsErr err))
-    Right streamIds => do
-      summaries <- traverse loadSummary (filter isTodoStream streamIds)
-      pure (Right (keepJusts summaries))
-  where
-    loadSummary : String -> TodoApp TodoEvent (Maybe TodoListSummary)
-    loadSummary streamId = do
-      loaded <- loadHistoryOrEmpty {m=ReaderT (AppEnv TodoEvent) IO} {stream=String} {event=TodoEvent} streamId
-      pure $ case loaded of
-        Left _ => Nothing
-        Right (streamVersion, history) =>
-          let summary = summaryFromEvents streamId streamVersion history in
-            if exists summary then Just summary else Nothing
+  listed <-
+    listProjectedSummaries
+      {m=ReaderT (AppEnv TodoEvent) IO}
+      {stream=String}
+      {event=TodoEvent}
+      {summary=TodoListSummary}
+      isTodoStream
+      summaryFromEvents
+      exists
+  pure $
+    case listed of
+      Left err => Left (renderListStreamsErr err)
+      Right summaries => Right summaries
 
 detailResyncInStore : String -> TodoApp TodoEvent (Either String (ResyncPayload TodoEvent))
 detailResyncInStore streamId = do
