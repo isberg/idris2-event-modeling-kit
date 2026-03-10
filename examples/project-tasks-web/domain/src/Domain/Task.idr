@@ -24,16 +24,8 @@ data TaskRejection
   | TaskNotStarted
 
 public export
-record TaskState where
-  constructor MkTaskState
-  exists : Bool
-  projectId : String
-  title : String
-  status : TaskStatus
-
-public export
-record TaskView where
-  constructor MkTaskView
+record TaskModel where
+  constructor MkTaskModel
   exists : Bool
   projectId : String
   title : String
@@ -125,14 +117,14 @@ nextTaskIdFromSummaries projectId summaries =
   in taskPrefixForProject projectId ++ show next
 
 public export
-summaryFromView : String -> Nat -> TaskView -> TaskSummary
-summaryFromView taskId streamVersion view =
-  MkTaskSummary taskId streamVersion (exists view) (projectId view) (title view) (status view)
+summaryFromModel : String -> Nat -> TaskModel -> TaskSummary
+summaryFromModel taskId streamVersion model =
+  MkTaskSummary taskId streamVersion (exists model) (projectId model) (title model) (status model)
 
 public export
-detailFromView : String -> Nat -> List TaskEvent -> TaskView -> TaskDetail
-detailFromView taskId streamVersion history view =
-  MkTaskDetail taskId streamVersion (exists view) (projectId view) (title view) (status view) history
+detailFromModel : String -> Nat -> List TaskEvent -> TaskModel -> TaskDetail
+detailFromModel taskId streamVersion history model =
+  MkTaskDetail taskId streamVersion (exists model) (projectId model) (title model) (status model) history
 
 public export
 summaryFromDetail : TaskDetail -> TaskSummary
@@ -181,7 +173,7 @@ applyTaskDetailEvent streamVersion event detail =
     Right (IgnoredStale current) => Right current
     Right (Applied next) => Right next
 
-data TaskLegal : TaskCommand -> TaskState -> Type where
+data TaskLegal : TaskCommand -> TaskModel -> Type where
   CanCreateTask :
     {projectId : String} ->
     {rawTitle : String} ->
@@ -190,35 +182,35 @@ data TaskLegal : TaskCommand -> TaskState -> Type where
   CanStartTask : TaskLegal StartTask state
   CanCompleteTask : TaskLegal CompleteTask state
 
-createLegal : (projectId : String) -> (rawTitle : String) -> TaskState -> Either TaskRejection (TaskLegal (CreateTask projectId rawTitle) state)
-createLegal projectId rawTitle (MkTaskState False _ _ _) =
+createLegal : (projectId : String) -> (rawTitle : String) -> TaskModel -> Either TaskRejection (TaskLegal (CreateTask projectId rawTitle) state)
+createLegal projectId rawTitle (MkTaskModel False _ _ _) =
   let cleanTitle = trim rawTitle in
     if cleanTitle == ""
       then Left EmptyTaskTitle
       else Right (CanCreateTask cleanTitle)
-createLegal _ _ (MkTaskState True _ _ _) = Left TaskAlreadyCreated
+createLegal _ _ (MkTaskModel True _ _ _) = Left TaskAlreadyCreated
 
-startLegal : TaskState -> Either TaskRejection (TaskLegal StartTask state)
-startLegal (MkTaskState False _ _ _) = Left TaskMissing
-startLegal (MkTaskState True _ _ TaskTodo) = Right CanStartTask
-startLegal (MkTaskState True _ _ TaskInProgress) = Left TaskAlreadyStarted
-startLegal (MkTaskState True _ _ TaskDone) = Left TaskAlreadyDone
+startLegal : TaskModel -> Either TaskRejection (TaskLegal StartTask state)
+startLegal (MkTaskModel False _ _ _) = Left TaskMissing
+startLegal (MkTaskModel True _ _ TaskTodo) = Right CanStartTask
+startLegal (MkTaskModel True _ _ TaskInProgress) = Left TaskAlreadyStarted
+startLegal (MkTaskModel True _ _ TaskDone) = Left TaskAlreadyDone
 
-completeLegal : TaskState -> Either TaskRejection (TaskLegal CompleteTask state)
-completeLegal (MkTaskState False _ _ _) = Left TaskMissing
-completeLegal (MkTaskState True _ _ TaskTodo) = Left TaskNotStarted
-completeLegal (MkTaskState True _ _ TaskInProgress) = Right CanCompleteTask
-completeLegal (MkTaskState True _ _ TaskDone) = Left TaskAlreadyDone
-
-public export
-implementation Projection TaskEvent TaskState where
-  initial = MkTaskState False "" "" TaskTodo
-  evolve _ (TaskCreated projectId taskTitle) = MkTaskState True projectId taskTitle TaskTodo
-  evolve state TaskStarted = { status := TaskInProgress } state
-  evolve state TaskCompleted = { status := TaskDone } state
+completeLegal : TaskModel -> Either TaskRejection (TaskLegal CompleteTask state)
+completeLegal (MkTaskModel False _ _ _) = Left TaskMissing
+completeLegal (MkTaskModel True _ _ TaskTodo) = Left TaskNotStarted
+completeLegal (MkTaskModel True _ _ TaskInProgress) = Right CanCompleteTask
+completeLegal (MkTaskModel True _ _ TaskDone) = Left TaskAlreadyDone
 
 public export
-implementation Decider List TaskCommand TaskRejection TaskEvent TaskState where
+implementation Projection TaskEvent TaskModel where
+  initial = MkTaskModel False "" "" TaskTodo
+  evolve _ (TaskCreated projectId taskTitle) = MkTaskModel True projectId taskTitle TaskTodo
+  evolve model TaskStarted = { status := TaskInProgress } model
+  evolve model TaskCompleted = { status := TaskDone } model
+
+public export
+implementation Decider List TaskCommand TaskRejection TaskEvent TaskModel where
   Legal = TaskLegal
 
   legal (CreateTask projectId rawTitle) state = createLegal projectId rawTitle state
@@ -231,20 +223,13 @@ implementation Decider List TaskCommand TaskRejection TaskEvent TaskState where
   decide CompleteTask state CanCompleteTask = [TaskCompleted]
 
 public export
-implementation Projection TaskEvent TaskView where
-  initial = MkTaskView False "" "" TaskTodo
-  evolve _ (TaskCreated projectId taskTitle) = MkTaskView True projectId taskTitle TaskTodo
-  evolve view TaskStarted = { status := TaskInProgress } view
-  evolve view TaskCompleted = { status := TaskDone } view
-
-public export
 summaryFromEvents : String -> Nat -> List TaskEvent -> TaskSummary
-summaryFromEvents taskId streamVersion events = summaryFromView taskId streamVersion (project events)
+summaryFromEvents taskId streamVersion events = summaryFromModel taskId streamVersion (project events)
 
 public export
 detailFromEvents : String -> Nat -> List TaskEvent -> TaskDetail
 detailFromEvents taskId streamVersion events =
-  detailFromView taskId streamVersion events (project events)
+  detailFromModel taskId streamVersion events (project events)
 
 public export
 canStart : TaskDetail -> Bool

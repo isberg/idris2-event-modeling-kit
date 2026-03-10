@@ -21,15 +21,8 @@ data ProjectRejection
   | ProjectAlreadyCompleted
 
 public export
-record ProjectState where
-  constructor MkProjectState
-  exists : Bool
-  title : String
-  completed : Bool
-
-public export
-record ProjectView where
-  constructor MkProjectView
+record ProjectModel where
+  constructor MkProjectModel
   exists : Bool
   title : String
   completed : Bool
@@ -111,14 +104,14 @@ nextProjectIdFromSummaries summaries =
   in projectPrefix ++ show next
 
 public export
-summaryFromView : String -> Nat -> ProjectView -> ProjectSummary
-summaryFromView projectId streamVersion view =
-  MkProjectSummary projectId streamVersion (exists view) (title view) (completed view)
+summaryFromModel : String -> Nat -> ProjectModel -> ProjectSummary
+summaryFromModel projectId streamVersion model =
+  MkProjectSummary projectId streamVersion (exists model) (title model) (completed model)
 
 public export
-detailFromView : String -> Nat -> ProjectView -> ProjectDetail
-detailFromView projectId streamVersion view =
-  MkProjectDetail projectId streamVersion (exists view) (title view) (completed view)
+detailFromModel : String -> Nat -> ProjectModel -> ProjectDetail
+detailFromModel projectId streamVersion model =
+  MkProjectDetail projectId streamVersion (exists model) (title model) (completed model)
 
 public export
 summaryFromDetail : ProjectDetail -> ProjectSummary
@@ -160,34 +153,34 @@ applyProjectDetailEvent streamVersion event detail =
     Right (IgnoredStale current) => Right current
     Right (Applied next) => Right next
 
-data ProjectLegal : ProjectCommand -> ProjectState -> Type where
+data ProjectLegal : ProjectCommand -> ProjectModel -> Type where
   CanCreateProject :
     {rawTitle : String} ->
     (cleanTitle : String) ->
     ProjectLegal (CreateProject rawTitle) state
   CanCompleteProject : ProjectLegal CompleteProject state
 
-createLegal : (rawTitle : String) -> ProjectState -> Either ProjectRejection (ProjectLegal (CreateProject rawTitle) state)
-createLegal rawTitle (MkProjectState False _ _) =
+createLegal : (rawTitle : String) -> ProjectModel -> Either ProjectRejection (ProjectLegal (CreateProject rawTitle) state)
+createLegal rawTitle (MkProjectModel False _ _) =
   let cleanTitle = trim rawTitle in
     if cleanTitle == ""
       then Left EmptyProjectTitle
       else Right (CanCreateProject cleanTitle)
-createLegal _ (MkProjectState True _ _) = Left ProjectAlreadyCreated
+createLegal _ (MkProjectModel True _ _) = Left ProjectAlreadyCreated
 
-completeLegal : ProjectState -> Either ProjectRejection (ProjectLegal CompleteProject state)
-completeLegal (MkProjectState False _ _) = Left ProjectMissing
-completeLegal (MkProjectState True _ True) = Left ProjectAlreadyCompleted
-completeLegal (MkProjectState True _ False) = Right CanCompleteProject
-
-public export
-implementation Projection ProjectEvent ProjectState where
-  initial = MkProjectState False "" False
-  evolve _ (ProjectCreated projectTitle) = MkProjectState True projectTitle False
-  evolve state ProjectCompleted = { completed := True } state
+completeLegal : ProjectModel -> Either ProjectRejection (ProjectLegal CompleteProject state)
+completeLegal (MkProjectModel False _ _) = Left ProjectMissing
+completeLegal (MkProjectModel True _ True) = Left ProjectAlreadyCompleted
+completeLegal (MkProjectModel True _ False) = Right CanCompleteProject
 
 public export
-implementation Decider List ProjectCommand ProjectRejection ProjectEvent ProjectState where
+implementation Projection ProjectEvent ProjectModel where
+  initial = MkProjectModel False "" False
+  evolve _ (ProjectCreated projectTitle) = MkProjectModel True projectTitle False
+  evolve model ProjectCompleted = { completed := True } model
+
+public export
+implementation Decider List ProjectCommand ProjectRejection ProjectEvent ProjectModel where
   Legal = ProjectLegal
 
   legal (CreateProject rawTitle) state = createLegal rawTitle state
@@ -198,15 +191,9 @@ implementation Decider List ProjectCommand ProjectRejection ProjectEvent Project
   decide CompleteProject state CanCompleteProject = [ProjectCompleted]
 
 public export
-implementation Projection ProjectEvent ProjectView where
-  initial = MkProjectView False "" False
-  evolve _ (ProjectCreated projectTitle) = MkProjectView True projectTitle False
-  evolve view ProjectCompleted = { completed := True } view
-
-public export
 summaryFromEvents : String -> Nat -> List ProjectEvent -> ProjectSummary
-summaryFromEvents projectId streamVersion events = summaryFromView projectId streamVersion (project events)
+summaryFromEvents projectId streamVersion events = summaryFromModel projectId streamVersion (project events)
 
 public export
 detailFromEvents : String -> Nat -> List ProjectEvent -> ProjectDetail
-detailFromEvents projectId streamVersion events = detailFromView projectId streamVersion (project events)
+detailFromEvents projectId streamVersion events = detailFromModel projectId streamVersion (project events)

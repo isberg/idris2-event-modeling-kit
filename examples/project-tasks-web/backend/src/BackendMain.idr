@@ -351,7 +351,7 @@ runProjectAutomation projectId = do
       in case Automation.automatedProjectCommand policyView of
           Nothing => pure ()
           Just cmd => do
-            _ <- executeTypedOnStoredExpected {command=Project.ProjectCommand} {rejection=Project.ProjectRejection} {localEvent=Event.ProjectEvent} {state=Project.ProjectState} projectEventFromStored wrapProjectEvent projectId projectVersion cmd
+            _ <- executeTypedOnStoredExpected {command=Project.ProjectCommand} {rejection=Project.ProjectRejection} {localEvent=Event.ProjectEvent} {state=Project.ProjectModel} projectEventFromStored wrapProjectEvent projectId projectVersion cmd
             pure ()
     _ => pure ()
 
@@ -371,7 +371,7 @@ executeTaskCommandInStore streamId payload = do
         (Event.TaskCreated projectId _ :: _) => runProjectAutomation projectId
         (_ :: _) =>
           case resultingState success of
-            Task.MkTaskState True projectId _ _ => runProjectAutomation projectId
+            Task.MkTaskModel True projectId _ _ => runProjectAutomation projectId
             _ => pure ()
       pure (Right (newVersion success))
 
