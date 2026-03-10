@@ -52,6 +52,7 @@ It should remain contract-focused. Domain route naming, JSON codec policy, and t
 
 `emkit-backend` owns shared backend web adapters:
 
+- shared memory/file backend app shell for `ReaderT (StoreAppEnv ev) IO`,
 - SSE replay plus live subscription helpers,
 - live category-feed subscription helpers,
 - mapped SSE replay plus live subscription helpers over stored-event streams,
@@ -169,3 +170,11 @@ After extracting mapped stored-event helpers from `project-tasks-web`, one more 
 - replay and stream mapped per-stream or category feeds over the shared SSE backend adapter.
 
 This keeps one important boundary intact: the stored-event wrapper stays app-local, but the mechanics of working against that wrapper are now shared.
+
+After extracting the repeated memory/file backend shell from `todo-web`, `counters-web`, and `project-tasks-web`, `emkit-backend` now also owns:
+
+- storage mode parsing for the current backend CLI shape,
+- the `StoreAppEnv` plus `EventStore` / `Observable` / `ObservableCategory` / `StreamCatalog` instances,
+- memory/file initialization for event-backed backend apps.
+
+This still stops short of route wrappers. Backend route layout, promise wrappers, and status mapping remain app-local.

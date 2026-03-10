@@ -19,7 +19,7 @@ This repository is not an application. It is a package workspace intended to sho
 - `emkit-wire`
   Shared transport contracts plus JSON codecs for execute, stream, and resync payloads.
 - `emkit-backend`
-  Shared backend SSE replay/live adapter helpers, including mapped per-stream replay/live subscriptions and mapped live category-feed subscriptions.
+  Shared backend store-app shell plus SSE replay/live adapter helpers, including mapped per-stream replay/live subscriptions and mapped live category-feed subscriptions.
 - `emkit-frontend`
   Shared frontend EventSource lifecycle helpers, typed execute/resync helpers, and minimal multi-stream subscribe helpers.
 
@@ -32,11 +32,11 @@ This repository is not an application. It is a package workspace intended to sho
 - `examples/counter-web-multi`
   Multi-stream SSE-first web application with typed execute and resync payloads. It proves the wire codecs, shared frontend execute/subscribe helpers, and the multi-stream cleanup fix in the shared backend SSE adapter.
 - `examples/todo-web`
-  Multi-screen SSE-first web application with dynamic per-list streams, a category overview feed, per-stream detail feeds, typed execute/resync payloads, and both memory/file store smoke paths. It pressure-tests stream catalog usage, screen switching, and the split between overview and detail subscriptions.
+  Multi-screen SSE-first web application with dynamic per-list streams, a category overview feed, per-stream detail feeds, typed execute/resync payloads, and both memory/file store smoke paths. It now uses the shared backend store-app shell. It pressure-tests stream catalog usage, screen switching, and the split between overview and detail subscriptions.
 - `examples/counters-web`
-  Multi-screen SSE-first web application with dynamic per-counter streams, a category overview feed, per-stream detail feeds, typed execute/resync payloads, and both memory/file store smoke paths. It repeats the same web-app shell as `todo-web` with a smaller domain and helped justify a shared backend category-feed helper.
+  Multi-screen SSE-first web application with dynamic per-counter streams, a category overview feed, per-stream detail feeds, typed execute/resync payloads, and both memory/file store smoke paths. It now uses the shared backend store-app shell and the shared backend category-feed helper.
 - `examples/project-tasks-web`
-  Multi-category SSE-first web application with `project-*` and `task-*` streams, aggregate-local project/task events, neutral aggregate-local `ProjectModel` and `TaskModel` folds, an app-local stored-event wrapper, a project overview feed, project-scoped task category feeds, per-project and per-task detail feeds, typed execute/resync payloads, and both memory/file store smoke paths. It now uses shared mapped stored-event helpers for execute, summary queries, and SSE replay/live subscriptions. It also includes a first Automation Pattern slice: when all tasks for a project are done, the backend issues `CompleteProject`.
+  Multi-category SSE-first web application with `project-*` and `task-*` streams, aggregate-local project/task events, neutral aggregate-local `ProjectModel` and `TaskModel` folds, an app-local stored-event wrapper, a project overview feed, project-scoped task category feeds, per-project and per-task detail feeds, typed execute/resync payloads, and both memory/file store smoke paths. It now uses the shared backend store-app shell and shared mapped stored-event helpers for execute, summary queries, and SSE replay/live subscriptions. It also includes a first Automation Pattern slice: when all tasks for a project are done, the backend issues `CompleteProject`.
 
 ## Notes
 
