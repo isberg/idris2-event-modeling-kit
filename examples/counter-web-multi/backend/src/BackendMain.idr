@@ -21,6 +21,7 @@ import EmKit.Wire.JSON.Simple
 import JSON
 import JSON.Simple.ToJSON as SimpleToJSON
 import Promise
+import System
 import System.Directory
 import TyTTP
 import TyTTP.Adapter.Node.HTTP
@@ -37,6 +38,20 @@ streamIds = ["counter-a", "counter-b", "counter-c"]
 
 isKnownStream : String -> Bool
 isKnownStream streamId = elem streamId streamIds
+
+findPortArg : List String -> Maybe String
+findPortArg [] = Nothing
+findPortArg ("--port" :: value :: _) = Just value
+findPortArg (_ :: rest) = findPortArg rest
+
+parsePort : String -> Maybe Int
+parsePort raw =
+  case parseInteger (trim raw) of
+    Nothing => Nothing
+    Just n =>
+      if n <= 0 || n > 65535
+        then Nothing
+        else Just (cast n)
 
 findHeader : String -> List (String, String) -> Maybe String
 findHeader _ [] = Nothing
@@ -119,12 +134,27 @@ readTotalP env = promise $ \resolve, _ => do
 covering
 main : IO ()
 main = do
+  args <- getArgs
+  serverPort <- case findPortArg args of
+    Nothing => pure (the Int 3000)
+    Just raw =>
+      case parsePort raw of
+        Nothing => do
+          putStrLn ("Invalid --port value: " ++ raw ++ ". Expected integer in range 1..65535.")
+          exitFailure
+        Just port => pure port
   http <- HTTP.require
   current <- currentDir
   folder <- pure (maybe "." id current)
   env <- Memory.mkEnv {stream=String} {ev=CounterEvent}
   unsubsRef <- IORef.newIORef emptyClientUnsubs
-  _ <- HTTP.listen http defaultOptions
+  let options : TyTTP.Adapter.Node.HTTP.Options Error
+      options =
+        { listenOptions :=
+            { port := Just serverPort
+            } Listen.defaultOptions
+        } defaultOptions
+  _ <- HTTP.listen http options
     $ parseUrl' (const $ sendText "URL has invalid format" >=> status BAD_REQUEST) {m = Promise Error IO}
     $ routes' (sendText "Not Found" >=> status NOT_FOUND)
       [ get $ pattern "/" $ \ctx =>
@@ -173,4 +203,4 @@ main = do
                     Right payload => sendText (SimpleToJSON.encode payload) ctx >>= status OK
                 else sendText ("Unknown stream: " ++ streamId) ctx >>= status BAD_REQUEST
       ]
-  putStrLn "Counter multi web backend online at port 3000."
+  putStrLn ("Counter multi web backend online at port " ++ show serverPort ++ ".")

@@ -46,7 +46,7 @@ initialState = MkState 0 initialCounterView [] "Kitchen" "Connecting live feed..
 
 httpErrorMessage : HTTPError -> String
 httpErrorMessage Timeout = "Request timed out."
-httpErrorMessage NetworkError = "Network error calling /api/counter. Run ./scripts/run.sh and open http://127.0.0.1:3000/static/index.html"
+httpErrorMessage NetworkError = "Network error calling /api/counter. Run ./scripts/run.sh and open /static/index.html on the configured port."
 httpErrorMessage (BadStatus code) = "Server returned status " ++ show code ++ "."
 httpErrorMessage (JSONError _ _) = "Failed to decode JSON response."
 

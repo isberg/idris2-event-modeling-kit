@@ -4,6 +4,32 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT_DIR"
 
+PORT=3000
+SKIP_BUILD=0
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --port)
+      shift
+      if [[ $# -eq 0 ]]; then
+        echo "missing value for --port"
+        exit 1
+      fi
+      PORT="$1"
+      shift
+      ;;
+    --skip-build)
+      SKIP_BUILD=1
+      shift
+      ;;
+    *)
+      echo "usage: ./scripts/smoke.sh [--port <port>] [--skip-build]"
+      exit 1
+      ;;
+  esac
+done
+
+BASE_URL="http://127.0.0.1:${PORT}"
 TMP_DIR="$(mktemp -d)"
 cleanup() {
   if [[ -n "${SSE_PID:-}" ]] && kill -0 "$SSE_PID" >/dev/null 2>&1; then
@@ -43,13 +69,15 @@ wait_for_event() {
   return 1
 }
 
-./scripts/build.sh >"$TMP_DIR/build.log" 2>&1
-./backend/build/exec/counter_web_backend >"$TMP_DIR/backend.log" 2>&1 &
+if [[ "$SKIP_BUILD" -ne 1 ]]; then
+  ./scripts/build.sh >"$TMP_DIR/build.log" 2>&1
+fi
+./backend/build/exec/counter_web_backend --port "$PORT" >"$TMP_DIR/backend.log" 2>&1 &
 BACKEND_PID=$!
 
 READY=0
 for _ in $(seq 1 100); do
-  if curl -fsS http://127.0.0.1:3000/health >/dev/null 2>&1; then
+  if curl -fsS "$BASE_URL/health" >/dev/null 2>&1; then
     READY=1
     break
   fi
@@ -61,27 +89,27 @@ if [[ "$READY" -ne 1 ]]; then
   exit 1
 fi
 
-curl -fsS http://127.0.0.1:3000/api/counter | ${grep_cmd} '"created":false'
+curl -fsS "$BASE_URL/api/counter" | ${grep_cmd} '"created":false'
 
 SSE_FILE="$TMP_DIR/sse.log"
-curl -N -sS http://127.0.0.1:3000/api/events/smoke-client >"$SSE_FILE" 2>"$TMP_DIR/sse.err" &
+curl -N -sS "$BASE_URL/api/events/smoke-client" >"$SSE_FILE" 2>"$TMP_DIR/sse.err" &
 SSE_PID=$!
 wait_for_event "SSE connected" '^: connected' "$SSE_FILE"
 
-create_resp=$(curl -fsS -X POST http://127.0.0.1:3000/api/counter/create \
+create_resp=$(curl -fsS -X POST "$BASE_URL/api/counter/create" \
   -H 'Content-Type: application/json' \
   -d '"Kitchen"')
 echo "$create_resp" | ${grep_cmd} '"ok":true'
 wait_for_event "Created arrived" '"eventType":"Created"' "$SSE_FILE"
 wait_for_event "Created id is 1" '^id: 1$' "$SSE_FILE"
 
-inc_resp=$(curl -fsS -X POST http://127.0.0.1:3000/api/counter/increment)
+inc_resp=$(curl -fsS -X POST "$BASE_URL/api/counter/increment")
 echo "$inc_resp" | ${grep_cmd} '"ok":true'
 wait_for_event "Increment arrived" '"eventType":"Incremented"' "$SSE_FILE"
 wait_for_event "Increment id is 2" '^id: 2$' "$SSE_FILE"
 
 RESUME_FILE="$TMP_DIR/resume.log"
-curl -N -sS http://127.0.0.1:3000/api/events/resume-client -H 'Last-Event-ID: 1' >"$RESUME_FILE" 2>"$TMP_DIR/resume.err" &
+curl -N -sS "$BASE_URL/api/events/resume-client" -H 'Last-Event-ID: 1' >"$RESUME_FILE" 2>"$TMP_DIR/resume.err" &
 RESUME_PID=$!
 wait_for_event "Resume connected" '^: connected' "$RESUME_FILE"
 wait_for_event "Resume replay incremented" '"eventType":"Incremented"' "$RESUME_FILE"
@@ -91,15 +119,15 @@ if ${grep_cmd} '"eventType":"Created"' "$RESUME_FILE"; then
   exit 1
 fi
 
-dec_resp=$(curl -fsS -X POST http://127.0.0.1:3000/api/counter/decrement)
+dec_resp=$(curl -fsS -X POST "$BASE_URL/api/counter/decrement")
 echo "$dec_resp" | ${grep_cmd} '"ok":true'
 wait_for_event "Decrement arrived" '"eventType":"Decremented"' "$SSE_FILE"
 
-reject_resp=$(curl -fsS -X POST http://127.0.0.1:3000/api/counter/decrement)
+reject_resp=$(curl -fsS -X POST "$BASE_URL/api/counter/decrement")
 echo "$reject_resp" | ${grep_cmd} '"ok":false'
 echo "$reject_resp" | ${grep_cmd} 'already at minimum'
 
-snapshot=$(curl -fsS http://127.0.0.1:3000/api/counter)
+snapshot=$(curl -fsS "$BASE_URL/api/counter")
 echo "$snapshot" | ${grep_cmd} '"version":3'
 echo "$snapshot" | ${grep_cmd} '"label":"Kitchen"'
 echo "$snapshot" | ${grep_cmd} '"roman":""'
@@ -109,8 +137,8 @@ echo "$snapshot" | ${grep_cmd} '"eventType":"Decremented"'
 
 index_file="$TMP_DIR/index.html"
 bundle_file="$TMP_DIR/frontend.js"
-curl -fsS http://127.0.0.1:3000/static/index.html -o "$index_file"
-curl -fsS http://127.0.0.1:3000/static/frontend.js -o "$bundle_file"
+curl -fsS "$BASE_URL/static/index.html" -o "$index_file"
+curl -fsS "$BASE_URL/static/frontend.js" -o "$bundle_file"
 ${grep_cmd} 'frontend.js' "$index_file"
 ${grep_cmd} 'Counter Web' "$bundle_file"
 ${grep_cmd} 'Live feed' "$bundle_file"

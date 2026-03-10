@@ -18,6 +18,7 @@ import JSON
 import JSON.Simple
 import JSON.Simple.ToJSON as SimpleToJSON
 import Promise
+import System
 import System.Directory
 import TyTTP
 import TyTTP.Adapter.Node.HTTP
@@ -33,6 +34,20 @@ import WebApiTypes
 
 counterStreamId : String
 counterStreamId = "counter-main"
+
+findPortArg : List String -> Maybe String
+findPortArg [] = Nothing
+findPortArg ("--port" :: value :: _) = Just value
+findPortArg (_ :: rest) = findPortArg rest
+
+parsePort : String -> Maybe Int
+parsePort raw =
+  case parseInteger (trim raw) of
+    Nothing => Nothing
+    Just n =>
+      if n <= 0 || n > 65535
+        then Nothing
+        else Just (cast n)
 
 findHeader : String -> List (String, String) -> Maybe String
 findHeader _ [] = Nothing
@@ -107,11 +122,26 @@ runCommandP env command = promise $ \resolve, _ => do
 covering
 main : IO ()
 main = do
+  args <- getArgs
+  serverPort <- case findPortArg args of
+    Nothing => pure (the Int 3000)
+    Just raw =>
+      case parsePort raw of
+        Nothing => do
+          putStrLn ("Invalid --port value: " ++ raw ++ ". Expected integer in range 1..65535.")
+          exitFailure
+        Just port => pure port
   http <- HTTP.require
   Just folder <- currentDir | _ => putStrLn "There is no current folder."
   env <- Memory.mkEnv {stream=String} {ev=CounterEvent}
   unsubsRef <- IORef.newIORef emptyClientUnsubs
-  _ <- HTTP.listen http defaultOptions
+  let options : TyTTP.Adapter.Node.HTTP.Options Error
+      options =
+        { listenOptions :=
+            { port := Just serverPort
+            } Listen.defaultOptions
+        } defaultOptions
+  _ <- HTTP.listen http options
     $ parseUrl' (const $ sendText "URL has invalid format" >=> status BAD_REQUEST) {m = Promise Error IO}
     $ routes' (sendText "Not Found" >=> status NOT_FOUND)
       [ get $ pattern "/" $ \ctx =>
@@ -149,4 +179,4 @@ main = do
           response <- liftPromise $ runCommandP env Decrement
           sendText (SimpleToJSON.encode response) ctx >>= status OK
       ]
-  putStrLn "Counter web backend online at port 3000."
+  putStrLn ("Counter web backend online at port " ++ show serverPort ++ ".")
