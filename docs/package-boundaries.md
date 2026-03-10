@@ -56,8 +56,10 @@ It may depend on `emkit-store` and `emkit-stream`, but it must not own route nam
 
 - browser EventSource lifecycle helpers,
 - client id generation for live subscriptions.
+- typed execute and resync request helpers,
+- minimal multi-stream subscribe helpers.
 
-It should remain route-neutral. Higher-level execute or stream controller helpers should be added only when more than one local example truly needs them.
+It should remain route-neutral. Higher-level stream controllers, page navigation helpers, and domain-specific retry policy should be added only when more than one local example truly needs them.
 
 `emkit-store` owns persistence contracts and basic adapters:
 
@@ -77,9 +79,9 @@ The following concerns remain app-local unless extraction evidence becomes stron
 - screen catalogs and projection bundles,
 - automation policy rules.
 
-After `examples/counter-web`, two more seams are now concrete but still intentionally local:
+After `examples/counter-web-multi`, two seams remain intentionally local:
 
-- higher-level execute helpers
-- higher-level stream endpoint/controller helpers
+- command route conventions for app-specific APIs
+- higher-level stream endpoint/controller helpers with unsubscribe or stream switching semantics
 
-The low-level SSE seam is now shared in `emkit-backend` and `emkit-frontend`. The next likely extraction candidates are typed frontend execute helpers and route-neutral stream endpoint helpers, but they remain deferred until another web example or a refactor of `counter-web` confirms the public shape.
+The low-level SSE seam, typed execute/resync helpers, and minimal subscribe helpers are now shared in `emkit-backend` and `emkit-frontend`. Richer stream lifecycle helpers still remain deferred until another example proves unsubscribe or stream-switching behavior without app-local assumptions.

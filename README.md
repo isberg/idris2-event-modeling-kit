@@ -21,20 +21,16 @@ This repository is not an application. It is a package workspace intended to sho
 - `emkit-backend`
   Shared backend SSE replay/live adapter helpers.
 - `emkit-frontend`
-  Shared frontend EventSource lifecycle helpers.
-
-## Planned Packages
-
-- web-focused backend/frontend helper packages once the current runtime layer has been proven by more than one example.
+  Shared frontend EventSource lifecycle helpers, typed execute/resync helpers, and minimal multi-stream subscribe helpers.
 
 ## Examples
 
 - `examples/counter-console`
   Small console application that proves the current package stack and the first `emkit-runtime` extraction.
 - `examples/counter-web`
-  Small SSE-first web application with one fixed stream and one screen. It now uses shared backend/frontend SSE helpers while keeping app-specific UI and snapshot logic local.
+  Small SSE-first web application with one fixed stream and one screen. It proves shared backend/frontend SSE helpers while keeping its app-specific command API and snapshot logic local.
 - `examples/counter-web-multi`
-  Multi-stream SSE-first web application with typed execute and resync payloads. It proves the wire codecs and the multi-stream cleanup fix in the shared backend SSE adapter.
+  Multi-stream SSE-first web application with typed execute and resync payloads. It proves the wire codecs, shared frontend execute/subscribe helpers, and the multi-stream cleanup fix in the shared backend SSE adapter.
 
 ## Quickstart
 
@@ -74,14 +70,14 @@ Build and smoke the web examples:
 
     cd examples/counter-web
     ./scripts/build.sh
-    ./scripts/smoke.sh
+    ./scripts/smoke.sh --port 3010
 
     cd ../counter-web-multi
     ./scripts/build.sh
-    ./scripts/smoke.sh
+    ./scripts/smoke.sh --port 3011
 
 ## Repository Rule
 
 Application policy stays out of shared packages. Audience filtering, route naming, DTO mapping, and domain-specific automation remain app-local unless repeated evidence justifies extraction.
 
-The current `counter-web` example intentionally keeps `BackendSSE` and `FrontendSSE` local. They are the first concrete candidates for future `emkit-backend` and `emkit-frontend` extraction, but they are not shared yet because this repo currently has only one proved web consumer.
+The current `counter-web` example intentionally keeps its app-specific command API and snapshot DTO mapping local. The current `counter-web-multi` example intentionally keeps its domain routing and page-specific view/controller logic local. Shared packages should only absorb behavior that is proven by more than one example or that sits below domain policy boundaries.
