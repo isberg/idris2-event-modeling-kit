@@ -1,0 +1,319 @@
+module Domain
+
+import Data.List
+import Data.String
+import EmKit.Modeling.Pattern.StateView
+import EmKit.Modeling.Screen.Actions
+import EmKit.Modeling.Screen.Contracts
+import EmKit.Sourcing.Decider
+
+%default total
+
+public export
+itemPrefix : String
+itemPrefix = "item-"
+
+public export
+listPrefix : String
+listPrefix = "todo-"
+
+public export
+data ItemStatus = ItemOpen | ItemDone
+
+public export
+Eq ItemStatus where
+  ItemOpen == ItemOpen = True
+  ItemDone == ItemDone = True
+  _ == _ = False
+
+public export
+record TodoItem where
+  constructor MkTodoItem
+  itemId : String
+  text : String
+  status : ItemStatus
+
+public export
+record TodoListState where
+  constructor MkTodoListState
+  exists : Bool
+  title : String
+  items : List TodoItem
+
+public export
+record TodoListView where
+  constructor MkTodoListView
+  exists : Bool
+  title : String
+  items : List TodoItem
+  openCount : Nat
+  doneCount : Nat
+
+public export
+record TodoListSummary where
+  constructor MkTodoListSummary
+  listId : String
+  exists : Bool
+  title : String
+  openCount : Nat
+  doneCount : Nat
+
+public export
+record TodoListDetail where
+  constructor MkTodoListDetail
+  listId : String
+  version : Nat
+  exists : Bool
+  title : String
+  items : List TodoItem
+  openCount : Nat
+  doneCount : Nat
+
+public export
+record AppBundle where
+  constructor MkAppBundle
+  summaries : List TodoListSummary
+  selectedDetail : Maybe TodoListDetail
+
+public export
+data Screen = ListsOverview | ListDetailScreen
+
+public export
+data Action
+  = CreateListAction
+  | OpenListAction String
+  | BackToListsAction
+  | AddItemAction
+  | ToggleItemAction String
+
+public export
+data Intent
+  = PromptCreateList
+  | ShowListDetail String
+  | ShowOverview
+  | PromptAddItem
+  | RunToggleItem String
+
+public export
+data Command
+  = CreateList String
+  | AddItem String String
+  | ToggleItem String
+
+public export
+data Rejection
+  = ListAlreadyCreated
+  | ListMissing
+  | EmptyListTitle
+  | EmptyItemText
+  | ItemAlreadyExists String
+  | ItemMissing String
+
+public export
+data TodoEvent
+  = ListCreated String
+  | ItemAdded String String
+  | ItemCompleted String
+  | ItemReopened String
+
+public export
+renderRejection : Rejection -> String
+renderRejection ListAlreadyCreated = "list already exists."
+renderRejection ListMissing = "list does not exist yet."
+renderRejection EmptyListTitle = "list title is required."
+renderRejection EmptyItemText = "item text is required."
+renderRejection (ItemAlreadyExists itemId) = "item already exists: " ++ itemId
+renderRejection (ItemMissing itemId) = "item does not exist: " ++ itemId
+
+public export
+renderAction : Action -> String
+renderAction CreateListAction = "Create list"
+renderAction (OpenListAction listId) = "Open " ++ listId
+renderAction BackToListsAction = "Back to lists"
+renderAction AddItemAction = "Add item"
+renderAction (ToggleItemAction itemId) = "Toggle " ++ itemId
+
+decNat : Nat -> Nat
+decNat Z = Z
+decNat (S k) = k
+
+findItemById : String -> List TodoItem -> Maybe TodoItem
+findItemById _ [] = Nothing
+findItemById wanted (item :: rest) =
+  if itemId item == wanted
+    then Just item
+    else findItemById wanted rest
+
+itemExists : String -> List TodoItem -> Bool
+itemExists wanted items =
+  case findItemById wanted items of
+    Just _ => True
+    Nothing => False
+
+setStatus : String -> ItemStatus -> List TodoItem -> List TodoItem
+setStatus _ _ [] = []
+setStatus wanted newStatus (item :: rest) =
+  if itemId item == wanted
+    then MkTodoItem (itemId item) (text item) newStatus :: rest
+    else item :: setStatus wanted newStatus rest
+
+countOpen : List TodoItem -> Nat
+countOpen [] = Z
+countOpen (item :: rest) =
+  case status item of
+    ItemOpen => S (countOpen rest)
+    ItemDone => countOpen rest
+
+countDone : List TodoItem -> Nat
+countDone [] = Z
+countDone (item :: rest) =
+  case status item of
+    ItemOpen => countDone rest
+    ItemDone => S (countDone rest)
+
+public export
+summaryFromView : String -> TodoListView -> TodoListSummary
+summaryFromView listId view =
+  MkTodoListSummary listId (exists view) (title view) (openCount view) (doneCount view)
+
+public export
+detailFromView : String -> Nat -> TodoListView -> TodoListDetail
+detailFromView listId version view =
+  MkTodoListDetail listId version (exists view) (title view) (items view) (openCount view) (doneCount view)
+
+public export
+applySummaryEvent : String -> TodoEvent -> TodoListSummary -> TodoListSummary
+applySummaryEvent listId event summary =
+  case event of
+    ListCreated title => MkTodoListSummary listId True title 0 0
+    ItemAdded _ _ => { exists := True, openCount := S (openCount summary) } summary
+    ItemCompleted _ => { openCount := decNat (openCount summary), doneCount := S (doneCount summary) } summary
+    ItemReopened _ => { openCount := S (openCount summary), doneCount := decNat (doneCount summary) } summary
+
+public export
+emptySummary : String -> TodoListSummary
+emptySummary listId = MkTodoListSummary listId False "" 0 0
+
+public export
+bundleForApp : List TodoListSummary -> Maybe TodoListDetail -> AppBundle
+bundleForApp = MkAppBundle
+
+data CommandLegal : Command -> TodoListState -> Type where
+  CanCreateMissing :
+    {rawTitle : String} ->
+    (cleanTitle : String) ->
+    CommandLegal (CreateList rawTitle) state
+  CanAddFreshItem :
+    {itemId : String} ->
+    {rawText : String} ->
+    (cleanText : String) ->
+    CommandLegal (AddItem itemId rawText) state
+  CanToggleOpenItem :
+    {itemId : String} ->
+    CommandLegal (ToggleItem itemId) state
+  CanToggleDoneItem :
+    {itemId : String} ->
+    CommandLegal (ToggleItem itemId) state
+
+createLegal : (rawTitle : String) -> (state : TodoListState) -> Either Rejection (CommandLegal (CreateList rawTitle) state)
+createLegal rawTitle (MkTodoListState False currentTitle items) =
+  let cleanTitle = trim rawTitle in
+    if cleanTitle == ""
+      then Left EmptyListTitle
+      else Right (CanCreateMissing cleanTitle)
+createLegal _ (MkTodoListState True _ _) = Left ListAlreadyCreated
+
+addItemLegal : (itemId : String) -> (rawText : String) -> (state : TodoListState) -> Either Rejection (CommandLegal (AddItem itemId rawText) state)
+addItemLegal _ _ (MkTodoListState False _ _) = Left ListMissing
+addItemLegal itemId rawText (MkTodoListState True currentTitle items) =
+  let cleanText = trim rawText in
+    if cleanText == ""
+      then Left EmptyItemText
+      else if itemExists itemId items
+        then Left (ItemAlreadyExists itemId)
+        else Right (CanAddFreshItem cleanText)
+
+toggleLegal : (itemId : String) -> (state : TodoListState) -> Either Rejection (CommandLegal (ToggleItem itemId) state)
+toggleLegal _ (MkTodoListState False _ _) = Left ListMissing
+toggleLegal itemId (MkTodoListState True currentTitle items) =
+  case findItemById itemId items of
+    Nothing => Left (ItemMissing itemId)
+    Just item =>
+      case status item of
+        ItemOpen => Right CanToggleOpenItem
+        ItemDone => Right CanToggleDoneItem
+
+public export
+implementation Projection TodoEvent TodoListState where
+  initial = MkTodoListState False "" []
+  evolve _ (ListCreated createdTitle) = MkTodoListState True createdTitle []
+  evolve state (ItemAdded newItemId newText) =
+    { items := items state ++ [MkTodoItem newItemId newText ItemOpen] } state
+  evolve state (ItemCompleted targetItemId) =
+    { items := setStatus targetItemId ItemDone (items state) } state
+  evolve state (ItemReopened targetItemId) =
+    { items := setStatus targetItemId ItemOpen (items state) } state
+
+public export
+implementation Decider List Command Rejection TodoEvent TodoListState where
+  Legal = CommandLegal
+
+  legal (CreateList rawTitle) state = createLegal rawTitle state
+  legal (AddItem itemId rawText) state = addItemLegal itemId rawText state
+  legal (ToggleItem itemId) state = toggleLegal itemId state
+
+  decide (CreateList rawTitle) state (CanCreateMissing cleanTitle) = [ListCreated cleanTitle]
+  decide (AddItem itemId rawText) state (CanAddFreshItem cleanText) = [ItemAdded itemId cleanText]
+  decide (ToggleItem itemId) state CanToggleOpenItem = [ItemCompleted itemId]
+  decide (ToggleItem itemId) state CanToggleDoneItem = [ItemReopened itemId]
+
+public export
+implementation StateView TodoEvent TodoListView where
+  initialView = MkTodoListView False "" [] 0 0
+  projectEvent _ (ListCreated createdTitle) = MkTodoListView True createdTitle [] 0 0
+  projectEvent view (ItemAdded newItemId newText) =
+    let nextItems = items view ++ [MkTodoItem newItemId newText ItemOpen]
+     in MkTodoListView True (title view) nextItems (S (openCount view)) (doneCount view)
+  projectEvent view (ItemCompleted targetItemId) =
+    let nextItems = setStatus targetItemId ItemDone (items view)
+     in MkTodoListView True (title view) nextItems (decNat (openCount view)) (S (doneCount view))
+  projectEvent view (ItemReopened targetItemId) =
+    let nextItems = setStatus targetItemId ItemOpen (items view)
+     in MkTodoListView True (title view) nextItems (S (openCount view)) (decNat (doneCount view))
+
+public export
+summaryFromEvents : String -> List TodoEvent -> TodoListSummary
+summaryFromEvents listId events = summaryFromView listId (projectFromList events)
+
+public export
+detailFromEvents : String -> Nat -> List TodoEvent -> TodoListDetail
+detailFromEvents listId version events = detailFromView listId version (projectFromList events)
+
+public export
+implementation ScreenCatalog Screen AppBundle where
+  specFor ListsOverview = MkScreenSpec ListsOverview HybridProjection (\_ => True)
+  specFor ListDetailScreen = MkScreenSpec ListDetailScreen HybridProjection (\bundle => case selectedDetail bundle of
+    Nothing => False
+    Just _ => True)
+
+public export
+implementation ScreenActions Screen AppBundle Action Intent where
+  screenForAction CreateListAction = ListsOverview
+  screenForAction (OpenListAction _) = ListsOverview
+  screenForAction BackToListsAction = ListDetailScreen
+  screenForAction AddItemAction = ListDetailScreen
+  screenForAction (ToggleItemAction _) = ListDetailScreen
+
+  intentForAction CreateListAction = PromptCreateList
+  intentForAction (OpenListAction listId) = ShowListDetail listId
+  intentForAction BackToListsAction = ShowOverview
+  intentForAction AddItemAction = PromptAddItem
+  intentForAction (ToggleItemAction itemId) = RunToggleItem itemId
+
+  availableScreenActions bundle ListsOverview =
+    CreateListAction :: map (OpenListAction . listId) (filter exists (summaries bundle))
+  availableScreenActions bundle ListDetailScreen =
+    case selectedDetail bundle of
+      Nothing => []
+      Just detail =>
+        BackToListsAction :: AddItemAction :: map (ToggleItemAction . itemId) (items detail)

@@ -1,0 +1,20 @@
+package todo-web-frontend
+version = 0.1.0
+authors = ""
+
+sourcedir = "src"
+
+modules = FrontendMain
+
+main = FrontendMain
+executable = "todo_web_frontend.js"
+opts = "--codegen javascript"
+
+depends = base
+        , contrib
+        , dom-mvc
+        , json-simple
+        , todo-web-domain
+        , emkit-modeling
+        , emkit-frontend
+        , emkit-wire
