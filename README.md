@@ -36,6 +36,13 @@ This repository is not an application. It is a package workspace intended to sho
 - `examples/counters-web`
   Multi-screen SSE-first web application with dynamic per-counter streams, a category overview feed, per-stream detail feeds, typed execute/resync payloads, and both memory/file store smoke paths. It repeats the same web-app shell as `todo-web` with a smaller domain and helped justify a shared backend category-feed helper.
 
+## Notes
+
+- `docs/package-boundaries.md`
+  Current package ownership and extraction boundaries.
+- `docs/sse-feed-boundaries.md`
+  Current stance on per-stream feeds, category feeds, replay semantics, and client-side projection safety.
+
 ## Quickstart
 
 Build a package from its package directory:
