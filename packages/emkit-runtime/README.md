@@ -12,10 +12,10 @@ Runtime helpers for applications built on `emkit`.
 `emkit-runtime` owns the small bridge between storage and domain execution:
 
 - load stream history as empty when no stream exists,
-- hydrate state from stored events,
+- project a model from stored events,
 - run a decider against the current state,
 - append produced events,
-- project a view from stored history,
+- project an overview model from stored history,
 - list stream-backed projected summaries for overview queries.
 
 It does not own:

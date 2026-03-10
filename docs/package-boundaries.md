@@ -13,18 +13,19 @@ It must stay dependency-light and should depend on `base` only unless there is a
 `emkit-modeling` owns Event Modeling runtime contracts:
 
 - command/state change helpers,
-- state-view helpers,
 - automation and translation helpers,
 - screen contracts and action contracts,
 - traceability links.
 
 It may depend on `emkit-sourcing`, but not on storage or web-adapter packages.
 
+The Event Modeling View pattern is expressed in code via `Projection` from `emkit-sourcing`. `emkit-modeling` does not own a second fold interface for that pattern.
+
 `emkit-runtime` owns application runtime composition helpers:
 
 - load stream history as empty when a stream does not exist,
 - execute deciders against store-backed stream histories,
-- project views from stored stream histories,
+- project models from stored stream histories,
 - list projected summaries across stream catalogs for overview queries.
 
 It may depend on `emkit-sourcing`, `emkit-modeling`, and `emkit-store`, but it must remain transport-neutral and framework-neutral.
@@ -141,7 +142,7 @@ After `examples/project-tasks-web`, the current shared stack is now also proven 
 That run did not justify a new shared extraction on its own. It did confirm three structural choices:
 
 - split the domain by category early when there are multiple aggregates,
-- keep aggregate-local `Decider`, `Projection`, and `StateView` instances on aggregate-local event types,
+- keep aggregate-local `Decider` and `Projection` instances on aggregate-local event types,
 - keep backend and frontend consolidated until repeated cross-category ceremony becomes clearer than the domain policy.
 
 The same run also proved one first automation slice without introducing a background worker:
