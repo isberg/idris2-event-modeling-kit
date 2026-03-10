@@ -36,7 +36,7 @@ This repository is not an application. It is a package workspace intended to sho
 - `examples/counters-web`
   Multi-screen SSE-first web application with dynamic per-counter streams, a category overview feed, per-stream detail feeds, typed execute/resync payloads, and both memory/file store smoke paths. It repeats the same web-app shell as `todo-web` with a smaller domain and helped justify a shared backend category-feed helper.
 - `examples/project-tasks-web`
-  Multi-category SSE-first web application with `project-*` and `task-*` streams, aggregate-local project/task events, an app-local stored-event wrapper, a project overview feed, project-scoped task category feeds, per-project and per-task detail feeds, typed execute/resync payloads, and both memory/file store smoke paths. It also includes a first Automation Pattern slice: when all tasks for a project are done, the backend issues `CompleteProject`.
+  Multi-category SSE-first web application with `project-*` and `task-*` streams, aggregate-local project/task events, neutral aggregate-local `ProjectModel` and `TaskModel` folds, an app-local stored-event wrapper, a project overview feed, project-scoped task category feeds, per-project and per-task detail feeds, typed execute/resync payloads, and both memory/file store smoke paths. It also includes a first Automation Pattern slice: when all tasks for a project are done, the backend issues `CompleteProject`.
 
 ## Notes
 

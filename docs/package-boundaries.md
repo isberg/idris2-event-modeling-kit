@@ -145,6 +145,11 @@ That run did not justify a new shared extraction on its own. It did confirm thre
 - keep aggregate-local `Decider` and `Projection` instances on aggregate-local event types,
 - keep backend and frontend consolidated until repeated cross-category ceremony becomes clearer than the domain policy.
 
+The same app now also confirms one naming rule:
+
+- when the same aggregate-local fold serves both write-side validation and read-side projection without divergence, prefer one neutral `Model` type,
+- keep separate `State` and `View` names only when the two projections materially differ.
+
 The same run also proved one first automation slice without introducing a background worker:
 
 - task events update projected task summaries for a project,
