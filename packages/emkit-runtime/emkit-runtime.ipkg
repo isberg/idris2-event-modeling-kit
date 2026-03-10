@@ -5,6 +5,7 @@ authors = ""
 sourcedir = "src"
 
 modules = EmKit.Runtime.Execute
+        , EmKit.Runtime.Query
 
 depends = base
         , emkit-sourcing
