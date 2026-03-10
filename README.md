@@ -11,7 +11,7 @@ This repository is not an application. It is a package workspace intended to sho
 - `emkit-modeling`
   Event Modeling pattern helpers, screen contracts, and traceability helpers.
 - `emkit-runtime`
-  Shared application runtime bridge for store-backed command execution, model projection, and overview-query summary listing.
+  Shared application runtime bridge for store-backed command execution, mapped stored-event execution, model projection, and overview-query summary listing.
 - `emkit-stream`
   Stream version/cursor helpers, version-aware projection safety helpers, and transport-neutral SSE framing helpers.
 - `emkit-store`
@@ -19,7 +19,7 @@ This repository is not an application. It is a package workspace intended to sho
 - `emkit-wire`
   Shared transport contracts plus JSON codecs for execute, stream, and resync payloads.
 - `emkit-backend`
-  Shared backend SSE replay/live adapter helpers, including per-stream replay/live subscriptions and live category-feed subscriptions.
+  Shared backend SSE replay/live adapter helpers, including mapped per-stream replay/live subscriptions and mapped live category-feed subscriptions.
 - `emkit-frontend`
   Shared frontend EventSource lifecycle helpers, typed execute/resync helpers, and minimal multi-stream subscribe helpers.
 
@@ -36,7 +36,7 @@ This repository is not an application. It is a package workspace intended to sho
 - `examples/counters-web`
   Multi-screen SSE-first web application with dynamic per-counter streams, a category overview feed, per-stream detail feeds, typed execute/resync payloads, and both memory/file store smoke paths. It repeats the same web-app shell as `todo-web` with a smaller domain and helped justify a shared backend category-feed helper.
 - `examples/project-tasks-web`
-  Multi-category SSE-first web application with `project-*` and `task-*` streams, aggregate-local project/task events, neutral aggregate-local `ProjectModel` and `TaskModel` folds, an app-local stored-event wrapper, a project overview feed, project-scoped task category feeds, per-project and per-task detail feeds, typed execute/resync payloads, and both memory/file store smoke paths. It also includes a first Automation Pattern slice: when all tasks for a project are done, the backend issues `CompleteProject`.
+  Multi-category SSE-first web application with `project-*` and `task-*` streams, aggregate-local project/task events, neutral aggregate-local `ProjectModel` and `TaskModel` folds, an app-local stored-event wrapper, a project overview feed, project-scoped task category feeds, per-project and per-task detail feeds, typed execute/resync payloads, and both memory/file store smoke paths. It now uses shared mapped stored-event helpers for execute, summary queries, and SSE replay/live subscriptions. It also includes a first Automation Pattern slice: when all tasks for a project are done, the backend issues `CompleteProject`.
 
 ## Notes
 

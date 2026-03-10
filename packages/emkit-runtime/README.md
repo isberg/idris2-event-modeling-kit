@@ -15,8 +15,11 @@ Runtime helpers for applications built on `emkit`.
 - project a model from stored events,
 - run a decider against the current state,
 - append produced events,
+- decode stored sum-type events into aggregate-local events,
+- execute a local decider against mapped stored-event history,
 - project an overview model from stored history,
-- list stream-backed projected summaries for overview queries.
+- list stream-backed projected summaries for overview queries,
+- list mapped projected summaries for overview queries.
 
 It does not own:
 

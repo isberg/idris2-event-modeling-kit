@@ -25,8 +25,10 @@ The Event Modeling View pattern is expressed in code via `Projection` from `emki
 
 - load stream history as empty when a stream does not exist,
 - execute deciders against store-backed stream histories,
+- execute aggregate-local deciders against mapped stored-event histories,
 - project models from stored stream histories,
-- list projected summaries across stream catalogs for overview queries.
+- list projected summaries across stream catalogs for overview queries,
+- list mapped projected summaries across stream catalogs for overview queries.
 
 It may depend on `emkit-sourcing`, `emkit-modeling`, and `emkit-store`, but it must remain transport-neutral and framework-neutral.
 
@@ -52,6 +54,7 @@ It should remain contract-focused. Domain route naming, JSON codec policy, and t
 
 - SSE replay plus live subscription helpers,
 - live category-feed subscription helpers,
+- mapped SSE replay plus live subscription helpers over stored-event streams,
 - per-stream subscription cleanup discipline.
 
 It may depend on `emkit-store` and `emkit-stream`, but it must not own route naming, auth, or domain-specific DTO policy.
@@ -157,3 +160,12 @@ The same run also proved one first automation slice without introducing a backgr
 - the backend may issue `CompleteProject` automatically.
 
 That automation policy remains intentionally app-local. The shared packages still do not own cross-category policy loops, command routing policy, or automation idempotency strategy.
+
+After extracting mapped stored-event helpers from `project-tasks-web`, one more backend/runtime seam is now shared:
+
+- decode stored sum-type events into aggregate-local events,
+- load mapped histories for resync and projection,
+- execute aggregate-local deciders against mapped histories and append wrapped stored events,
+- replay and stream mapped per-stream or category feeds over the shared SSE backend adapter.
+
+This keeps one important boundary intact: the stored-event wrapper stays app-local, but the mechanics of working against that wrapper are now shared.
