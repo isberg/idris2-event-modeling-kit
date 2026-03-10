@@ -1,0 +1,21 @@
+package project-tasks-web-domain
+version = 0.1.0
+authors = ""
+
+sourcedir = "src"
+
+modules = Domain
+        , Domain.Event
+        , Domain.Project
+        , Domain.Task
+        , Domain.Screens
+        , Domain.JSON
+        , Domain.JSON.Simple
+
+depends = base
+        , contrib
+        , emkit-sourcing
+        , emkit-modeling
+        , emkit-stream
+        , json
+        , json-simple
