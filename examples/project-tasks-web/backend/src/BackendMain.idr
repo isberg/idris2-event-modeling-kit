@@ -13,6 +13,8 @@ import Domain.JSON
 import Domain.JSON.Simple
 import Domain.Project as Project
 import Domain.Task as Task
+import Domain.Translation as Translation
+import EmKit.Modeling.Pattern.Translation
 import EmKit.Runtime.Execute
 import EmKit.Runtime.Query
 import EmKit.Sourcing.Decider
@@ -95,6 +97,22 @@ runtimeStatus (RuntimeRejected _) = BAD_REQUEST
 runtimeStatus (RuntimeLoadFailed _) = INTERNAL_SERVER_ERROR
 runtimeStatus (RuntimeAppendFailed _) = INTERNAL_SERVER_ERROR
 
+data TaskIntakeError
+  = TaskIntakeViewLoadFailed String
+  | TaskIntakeRejected Translation.TaskIntakeRejection
+  | TaskIntakeExecuteFailed (RuntimeExecuteError Task.TaskRejection)
+
+renderTaskIntakeErr : TaskIntakeError -> String
+renderTaskIntakeErr (TaskIntakeViewLoadFailed err) = err
+renderTaskIntakeErr (TaskIntakeRejected rejection) = Translation.renderTaskIntakeRejection rejection
+renderTaskIntakeErr (TaskIntakeExecuteFailed err) = renderRuntimeErr Task.renderTaskRejection err
+
+taskIntakeStatus : TaskIntakeError -> Status
+taskIntakeStatus (TaskIntakeViewLoadFailed _) = INTERNAL_SERVER_ERROR
+taskIntakeStatus (TaskIntakeRejected (Translation.IntakeProjectMissing _)) = NOT_FOUND
+taskIntakeStatus (TaskIntakeRejected Translation.IntakeEmptyTaskTitle) = BAD_REQUEST
+taskIntakeStatus (TaskIntakeExecuteFailed err) = runtimeStatus err
+
 projectEventFromStored : Event.StoredEvent -> Either LoadErr Event.ProjectEvent
 projectEventFromStored (Event.StoredProject event) = Right event
 projectEventFromStored (Event.StoredTask _) = Left Corrupt
@@ -127,6 +145,13 @@ listProjectSummariesInStore = do
       Left err => Left (renderProjectedSummaryErr err)
       Right summaries => Right summaries
 
+findExistingProjectSummary : String -> List Project.ProjectSummary -> Maybe Project.ProjectSummary
+findExistingProjectSummary targetId [] = Nothing
+findExistingProjectSummary targetId (summary :: rest) =
+  if projectId summary == targetId && exists summary
+    then Just summary
+    else findExistingProjectSummary targetId rest
+
 projectResyncInStore : String -> ProjectTaskApp Event.StoredEvent (Either String (ResyncPayload Event.ProjectEvent))
 projectResyncInStore streamId = do
   loaded <- loadMappedHistoryOrEmpty {m=ReaderT (StoreAppEnv Event.StoredEvent) IO} {stream=String} {storedEvent=Event.StoredEvent} {localEvent=Event.ProjectEvent} projectEventFromStored streamId
@@ -151,6 +176,17 @@ tasksForProjectInStore targetProjectId = do
     case listed of
       Left err => Left (renderProjectedSummaryErr err)
       Right summaries => Right summaries
+
+taskIntakeViewInStore : Translation.TaskIntakeSignal -> ProjectTaskApp Event.StoredEvent (Either String Translation.TaskIntakeView)
+taskIntakeViewInStore signal = do
+  projects <- listProjectSummariesInStore
+  tasks <- tasksForProjectInStore (projectRef signal)
+  pure $
+    case (projects, tasks) of
+      (Left err, _) => Left err
+      (_, Left err) => Left err
+      (Right projectSummaries, Right taskSummaries) =>
+        Right (Translation.MkTaskIntakeView (findExistingProjectSummary (projectRef signal) projectSummaries) taskSummaries)
 
 taskResyncInStore : String -> ProjectTaskApp Event.StoredEvent (Either String (ResyncPayload Event.TaskEvent))
 taskResyncInStore streamId = do
@@ -181,7 +217,8 @@ executeProjectCommandInStore streamId payload = do
 
 executeTaskCommandInStore : String -> ExecutePayload Task.TaskCommand -> ProjectTaskApp Event.StoredEvent (Either (RuntimeExecuteError Task.TaskRejection) Nat)
 executeTaskCommandInStore streamId payload = do
-  result <- executeMappedOnStreamExpected {m=ReaderT (StoreAppEnv Event.StoredEvent) IO} {stream=String} {command=Task.TaskCommand} {rejection=Task.TaskRejection} {storedEvent=Event.StoredEvent} {localEvent=Event.TaskEvent} {state=Task.TaskModel} taskEventFromStored wrapTaskEvent streamId (expectedVersion payload) (command payload)
+  let MkExecutePayload expected cmd = payload
+  result <- executeMappedOnStreamExpected {m=ReaderT (StoreAppEnv Event.StoredEvent) IO} {stream=String} {command=Task.TaskCommand} {rejection=Task.TaskRejection} {storedEvent=Event.StoredEvent} {localEvent=Event.TaskEvent} {state=Task.TaskModel} taskEventFromStored wrapTaskEvent streamId expected cmd
   case result of
     Left err => pure (Left err)
     Right success => do
@@ -193,6 +230,22 @@ executeTaskCommandInStore streamId payload = do
             Task.MkTaskModel True projectId _ _ => runProjectAutomation projectId
             _ => pure ()
       pure (Right (newVersion success))
+
+executeTaskIntakeInStore : Translation.TaskIntakeSignal -> ProjectTaskApp Event.StoredEvent (Either TaskIntakeError Translation.TaskIntakeAccepted)
+executeTaskIntakeInStore signal = do
+  viewResult <- taskIntakeViewInStore signal
+  case viewResult of
+    Left err => pure (Left (TaskIntakeViewLoadFailed err))
+    Right intakeView =>
+      case translate (Translation.MkTaskIntakeInput signal intakeView) of
+        Left rejection => pure (Left (TaskIntakeRejected rejection))
+        Right translated => do
+          let Translation.MkTranslatedTaskCommand targetTaskId targetCommand = translated
+          result <- executeTaskCommandInStore targetTaskId (MkExecutePayload 0 targetCommand)
+          pure $
+            case result of
+              Left err => Left (TaskIntakeExecuteFailed err)
+              Right _ => Right (Translation.acceptedFromTranslation translated)
 
 frameProjectDetailEvent : Nat -> Event.ProjectEvent -> Buffer
 frameProjectDetailEvent version event =
@@ -264,6 +317,11 @@ runProjectExecuteP env streamId payload = promise $ \resolve, _ => do
 runTaskExecuteP : StoreAppEnv Event.StoredEvent -> String -> ExecutePayload Task.TaskCommand -> Promise Error IO (Either (RuntimeExecuteError Task.TaskRejection) Nat)
 runTaskExecuteP env streamId payload = promise $ \resolve, _ => do
   result <- runReaderT env (executeTaskCommandInStore streamId payload)
+  resolve result
+
+runTaskIntakeP : StoreAppEnv Event.StoredEvent -> Translation.TaskIntakeSignal -> Promise Error IO (Either TaskIntakeError Translation.TaskIntakeAccepted)
+runTaskIntakeP env signal = promise $ \resolve, _ => do
+  result <- runReaderT env (executeTaskIntakeInStore signal)
   resolve result
 
 
@@ -379,6 +437,15 @@ main = do
                   in pure $ MkContext ctx.request (MkResponse OK sseHeaders stream)
                 else sendText ("Unknown stream: " ++ taskId) ctx >>= status BAD_REQUEST
             _ => sendText "Missing taskId or clientId." ctx >>= status BAD_REQUEST
+      , post
+          $ pattern "/api/inbox/tasks"
+          $ consumes' [JSON] {a = Translation.TaskIntakeSignal}
+              (\ctx => sendText "Content cannot be parsed." ctx >>= status BAD_REQUEST)
+              (\ctx => do
+                result <- liftPromise $ runTaskIntakeP env ctx.request.body
+                case result of
+                  Left err => sendText (renderTaskIntakeErr err) ctx >>= status (taskIntakeStatus err)
+                  Right accepted => sendText (SimpleToJSON.encode accepted) ctx >>= status OK)
       , post
           $ pattern "/api/tasks/execute/{taskId}"
           $ consumes' [JSON] {a = ExecutePayload Task.TaskCommand}

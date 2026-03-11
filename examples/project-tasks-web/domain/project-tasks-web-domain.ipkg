@@ -9,6 +9,7 @@ modules = Domain
         , Domain.Project
         , Domain.Task
         , Domain.Automation
+        , Domain.Translation
         , Domain.Screens
         , Domain.JSON
         , Domain.JSON.Simple

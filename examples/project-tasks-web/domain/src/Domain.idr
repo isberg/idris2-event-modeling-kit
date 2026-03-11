@@ -5,3 +5,4 @@ import public Domain.Project
 import public Domain.Task
 import public Domain.Automation
 import public Domain.Screens
+import public Domain.Translation

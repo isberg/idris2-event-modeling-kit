@@ -119,6 +119,12 @@ curl -N -sS "$BASE_URL/api/projects/overview-events/smoke-overview" >"$OVERVIEW_
 OVERVIEW_PID=$!
 wait_for_event "Overview connected" '^: connected' "$OVERVIEW_FILE"
 
+missing_intake_code=$(curl -sS -o "$TMP_DIR/missing-intake.txt" -w '%{http_code}' -X POST "$BASE_URL/api/inbox/tasks" \
+  -H 'Content-Type: application/json' \
+  -d '{"projectRef":"project-404","taskTitle":"Ghost task"}')
+echo "$missing_intake_code" | ${grep_cmd} '^404$'
+cat "$TMP_DIR/missing-intake.txt" | ${grep_cmd} 'project does not exist: project-404'
+
 create_project_code=$(curl -sS -o "$TMP_DIR/create-project.txt" -w '%{http_code}' -X POST "$BASE_URL/api/projects/execute/project-1" \
   -H 'Content-Type: application/json' \
   -d '{"expectedVersion":0,"command":{"tag":"CreateProject","contents":"Alpha"}}')
@@ -150,16 +156,19 @@ curl -N -sS "$BASE_URL/api/projects/tasks-events/project-1/smoke-project" >"$PRO
 PROJECT_TASKS_PID=$!
 wait_for_event "Project tasks connected" '^: connected' "$PROJECT_TASKS_FILE"
 
-create_task_code=$(curl -sS -o "$TMP_DIR/create-task.txt" -w '%{http_code}' -X POST "$BASE_URL/api/tasks/execute/task-project-1-1" \
+create_task_code=$(curl -sS -o "$TMP_DIR/create-task.txt" -w '%{http_code}' -X POST "$BASE_URL/api/inbox/tasks" \
   -H 'Content-Type: application/json' \
-  -d '{"expectedVersion":0,"command":{"tag":"CreateTask","contents":["project-1","First task"]}}')
+  -d '{"projectRef":"project-1","taskTitle":"Imported task"}')
 echo "$create_task_code" | ${grep_cmd} '^200$'
+cat "$TMP_DIR/create-task.txt" | ${grep_cmd} '"taskId":"task-project-1-1"'
+cat "$TMP_DIR/create-task.txt" | ${grep_cmd} '"projectId":"project-1"'
+cat "$TMP_DIR/create-task.txt" | ${grep_cmd} '"acceptedTitle":"Imported task"'
 wait_for_event "Task created in project feed" '"streamId":"task-project-1-1"' "$PROJECT_TASKS_FILE"
 wait_for_event "Task created tag" '"tag":"TaskCreated"' "$PROJECT_TASKS_FILE"
 
 curl -fsS "$BASE_URL/api/projects/tasks/project-1" | ${grep_cmd} '"taskId":"task-project-1-1"'
 curl -fsS "$BASE_URL/api/projects/tasks/project-1" | ${grep_cmd} '"projectId":"project-1"'
-curl -fsS "$BASE_URL/api/projects/tasks/project-1" | ${grep_cmd} '"title":"First task"'
+curl -fsS "$BASE_URL/api/projects/tasks/project-1" | ${grep_cmd} '"title":"Imported task"'
 curl -fsS "$BASE_URL/api/projects/tasks/project-1" | ${grep_cmd} '"status":"TaskTodo"'
 
 TASK_FILE="$TMP_DIR/task.log"
@@ -170,6 +179,7 @@ wait_for_event "Task connected" '^: connected' "$TASK_FILE"
 task_resync_one=$(curl -fsS "$BASE_URL/api/tasks/resync/task-project-1-1")
 echo "$task_resync_one" | ${grep_cmd} '"version":1'
 echo "$task_resync_one" | ${grep_cmd} '"tag":"TaskCreated"'
+echo "$task_resync_one" | ${grep_cmd} '"Imported task"'
 
 start_task_code=$(curl -sS -o "$TMP_DIR/start-task.txt" -w '%{http_code}' -X POST "$BASE_URL/api/tasks/execute/task-project-1-1" \
   -H 'Content-Type: application/json' \
