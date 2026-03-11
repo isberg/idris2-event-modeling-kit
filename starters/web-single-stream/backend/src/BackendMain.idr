@@ -92,7 +92,7 @@ detailResyncInStore = do
 
 executeCommandInStore : ExecutePayload Command -> StarterApp CounterEvent (Either (RuntimeExecuteError Rejection) Nat)
 executeCommandInStore payload = do
-  result <- executeOnStreamExpected {m=ReaderT (StoreAppEnv CounterEvent) IO} {stream=String} {command=Command} {rejection=Rejection} {event=CounterEvent} {state=CounterState} counterStreamId (expectedVersion payload) (command payload)
+  result <- executeOnStreamExpected {m=ReaderT (StoreAppEnv CounterEvent) IO} {stream=String} {command=Command} {rejection=Rejection} {event=CounterEvent} {state=CounterModel} counterStreamId (expectedVersion payload) (command payload)
   pure (map newVersion result)
 
 frameEvent : Nat -> CounterEvent -> Buffer

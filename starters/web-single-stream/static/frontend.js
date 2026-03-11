@@ -636,7 +636,7 @@ function x24tcOpt_12($0) {
          case 0: /* nothing */ {
           const $27 = Text_ILex_Internal_Types_addSet($0.a1, $0.a3.a1.a2, undefined);
           const $2c = Data_Linear_Traverse1_traverse1List({h: 0}, $30 => $31 => Text_ILex_Internal_Types_lookupDflt1($30, () => ({a1: $30, a2: {h: 0}, a3: {h: 0}}), $0.a1.a4, $31), $0.a3.a1.a2, undefined);
-          const $3d = Text_ILex_Internal_Types_insert1($27, Prelude_Types_foldl_Foldable_List(csegen_606(), {a1: $27, a2: {h: 0}, a3: {h: 0}}, $2c), $0.a1.a4, undefined);
+          const $3d = Text_ILex_Internal_Types_insert1($27, Prelude_Types_foldl_Foldable_List(csegen_601(), {a1: $27, a2: {h: 0}, a3: {h: 0}}, $2c), $0.a1.a4, undefined);
           const $4c = Text_ILex_Internal_DFA_discrete($0.a1, $27, undefined);
           return Text_ILex_Internal_DFA_process($0.a1, {a1: $0.a2, a2: {a1: $0.a3.a1.a1, a2: $27}}, $0.a3.a2)(undefined);
          }
@@ -654,7 +654,7 @@ function x24tcOpt_12($0) {
        case 0: /* nothing */ {
         const $6d = Text_ILex_Internal_Types_addSet($0.a1, $0.a3.a1.a2, undefined);
         const $72 = Data_Linear_Traverse1_traverse1List({h: 0}, $76 => $77 => Text_ILex_Internal_Types_lookupDflt1($76, () => ({a1: $76, a2: {h: 0}, a3: {h: 0}}), $0.a1.a4, $77), $0.a3.a1.a2, undefined);
-        const $83 = Text_ILex_Internal_Types_insert1($6d, Prelude_Types_foldl_Foldable_List(csegen_606(), {a1: $6d, a2: {h: 0}, a3: {h: 0}}, $72), $0.a1.a4, undefined);
+        const $83 = Text_ILex_Internal_Types_insert1($6d, Prelude_Types_foldl_Foldable_List(csegen_601(), {a1: $6d, a2: {h: 0}, a3: {h: 0}}, $72), $0.a1.a4, undefined);
         const $92 = Text_ILex_Internal_DFA_discrete($0.a1, $6d, undefined);
         return Text_ILex_Internal_DFA_process($0.a1, {a1: $0.a2, a2: {a1: $0.a3.a1.a1, a2: $6d}}, $0.a3.a2)(undefined);
        }
@@ -852,12 +852,12 @@ function x24tcOpt_17($0) {
      const $c = ($0.a5.value);
      return {h: 2 /* {TcContinue17:2} */, a1: $0.a3, a2: $0.a4, a3: $0.a5, a4: $0.a6, a5: $0.a7, a6: $0.a8, a7: $0.a2, a8: $0.a1, a9: 0, a10: $c, a11: $0.a4($0.a8)($c), a12: $0.a9};
     }
-    case 1: return {h: 0 /* {TcDone:17} */, a1: Data_IORef_modifyIORef(csegen_111()(), $0.a7, $28 => Data_Queue_enqueue($28, $0.a8))($0.a9)};
+    case 1: return {h: 0 /* {TcDone:17} */, a1: Data_IORef_modifyIORef(csegen_106()(), $0.a7, $28 => Data_Queue_enqueue($28, $0.a8))($0.a9)};
    }
   }
   case 2: /* {TcContinue17:2} */ {
    const $2e = ($0.a3.value=$0.a11.a1);
-   const $33 = $0.a11.a2($37 => Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $3d => Web_MVC_n__6231_4025_handle($0.a8, $0.a7, $0.a1, $0.a2, $0.a3, $0.a4, $0.a5, $37, $3d)))($0.a12);
+   const $33 = $0.a11.a2($37 => Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $3d => Web_MVC_n__6231_4025_handle($0.a8, $0.a7, $0.a1, $0.a2, $0.a3, $0.a4, $0.a5, $37, $3d)))($0.a12);
    let $49;
    switch($33.h) {
     case 0: /* Left */ {
@@ -894,152 +894,122 @@ function Web_MVC_case__casex20blockx20inx20runControllerx2chandle_4097($0, $1, $
 
 /* {$tcOpt:18} */
 function x24tcOpt_18($0) {
- switch($0.a1) {
-  case '': {
-   switch($0.a2.h) {
-    case 0: /* Nil */ return {h: 0 /* {TcDone:18} */, a1: ''};
-    default: {
-     const $6 = ($0.a2.a1+$0.a2.a2);
-     switch(Prelude_Types_isSpace($0.a2.a1)) {
-      case 1: return {h: 1 /* {TcContinue18:1} */, a1: $0.a2.a2, a2: $0.a2.a3()};
-      case 0: return {h: 0 /* {TcDone:18} */, a1: $6};
-     }
-    }
-   }
-  }
-  default: {
-   const $11 = ($0.a2.a1+$0.a2.a2);
-   switch(Prelude_Types_isSpace($0.a2.a1)) {
-    case 1: return {h: 1 /* {TcContinue18:1} */, a1: $0.a2.a2, a2: $0.a2.a3()};
-    case 0: return {h: 0 /* {TcDone:18} */, a1: $11};
-   }
-  }
- }
-}
-
-/* Data.String.with block in ltrim */
-function Data_String_with__ltrim_9864($0, $1) {
- return __tailRec(x24tcOpt_18, {h: 1 /* {TcContinue18:1} */, a1: $0, a2: $1});
-}
-
-/* {$tcOpt:19} */
-function x24tcOpt_19($0) {
  switch($0.h) {
-  case 1: /* {TcContinue19:1} */ {
+  case 1: /* {TcContinue18:1} */ {
    switch($0.a6) {
     case 0n: {
-     const $3 = ($0.a4.value=csegen_536());
-     return {h: 0 /* {TcDone:19} */, a1: $0.a2.a6($0.a5)($0.a1)(undefined)};
+     const $3 = ($0.a4.value=csegen_531());
+     return {h: 0 /* {TcDone:18} */, a1: $0.a2.a6($0.a5)($0.a1)(undefined)};
     }
     default: {
      const $11 = ($0.a6-1n);
-     return {h: 2 /* {TcContinue19:2} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $11, a6: $0.a8, a7: $0.a7, a8: $0.a5, a9: Text_ILex_Parser_prim__machineGet($0.a2.a3, $0.a5)};
+     return {h: 2 /* {TcContinue18:2} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $11, a6: $0.a8, a7: $0.a7, a8: $0.a5, a9: Text_ILex_Parser_prim__machineGet($0.a2.a3, $0.a5)};
     }
    }
   }
-  case 2: /* {TcContinue19:2} */ {
+  case 2: /* {TcContinue18:2} */ {
    const $22 = Data_Array_Core_prim__arrayGet($0.a9.a2, 0n);
-   return {h: 3 /* {TcContinue19:3} */, a1: $0.a2, a2: $0.a3, a3: $0.a4, a4: $0.a5, a5: $0.a6, a6: $0.a7, a7: $0.a8, a8: $0.a9.a1, a9: $0.a1, a10: $0.a9.a2, a11: $22, a12: Data_Array_Core_prim__arrayGet($22, BigInt(Data_Buffer_Core_prim__getByte($0.a3, $0.a7)))};
+   return {h: 3 /* {TcContinue18:3} */, a1: $0.a2, a2: $0.a3, a3: $0.a4, a4: $0.a5, a5: $0.a6, a6: $0.a7, a7: $0.a8, a8: $0.a9.a1, a9: $0.a1, a10: $0.a9.a2, a11: $22, a12: Data_Array_Core_prim__arrayGet($22, BigInt(Data_Buffer_Core_prim__getByte($0.a3, $0.a7)))};
   }
-  case 3: /* {TcContinue19:3} */ {
+  case 3: /* {TcContinue18:3} */ {
    switch($0.a12.h) {
     case 1: /* Done */ {
      const $3a = $0.a12.a1($0.a9);
-     return {h: 1 /* {TcContinue19:1} */, a1: $0.a9, a2: $0.a1, a3: $0.a2, a4: $0.a3, a5: $3a, a6: $0.a4, a7: ($0.a6+1n), a8: undefined};
+     return {h: 1 /* {TcContinue18:1} */, a1: $0.a9, a2: $0.a1, a3: $0.a2, a4: $0.a3, a5: $3a, a6: $0.a4, a7: ($0.a6+1n), a8: undefined};
     }
-    case 3: /* Move */ return {h: 6 /* {TcContinue19:6} */, a1: $0.a9, a2: $0.a1, a3: $0.a2, a4: $0.a3, a5: $0.a7, a6: $0.a10, a7: Data_Array_Core_prim__arrayGet($0.a10, $0.a12.a1), a8: $0.a12.a2, a9: $0.a6, a10: $0.a4, a11: ($0.a6+1n), a12: $0.a5};
-    case 4: /* MoveE */ return {h: 4 /* {TcContinue19:4} */, a1: $0.a9, a2: $0.a1, a3: $0.a2, a4: $0.a3, a5: $0.a7, a6: $0.a10, a7: Data_Array_Core_prim__arrayGet($0.a10, $0.a12.a1), a8: $0.a6, a9: $0.a4, a10: ($0.a6+1n), a11: $0.a5};
+    case 3: /* Move */ return {h: 6 /* {TcContinue18:6} */, a1: $0.a9, a2: $0.a1, a3: $0.a2, a4: $0.a3, a5: $0.a7, a6: $0.a10, a7: Data_Array_Core_prim__arrayGet($0.a10, $0.a12.a1), a8: $0.a12.a2, a9: $0.a6, a10: $0.a4, a11: ($0.a6+1n), a12: $0.a5};
+    case 4: /* MoveE */ return {h: 4 /* {TcContinue18:4} */, a1: $0.a9, a2: $0.a1, a3: $0.a2, a4: $0.a3, a5: $0.a7, a6: $0.a10, a7: Data_Array_Core_prim__arrayGet($0.a10, $0.a12.a1), a8: $0.a6, a9: $0.a4, a10: ($0.a6+1n), a11: $0.a5};
     case 2: /* DoneBS */ {
      const $69 = {a1: $0.a2, a2: 0n};
      const $6c = {a1: Prelude_Types_prim__integerToNat((($0.a6+1n)-$0.a6)), a2: Data_ByteVect_substringFromTill($0.a6, ($0.a6+1n), $69)};
      const $68 = ($0.a3.value=$6c);
      const $7f = $0.a12.a1($0.a9);
-     return {h: 1 /* {TcContinue19:1} */, a1: $0.a9, a2: $0.a1, a3: $0.a2, a4: $0.a3, a5: $7f, a6: $0.a4, a7: ($0.a6+1n), a8: undefined};
+     return {h: 1 /* {TcContinue18:1} */, a1: $0.a9, a2: $0.a1, a3: $0.a2, a4: $0.a3, a5: $7f, a6: $0.a4, a7: ($0.a6+1n), a8: undefined};
     }
     default: {
      const $8d = {a1: $0.a2, a2: 0n};
      const $90 = {a1: Prelude_Types_prim__integerToNat((($0.a6+1n)-$0.a6)), a2: Data_ByteVect_substringFromTill($0.a6, ($0.a6+1n), $8d)};
      const $8c = ($0.a3.value=$90);
-     return {h: 0 /* {TcDone:19} */, a1: Text_ILex_Parser_arrFail($0.a1.a5, $0.a7, $0.a9, undefined)};
+     return {h: 0 /* {TcDone:18} */, a1: Text_ILex_Parser_arrFail($0.a1.a5, $0.a7, $0.a9, undefined)};
     }
    }
   }
-  case 4: /* {TcContinue19:4} */ {
+  case 4: /* {TcContinue18:4} */ {
    switch($0.a9) {
     case 0n: {
      const $ac = {a1: $0.a3, a2: 0n};
      const $af = {a1: Prelude_Types_prim__integerToNat(($0.a10-$0.a8)), a2: Data_ByteVect_substringFromTill($0.a8, $0.a10, $ac)};
      const $ab = ($0.a4.value=$af);
-     return {h: 0 /* {TcDone:19} */, a1: Text_ILex_Parser_arrFail($0.a2.a5, $0.a5, $0.a1, undefined)};
+     return {h: 0 /* {TcDone:18} */, a1: Text_ILex_Parser_arrFail($0.a2.a5, $0.a5, $0.a1, undefined)};
     }
     default: {
      const $c5 = ($0.a9-1n);
      const $c8 = Data_Buffer_Core_prim__getByte($0.a3, $0.a10);
-     return {h: 5 /* {TcContinue19:5} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $c5, a6: $0.a11, a7: $0.a10, a8: $0.a8, a9: $0.a7, a10: $0.a6, a11: $0.a5, a12: $c8, a13: Data_Array_Core_prim__arrayGet($0.a7, BigInt($c8))};
+     return {h: 5 /* {TcContinue18:5} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $c5, a6: $0.a11, a7: $0.a10, a8: $0.a8, a9: $0.a7, a10: $0.a6, a11: $0.a5, a12: $c8, a13: Data_Array_Core_prim__arrayGet($0.a7, BigInt($c8))};
     }
    }
   }
-  case 5: /* {TcContinue19:5} */ {
+  case 5: /* {TcContinue18:5} */ {
    switch($0.a13.h) {
-    case 0: /* Keep */ return {h: 4 /* {TcContinue19:4} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $0.a11, a6: $0.a10, a7: $0.a9, a8: $0.a8, a9: $0.a5, a10: ($0.a7+1n), a11: $0.a6};
+    case 0: /* Keep */ return {h: 4 /* {TcContinue18:4} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $0.a11, a6: $0.a10, a7: $0.a9, a8: $0.a8, a9: $0.a5, a10: ($0.a7+1n), a11: $0.a6};
     case 1: /* Done */ {
      const $eb = $0.a13.a1($0.a1);
-     return {h: 1 /* {TcContinue19:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $eb, a6: $0.a5, a7: ($0.a7+1n), a8: undefined};
+     return {h: 1 /* {TcContinue18:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $eb, a6: $0.a5, a7: ($0.a7+1n), a8: undefined};
     }
-    case 3: /* Move */ return {h: 6 /* {TcContinue19:6} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $0.a11, a6: $0.a10, a7: Data_Array_Core_prim__arrayGet($0.a10, $0.a13.a1), a8: $0.a13.a2, a9: $0.a8, a10: $0.a5, a11: ($0.a7+1n), a12: $0.a6};
-    case 4: /* MoveE */ return {h: 4 /* {TcContinue19:4} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $0.a11, a6: $0.a10, a7: Data_Array_Core_prim__arrayGet($0.a10, $0.a13.a1), a8: $0.a8, a9: $0.a5, a10: ($0.a7+1n), a11: $0.a6};
+    case 3: /* Move */ return {h: 6 /* {TcContinue18:6} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $0.a11, a6: $0.a10, a7: Data_Array_Core_prim__arrayGet($0.a10, $0.a13.a1), a8: $0.a13.a2, a9: $0.a8, a10: $0.a5, a11: ($0.a7+1n), a12: $0.a6};
+    case 4: /* MoveE */ return {h: 4 /* {TcContinue18:4} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $0.a11, a6: $0.a10, a7: Data_Array_Core_prim__arrayGet($0.a10, $0.a13.a1), a8: $0.a8, a9: $0.a5, a10: ($0.a7+1n), a11: $0.a6};
     case 2: /* DoneBS */ {
      const $11a = {a1: $0.a3, a2: 0n};
      const $11d = {a1: Prelude_Types_prim__integerToNat((($0.a7+1n)-$0.a8)), a2: Data_ByteVect_substringFromTill($0.a8, ($0.a7+1n), $11a)};
      const $119 = ($0.a4.value=$11d);
      const $130 = $0.a13.a1($0.a1);
-     return {h: 1 /* {TcContinue19:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $130, a6: $0.a5, a7: ($0.a7+1n), a8: undefined};
+     return {h: 1 /* {TcContinue18:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $130, a6: $0.a5, a7: ($0.a7+1n), a8: undefined};
     }
     case 5: /* Bottom */ {
      const $13e = {a1: $0.a3, a2: 0n};
      const $141 = {a1: Prelude_Types_prim__integerToNat((($0.a7+1n)-$0.a8)), a2: Data_ByteVect_substringFromTill($0.a8, ($0.a7+1n), $13e)};
      const $13d = ($0.a4.value=$141);
-     return {h: 0 /* {TcDone:19} */, a1: Text_ILex_Parser_arrFail($0.a2.a5, $0.a11, $0.a1, undefined)};
+     return {h: 0 /* {TcDone:18} */, a1: Text_ILex_Parser_arrFail($0.a2.a5, $0.a11, $0.a1, undefined)};
     }
    }
   }
-  case 6: /* {TcContinue19:6} */ {
+  case 6: /* {TcContinue18:6} */ {
    switch($0.a10) {
     case 0n: {
      const $15d = {a1: $0.a3, a2: 0n};
      const $160 = {a1: Prelude_Types_prim__integerToNat(($0.a11-$0.a9)), a2: Data_ByteVect_substringFromTill($0.a9, $0.a11, $15d)};
      const $15c = ($0.a4.value=$160);
-     return {h: 0 /* {TcDone:19} */, a1: Text_ILex_Parser_lastStep($0.a2, $0.a8, $0.a5, $0.a1, undefined)};
+     return {h: 0 /* {TcDone:18} */, a1: Text_ILex_Parser_lastStep($0.a2, $0.a8, $0.a5, $0.a1, undefined)};
     }
     default: {
      const $176 = ($0.a10-1n);
      const $179 = Data_Buffer_Core_prim__getByte($0.a3, $0.a11);
-     return {h: 7 /* {TcContinue19:7} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $176, a6: $0.a12, a7: $0.a11, a8: $0.a9, a9: $0.a8, a10: $0.a7, a11: $0.a6, a12: $0.a5, a13: $179, a14: Data_Array_Core_prim__arrayGet($0.a7, BigInt($179))};
+     return {h: 7 /* {TcContinue18:7} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $176, a6: $0.a12, a7: $0.a11, a8: $0.a9, a9: $0.a8, a10: $0.a7, a11: $0.a6, a12: $0.a5, a13: $179, a14: Data_Array_Core_prim__arrayGet($0.a7, BigInt($179))};
     }
    }
   }
-  case 7: /* {TcContinue19:7} */ {
+  case 7: /* {TcContinue18:7} */ {
    switch($0.a14.h) {
-    case 0: /* Keep */ return {h: 6 /* {TcContinue19:6} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $0.a12, a6: $0.a11, a7: $0.a10, a8: $0.a9, a9: $0.a8, a10: $0.a5, a11: ($0.a7+1n), a12: $0.a6};
+    case 0: /* Keep */ return {h: 6 /* {TcContinue18:6} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $0.a12, a6: $0.a11, a7: $0.a10, a8: $0.a9, a9: $0.a8, a10: $0.a5, a11: ($0.a7+1n), a12: $0.a6};
     case 1: /* Done */ {
      const $19e = $0.a14.a1($0.a1);
-     return {h: 1 /* {TcContinue19:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $19e, a6: $0.a5, a7: ($0.a7+1n), a8: undefined};
+     return {h: 1 /* {TcContinue18:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $19e, a6: $0.a5, a7: ($0.a7+1n), a8: undefined};
     }
-    case 3: /* Move */ return {h: 6 /* {TcContinue19:6} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $0.a12, a6: $0.a11, a7: Data_Array_Core_prim__arrayGet($0.a11, $0.a14.a1), a8: $0.a14.a2, a9: $0.a8, a10: $0.a5, a11: ($0.a7+1n), a12: $0.a6};
-    case 4: /* MoveE */ return {h: 4 /* {TcContinue19:4} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $0.a12, a6: $0.a11, a7: Data_Array_Core_prim__arrayGet($0.a11, $0.a14.a1), a8: $0.a8, a9: $0.a5, a10: ($0.a7+1n), a11: $0.a6};
+    case 3: /* Move */ return {h: 6 /* {TcContinue18:6} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $0.a12, a6: $0.a11, a7: Data_Array_Core_prim__arrayGet($0.a11, $0.a14.a1), a8: $0.a14.a2, a9: $0.a8, a10: $0.a5, a11: ($0.a7+1n), a12: $0.a6};
+    case 4: /* MoveE */ return {h: 4 /* {TcContinue18:4} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $0.a12, a6: $0.a11, a7: Data_Array_Core_prim__arrayGet($0.a11, $0.a14.a1), a8: $0.a8, a9: $0.a5, a10: ($0.a7+1n), a11: $0.a6};
     case 2: /* DoneBS */ {
      const $1cd = {a1: $0.a3, a2: 0n};
      const $1d0 = {a1: Prelude_Types_prim__integerToNat((($0.a7+1n)-$0.a8)), a2: Data_ByteVect_substringFromTill($0.a8, ($0.a7+1n), $1cd)};
      const $1cc = ($0.a4.value=$1d0);
      const $1e3 = $0.a14.a1($0.a1);
-     return {h: 1 /* {TcContinue19:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $1e3, a6: $0.a5, a7: ($0.a7+1n), a8: undefined};
+     return {h: 1 /* {TcContinue18:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $1e3, a6: $0.a5, a7: ($0.a7+1n), a8: undefined};
     }
     case 5: /* Bottom */ {
      const $1f1 = {a1: $0.a3, a2: 0n};
      const $1f4 = {a1: Prelude_Types_prim__integerToNat(($0.a7-$0.a8)), a2: Data_ByteVect_substringFromTill($0.a8, $0.a7, $1f1)};
      const $1f0 = ($0.a4.value=$1f4);
      const $203 = $0.a9($0.a1);
-     return {h: 1 /* {TcContinue19:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $203, a6: ($0.a5+1n), a7: $0.a7, a8: undefined};
+     return {h: 1 /* {TcContinue18:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $203, a6: ($0.a5+1n), a7: $0.a7, a8: undefined};
     }
    }
   }
@@ -1049,51 +1019,51 @@ function x24tcOpt_19($0) {
 /* Text.ILex.Runner.loop : s q -> P1 q e r s a -> IBuffer n -> Ref q ByteString -> Index r -> (pos : Nat) ->
 Ix pos n => F1 q (Either e a) */
 function Text_ILex_Runner_loop($0, $1, $2, $3, $4, $5, $6, $7) {
- return __tailRec(x24tcOpt_19, {h: 1 /* {TcContinue19:1} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6, a8: $7});
+ return __tailRec(x24tcOpt_18, {h: 1 /* {TcContinue18:1} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6, a8: $7});
 }
 
 /* Text.ILex.Runner.case block in loop */
 function Text_ILex_Runner_case__loop_7379($0, $1, $2, $3, $4, $5, $6, $7, $8) {
- return __tailRec(x24tcOpt_19, {h: 2 /* {TcContinue19:2} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6, a8: $7, a9: $8});
+ return __tailRec(x24tcOpt_18, {h: 2 /* {TcContinue18:2} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6, a8: $7, a9: $8});
 }
 
 /* Text.ILex.Runner.case block in case block in loop */
 function Text_ILex_Runner_case__casex20blockx20inx20loop_7435($0, $1, $2, $3, $4, $5, $6, $7, $8, $9, $a, $b) {
- return __tailRec(x24tcOpt_19, {h: 3 /* {TcContinue19:3} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6, a8: $7, a9: $8, a10: $9, a11: $a, a12: $b});
+ return __tailRec(x24tcOpt_18, {h: 3 /* {TcContinue18:3} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6, a8: $7, a9: $8, a10: $9, a11: $a, a12: $b});
 }
 
 /* Text.ILex.Runner.step : s q -> P1 q e r s a -> IBuffer n -> Ref q ByteString -> Index r -> Stepper k q r s -> ByteStep k q r s -> (from : Ix m n) ->
 (pos : Nat) -> {auto x : Ix pos n} ->
 {auto 0 _ : LTE (ixToNat from) (ixToNat x)} -> F1 q (Either e a) */
 function Text_ILex_Runner_step($0, $1, $2, $3, $4, $5, $6, $7, $8, $9, $a) {
- return __tailRec(x24tcOpt_19, {h: 4 /* {TcContinue19:4} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6, a8: $7, a9: $8, a10: $9, a11: $a});
+ return __tailRec(x24tcOpt_18, {h: 4 /* {TcContinue18:4} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6, a8: $7, a9: $8, a10: $9, a11: $a});
 }
 
 /* Text.ILex.Runner.case block in step */
 function Text_ILex_Runner_case__step_8834($0, $1, $2, $3, $4, $5, $6, $7, $8, $9, $a, $b, $c) {
- return __tailRec(x24tcOpt_19, {h: 5 /* {TcContinue19:5} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6, a8: $7, a9: $8, a10: $9, a11: $a, a12: $b, a13: $c});
+ return __tailRec(x24tcOpt_18, {h: 5 /* {TcContinue18:5} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6, a8: $7, a9: $8, a10: $9, a11: $a, a12: $b, a13: $c});
 }
 
 /* Text.ILex.Runner.succ : s q -> P1 q e r s a -> IBuffer n -> Ref q ByteString -> Index r -> Stepper k q r s -> ByteStep k q r s -> Step1 q r s -> (from : Ix m n) ->
 (pos : Nat) -> {auto x : Ix pos n} ->
 {auto 0 _ : LTE (ixToNat from) (ixToNat x)} -> F1 q (Either e a) */
 function Text_ILex_Runner_succ($0, $1, $2, $3, $4, $5, $6, $7, $8, $9, $a, $b) {
- return __tailRec(x24tcOpt_19, {h: 6 /* {TcContinue19:6} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6, a8: $7, a9: $8, a10: $9, a11: $a, a12: $b});
+ return __tailRec(x24tcOpt_18, {h: 6 /* {TcContinue18:6} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6, a8: $7, a9: $8, a10: $9, a11: $a, a12: $b});
 }
 
 /* Text.ILex.Runner.case block in succ */
 function Text_ILex_Runner_case__succ_8029($0, $1, $2, $3, $4, $5, $6, $7, $8, $9, $a, $b, $c, $d) {
- return __tailRec(x24tcOpt_19, {h: 7 /* {TcContinue19:7} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6, a8: $7, a9: $8, a10: $9, a11: $a, a12: $b, a13: $c, a14: $d});
+ return __tailRec(x24tcOpt_18, {h: 7 /* {TcContinue18:7} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6, a8: $7, a9: $8, a10: $9, a11: $a, a12: $b, a13: $c, a14: $d});
 }
 
-/* {$tcOpt:20} */
-function x24tcOpt_20($0) {
+/* {$tcOpt:19} */
+function x24tcOpt_19($0) {
  switch($0.a3.h) {
-  case 0: /* nil */ return {h: 0 /* {TcDone:20} */, a1: {h: 0}};
+  case 0: /* nil */ return {h: 0 /* {TcDone:19} */, a1: {h: 0}};
   case undefined: /* cons */ {
    switch($0.a1($0.a2)($0.a3.a1.a1)) {
-    case 1: return {h: 0 /* {TcDone:20} */, a1: {a1: $0.a3.a1.a2}};
-    case 0: return {h: 1 /* {TcContinue20:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3.a2};
+    case 1: return {h: 0 /* {TcDone:19} */, a1: {a1: $0.a3.a1.a2}};
+    case 0: return {h: 1 /* {TcContinue19:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3.a2};
    }
   }
  }
@@ -1101,31 +1071,31 @@ function x24tcOpt_20($0) {
 
 /* Data.List.lookupBy : (a -> b -> Bool) -> a -> List (b, v) -> Maybe v */
 function Data_List_lookupBy($0, $1, $2) {
- return __tailRec(x24tcOpt_20, {h: 1 /* {TcContinue20:1} */, a1: $0, a2: $1, a3: $2});
+ return __tailRec(x24tcOpt_19, {h: 1 /* {TcContinue19:1} */, a1: $0, a2: $1, a3: $2});
 }
 
-/* {$tcOpt:21} */
-function x24tcOpt_21($0) {
+/* {$tcOpt:20} */
+function x24tcOpt_20($0) {
  switch($0.a3.h) {
   case 0: /* Leaf */ {
    switch($0.a1.a1.a1($0.a2)($0.a3.a1)) {
-    case 1: return {h: 0 /* {TcDone:21} */, a1: {a1: {a1: $0.a3.a1, a2: $0.a3.a2}}};
-    case 0: return {h: 0 /* {TcDone:21} */, a1: {h: 0}};
+    case 1: return {h: 0 /* {TcDone:20} */, a1: {a1: {a1: $0.a3.a1, a2: $0.a3.a2}}};
+    case 0: return {h: 0 /* {TcDone:20} */, a1: {h: 0}};
    }
   }
   case 1: /* Branch2 */ {
    switch($0.a1.a5($0.a2)($0.a3.a2)) {
-    case 1: return {h: 1 /* {TcContinue21:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3.a1};
-    case 0: return {h: 1 /* {TcContinue21:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3.a3};
+    case 1: return {h: 1 /* {TcContinue20:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3.a1};
+    case 0: return {h: 1 /* {TcContinue20:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3.a3};
    }
   }
   case 2: /* Branch3 */ {
    switch($0.a1.a5($0.a2)($0.a3.a2)) {
-    case 1: return {h: 1 /* {TcContinue21:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3.a1};
+    case 1: return {h: 1 /* {TcContinue20:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3.a1};
     case 0: {
      switch($0.a1.a5($0.a2)($0.a3.a4)) {
-      case 1: return {h: 1 /* {TcContinue21:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3.a3};
-      case 0: return {h: 1 /* {TcContinue21:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3.a5};
+      case 1: return {h: 1 /* {TcContinue20:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3.a3};
+      case 0: return {h: 1 /* {TcContinue20:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3.a5};
      }
     }
    }
@@ -1135,63 +1105,63 @@ function x24tcOpt_21($0) {
 
 /* Data.SortedMap.Dependent.treeLookup : Ord k => k -> Tree n k v o -> Maybe (y : k ** v y) */
 function Data_SortedMap_Dependent_treeLookup($0, $1, $2) {
- return __tailRec(x24tcOpt_21, {h: 1 /* {TcContinue21:1} */, a1: $0, a2: $1, a3: $2});
+ return __tailRec(x24tcOpt_20, {h: 1 /* {TcContinue20:1} */, a1: $0, a2: $1, a3: $2});
 }
 
-/* {$tcOpt:22} */
-function x24tcOpt_22($0) {
+/* {$tcOpt:21} */
+function x24tcOpt_21($0) {
  switch($0.a3.h) {
-  case 0: /* nil */ return {h: 0 /* {TcDone:22} */, a1: Prelude_Types_List_reverse($0.a2)};
-  case undefined: /* cons */ return {h: 1 /* {TcContinue22:1} */, a1: $0.a1, a2: Prelude_Types_List_reverseOnto($0.a2, $0.a1($0.a3.a1)), a3: $0.a3.a2};
+  case 0: /* nil */ return {h: 0 /* {TcDone:21} */, a1: Prelude_Types_List_reverse($0.a2)};
+  case undefined: /* cons */ return {h: 1 /* {TcContinue21:1} */, a1: $0.a1, a2: Prelude_Types_List_reverseOnto($0.a2, $0.a1($0.a3.a1)), a3: $0.a3.a2};
  }
 }
 
 /* Prelude.Types.listBindOnto : (a -> List b) -> List b -> List a -> List b */
 function Prelude_Types_listBindOnto($0, $1, $2) {
- return __tailRec(x24tcOpt_22, {h: 1 /* {TcContinue22:1} */, a1: $0, a2: $1, a3: $2});
+ return __tailRec(x24tcOpt_21, {h: 1 /* {TcContinue21:1} */, a1: $0, a2: $1, a3: $2});
+}
+
+/* {$tcOpt:22} */
+function x24tcOpt_22($0) {
+ switch($0.a2.h) {
+  case 0: /* nil */ return {h: 0 /* {TcDone:22} */, a1: $0.a1};
+  case undefined: /* cons */ return {h: 1 /* {TcContinue22:1} */, a1: {a1: $0.a2.a1, a2: $0.a1}, a2: $0.a2.a2};
+ }
+}
+
+/* Prelude.Types.List.reverseOnto : List a -> List a -> List a */
+function Prelude_Types_List_reverseOnto($0, $1) {
+ return __tailRec(x24tcOpt_22, {h: 1 /* {TcContinue22:1} */, a1: $0, a2: $1});
 }
 
 /* {$tcOpt:23} */
 function x24tcOpt_23($0) {
  switch($0.a2.h) {
   case 0: /* nil */ return {h: 0 /* {TcDone:23} */, a1: $0.a1};
-  case undefined: /* cons */ return {h: 1 /* {TcContinue23:1} */, a1: {a1: $0.a2.a1, a2: $0.a1}, a2: $0.a2.a2};
- }
-}
-
-/* Prelude.Types.List.reverseOnto : List a -> List a -> List a */
-function Prelude_Types_List_reverseOnto($0, $1) {
- return __tailRec(x24tcOpt_23, {h: 1 /* {TcContinue23:1} */, a1: $0, a2: $1});
-}
-
-/* {$tcOpt:24} */
-function x24tcOpt_24($0) {
- switch($0.a2.h) {
-  case 0: /* nil */ return {h: 0 /* {TcDone:24} */, a1: $0.a1};
-  case undefined: /* cons */ return {h: 1 /* {TcContinue24:1} */, a1: ($0.a1+1n), a2: $0.a2.a2};
+  case undefined: /* cons */ return {h: 1 /* {TcContinue23:1} */, a1: ($0.a1+1n), a2: $0.a2.a2};
  }
 }
 
 /* Prelude.Types.List.lengthPlus : Nat -> List a -> Nat */
 function Prelude_Types_List_lengthPlus($0, $1) {
- return __tailRec(x24tcOpt_24, {h: 1 /* {TcContinue24:1} */, a1: $0, a2: $1});
+ return __tailRec(x24tcOpt_23, {h: 1 /* {TcContinue23:1} */, a1: $0, a2: $1});
 }
 
-/* {$tcOpt:25} */
-function x24tcOpt_25($0) {
+/* {$tcOpt:24} */
+function x24tcOpt_24($0) {
  switch($0.h) {
-  case 1: /* {TcContinue25:1} */ {
+  case 1: /* {TcContinue24:1} */ {
    switch($0.a7) {
-    case 0n: return {h: 0 /* {TcDone:25} */, a1: {a1: $0.a5, a2: $0.a6}};
+    case 0n: return {h: 0 /* {TcDone:24} */, a1: {a1: $0.a5, a2: $0.a6}};
     default: {
      const $6 = ($0.a7-1n);
-     return {h: 2 /* {TcContinue25:2} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $6, a6: $0.a8, a7: $0.a6, a8: $0.a5, a9: Data_Buffer_Core_prim__getByteOffset($0.a2.a1, $0.a8, $0.a2.a2)};
+     return {h: 2 /* {TcContinue24:2} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $6, a6: $0.a8, a7: $0.a6, a8: $0.a5, a9: Data_Buffer_Core_prim__getByteOffset($0.a2.a1, $0.a8, $0.a2.a2)};
     }
    }
   }
-  case 2: /* {TcContinue25:2} */ {
+  case 2: /* {TcContinue24:2} */ {
    switch($0.a9) {
-    case 10: return {h: 1 /* {TcContinue25:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: ($0.a8+1n), a6: 0n, a7: $0.a5, a8: ($0.a6+1n)};
+    case 10: return {h: 1 /* {TcContinue24:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: ($0.a8+1n), a6: 0n, a7: $0.a5, a8: ($0.a6+1n)};
     default: {
      let $24;
      switch(Prelude_EqOrd_x3c_Ord_Bits8($0.a9, 128)) {
@@ -1205,8 +1175,8 @@ function x24tcOpt_25($0) {
       }
      }
      switch($24) {
-      case 1: return {h: 1 /* {TcContinue25:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $0.a8, a6: ($0.a7+1n), a7: $0.a5, a8: ($0.a6+1n)};
-      default: return {h: 1 /* {TcContinue25:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $0.a8, a6: $0.a7, a7: $0.a5, a8: ($0.a6+1n)};
+      case 1: return {h: 1 /* {TcContinue24:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $0.a8, a6: ($0.a7+1n), a7: $0.a5, a8: ($0.a6+1n)};
+      default: return {h: 1 /* {TcContinue24:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $0.a8, a6: $0.a7, a7: $0.a5, a8: ($0.a6+1n)};
      }
     }
    }
@@ -1216,28 +1186,28 @@ function x24tcOpt_25($0) {
 
 /* Text.Bounds.9325:12498:go */
 function Text_Bounds_n__9325_12498_go($0, $1, $2, $3, $4, $5, $6, $7) {
- return __tailRec(x24tcOpt_25, {h: 1 /* {TcContinue25:1} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6, a8: $7});
+ return __tailRec(x24tcOpt_24, {h: 1 /* {TcContinue24:1} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6, a8: $7});
 }
 
 /* Text.Bounds.case block in incBytes,go */
 function Text_Bounds_case__incBytesx2cgo_12524($0, $1, $2, $3, $4, $5, $6, $7, $8) {
- return __tailRec(x24tcOpt_25, {h: 2 /* {TcContinue25:2} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6, a8: $7, a9: $8});
+ return __tailRec(x24tcOpt_24, {h: 2 /* {TcContinue24:2} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6, a8: $7, a9: $8});
 }
 
-/* {$tcOpt:26} */
-function x24tcOpt_26($0) {
+/* {$tcOpt:25} */
+function x24tcOpt_25($0) {
  switch($0.a1) {
   case 0n: {
    switch($0.a2.h) {
-    case undefined: /* cons */ return {h: 0 /* {TcDone:26} */, a1: {a1: $0.a2.a1}};
-    default: return {h: 0 /* {TcDone:26} */, a1: {h: 0}};
+    case undefined: /* cons */ return {h: 0 /* {TcDone:25} */, a1: {a1: $0.a2.a1}};
+    default: return {h: 0 /* {TcDone:25} */, a1: {h: 0}};
    }
   }
   default: {
    const $8 = ($0.a1-1n);
    switch($0.a2.h) {
-    case undefined: /* cons */ return {h: 1 /* {TcContinue26:1} */, a1: $8, a2: $0.a2.a2};
-    default: return {h: 0 /* {TcDone:26} */, a1: {h: 0}};
+    case undefined: /* cons */ return {h: 1 /* {TcContinue25:1} */, a1: $8, a2: $0.a2.a2};
+    default: return {h: 0 /* {TcDone:25} */, a1: {h: 0}};
    }
   }
  }
@@ -1245,6 +1215,19 @@ function x24tcOpt_26($0) {
 
 /* Prelude.Types.getAt : Nat -> List a -> Maybe a */
 function Prelude_Types_getAt($0, $1) {
+ return __tailRec(x24tcOpt_25, {h: 1 /* {TcContinue25:1} */, a1: $0, a2: $1});
+}
+
+/* {$tcOpt:26} */
+function x24tcOpt_26($0) {
+ switch($0.a2.h) {
+  case 0: /* nil */ return {h: 0 /* {TcDone:26} */, a1: $0.a1};
+  case undefined: /* cons */ return {h: 1 /* {TcContinue26:1} */, a1: {a1: $0.a2.a1, a2: $0.a1}, a2: $0.a2.a2};
+ }
+}
+
+/* Data.Vect.fromList' : Vect len elem -> (l : List elem) -> Vect (length l + len) elem */
+function Data_Vect_fromListx27($0, $1) {
  return __tailRec(x24tcOpt_26, {h: 1 /* {TcContinue26:1} */, a1: $0, a2: $1});
 }
 
@@ -1256,84 +1239,71 @@ function x24tcOpt_27($0) {
  }
 }
 
-/* Data.Vect.fromList' : Vect len elem -> (l : List elem) -> Vect (length l + len) elem */
-function Data_Vect_fromListx27($0, $1) {
+/* Data.Vect.reverseOnto : Vect n elem -> Vect m elem -> Vect (n + m) elem */
+function Data_Vect_reverseOnto($0, $1) {
  return __tailRec(x24tcOpt_27, {h: 1 /* {TcContinue27:1} */, a1: $0, a2: $1});
 }
 
 /* {$tcOpt:28} */
 function x24tcOpt_28($0) {
  switch($0.a2.h) {
-  case 0: /* nil */ return {h: 0 /* {TcDone:28} */, a1: $0.a1};
-  case undefined: /* cons */ return {h: 1 /* {TcContinue28:1} */, a1: {a1: $0.a2.a1, a2: $0.a1}, a2: $0.a2.a2};
- }
-}
-
-/* Data.Vect.reverseOnto : Vect n elem -> Vect m elem -> Vect (n + m) elem */
-function Data_Vect_reverseOnto($0, $1) {
- return __tailRec(x24tcOpt_28, {h: 1 /* {TcContinue28:1} */, a1: $0, a2: $1});
-}
-
-/* {$tcOpt:29} */
-function x24tcOpt_29($0) {
- switch($0.a2.h) {
-  case 0: /* Eps */ return {h: 0 /* {TcDone:29} */, a1: $0.a3};
+  case 0: /* Eps */ return {h: 0 /* {TcDone:28} */, a1: $0.a3};
   case 2: /* And */ {
    const $4 = Text_ILex_Internal_ENFA_enfa($0.a1, $0.a2.a2, $0.a3, $0.a4);
-   return {h: 1 /* {TcContinue29:1} */, a1: $0.a1, a2: $0.a2.a1, a3: $4, a4: undefined};
+   return {h: 1 /* {TcContinue28:1} */, a1: $0.a1, a2: $0.a2.a1, a3: $4, a4: undefined};
   }
   case 1: /* Ch */ {
    const $e = Text_ILex_Internal_Types_inc($0.a1, $0.a4);
    const $12 = Text_ILex_Internal_Types_insert1($e, {a1: {h: 0}, a2: {h: 0}, a3: Prelude_Types_List_mapAppend({h: 0}, $1c => ({a1: $1c, a2: $0.a3}), $0.a2.a1)}, $0.a1.a3, undefined);
-   return {h: 0 /* {TcDone:29} */, a1: $e};
+   return {h: 0 /* {TcDone:28} */, a1: $e};
   }
   case 3: /* Or */ {
    const $24 = Text_ILex_Internal_ENFA_enfa($0.a1, $0.a2.a1, $0.a3, $0.a4);
    const $2a = Text_ILex_Internal_ENFA_enfa($0.a1, $0.a2.a2, $0.a3, undefined);
    const $30 = Text_ILex_Internal_Types_inc($0.a1, undefined);
    const $34 = Text_ILex_Internal_Types_insert1($30, {a1: {h: 0}, a2: {a1: $24, a2: {a1: $2a, a2: {h: 0}}}, a3: {h: 0}}, $0.a1.a3, undefined);
-   return {h: 0 /* {TcDone:29} */, a1: $30};
+   return {h: 0 /* {TcDone:28} */, a1: $30};
   }
   case 4: /* Star */ {
    const $43 = Text_ILex_Internal_Types_inc($0.a1, $0.a4);
    const $47 = Text_ILex_Internal_ENFA_enfa($0.a1, $0.a2.a1, $43, undefined);
    const $4d = Text_ILex_Internal_Types_insert1($43, {a1: {h: 0}, a2: {a1: $47, a2: {a1: $0.a3, a2: {h: 0}}}, a3: {h: 0}}, $0.a1.a3, undefined);
-   return {h: 0 /* {TcDone:29} */, a1: $43};
+   return {h: 0 /* {TcDone:28} */, a1: $43};
   }
  }
 }
 
 /* Text.ILex.Internal.ENFA.enfa : DFAState s a => RExp8 b -> Nat -> F1 s Nat */
 function Text_ILex_Internal_ENFA_enfa($0, $1, $2, $3) {
- return __tailRec(x24tcOpt_29, {h: 1 /* {TcContinue29:1} */, a1: $0, a2: $1, a3: $2, a4: $3});
+ return __tailRec(x24tcOpt_28, {h: 1 /* {TcContinue28:1} */, a1: $0, a2: $1, a3: $2, a4: $3});
 }
 
-/* {$tcOpt:30} */
-function x24tcOpt_30($0) {
+/* {$tcOpt:29} */
+function x24tcOpt_29($0) {
  switch($0.a3.h) {
-  case 0: /* nil */ return {h: 0 /* {TcDone:30} */, a1: $0.a2};
-  case undefined: /* cons */ return {h: 1 /* {TcContinue30:1} */, a1: $0.a1, a2: $0.a1($0.a2)($0.a3.a1), a3: $0.a3.a2};
+  case 0: /* nil */ return {h: 0 /* {TcDone:29} */, a1: $0.a2};
+  case undefined: /* cons */ return {h: 1 /* {TcContinue29:1} */, a1: $0.a1, a2: $0.a1($0.a2)($0.a3.a1), a3: $0.a3.a2};
  }
 }
 
 /* Prelude.Types.foldl */
 function Prelude_Types_foldl_Foldable_List($0, $1, $2) {
- return __tailRec(x24tcOpt_30, {h: 1 /* {TcContinue30:1} */, a1: $0, a2: $1, a3: $2});
+ return __tailRec(x24tcOpt_29, {h: 1 /* {TcContinue29:1} */, a1: $0, a2: $1, a3: $2});
 }
 
-/* {$tcOpt:31} */
-function x24tcOpt_31($0) {
+/* {$tcOpt:30} */
+function x24tcOpt_30($0) {
  switch($0.h) {
-  case 1: /* {TcContinue31:1} */ return {h: 2 /* {TcContinue31:2} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $0.a6, a6: $0.a5, a7: Data_Array_Index_tryNatToFin($0.a4, $0.a3)};
-  case 2: /* {TcContinue31:2} */ {
+  case 1: /* {TcContinue30:1} */ return {h: 2 /* {TcContinue30:2} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $0.a4, a5: $0.a6, a6: $0.a5, a7: Data_Array_Index_tryNatToFin($0.a4, $0.a3)};
+  case 2: /* {TcContinue30:2} */ {
    switch($0.a7.h) {
     case undefined: /* just */ {
      const $d = Data_Array_Core_prim__arraySet($0.a6, $0.a7.a1, {a1: $0.a1}, $0.a5);
-     return {h: 0 /* {TcDone:31} */, a1: ($0.a2.value={a1: $0.a4, a2: $0.a6})};
+     return {h: 0 /* {TcDone:30} */, a1: ($0.a2.value={a1: $0.a4, a2: $0.a6})};
     }
     case 0: /* nothing */ {
      const $1b = Data_Array_Mutable_mgrow($0.a4, $0.a6, $0.a4, {h: 0}, $0.a5);
-     return {h: 1 /* {TcContinue31:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: ($0.a4+$0.a4), a5: $1b, a6: undefined};
+     return {h: 1 /* {TcContinue30:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: ($0.a4+$0.a4), a5: $1b, a6: undefined};
     }
    }
   }
@@ -1342,16 +1312,16 @@ function x24tcOpt_31($0) {
 
 /* Text.ILex.Internal.Types.9368:9393:go */
 function Text_ILex_Internal_Types_n__9368_9393_go($0, $1, $2, $3, $4, $5) {
- return __tailRec(x24tcOpt_31, {h: 1 /* {TcContinue31:1} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5});
+ return __tailRec(x24tcOpt_30, {h: 1 /* {TcContinue30:1} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5});
 }
 
 /* Text.ILex.Internal.Types.case block in insert1,go */
 function Text_ILex_Internal_Types_case__insert1x2cgo_9410($0, $1, $2, $3, $4, $5, $6) {
- return __tailRec(x24tcOpt_31, {h: 2 /* {TcContinue31:2} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6});
+ return __tailRec(x24tcOpt_30, {h: 2 /* {TcContinue30:2} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4, a6: $5, a7: $6});
 }
 
-/* {$tcOpt:32} */
-function x24tcOpt_32($0) {
+/* {$tcOpt:31} */
+function x24tcOpt_31($0) {
  switch($0.a4.h) {
   case undefined: /* cons */ {
    switch($0.a5.h) {
@@ -1360,90 +1330,90 @@ function x24tcOpt_32($0) {
      const $f = {a1: $0.a4.a1, a2: $0.a4.a2};
      const $12 = {a1: $0.a5.a1, a2: $0.a5.a2};
      switch($0.a1.a1.a3(Text_ILex_Char_Range_upperBound($0.a1, $0.a4.a1))(Text_ILex_Char_Range_upperBound($0.a1, $0.a5.a1))) {
-      case 1: return {h: 1 /* {TcContinue32:1} */, a1: $0.a1, a2: $0.a2, a3: $4, a4: $0.a4.a2, a5: $12};
-      case 0: return {h: 1 /* {TcContinue32:1} */, a1: $0.a1, a2: $0.a2, a3: $4, a4: $f, a5: $0.a5.a2};
+      case 1: return {h: 1 /* {TcContinue31:1} */, a1: $0.a1, a2: $0.a2, a3: $4, a4: $0.a4.a2, a5: $12};
+      case 0: return {h: 1 /* {TcContinue31:1} */, a1: $0.a1, a2: $0.a2, a3: $4, a4: $f, a5: $0.a5.a2};
      }
     }
-    default: return {h: 0 /* {TcDone:32} */, a1: Prelude_Types_SnocList_x3cx3ex3e($0.a3, {h: 0})};
+    default: return {h: 0 /* {TcDone:31} */, a1: Prelude_Types_SnocList_x3cx3ex3e($0.a3, {h: 0})};
    }
   }
-  default: return {h: 0 /* {TcDone:32} */, a1: Prelude_Types_SnocList_x3cx3ex3e($0.a3, {h: 0})};
+  default: return {h: 0 /* {TcDone:31} */, a1: Prelude_Types_SnocList_x3cx3ex3e($0.a3, {h: 0})};
  }
 }
 
 /* Text.ILex.Char.Set.inters : WithBounds t => Neg t =>
 SnocList (RangeOf t) -> List (RangeOf t) -> List (RangeOf t) -> List (RangeOf t) */
 function Text_ILex_Char_Set_inters($0, $1, $2, $3, $4) {
- return __tailRec(x24tcOpt_32, {h: 1 /* {TcContinue32:1} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4});
+ return __tailRec(x24tcOpt_31, {h: 1 /* {TcContinue31:1} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4});
 }
 
-/* {$tcOpt:33} */
-function x24tcOpt_33($0) {
+/* {$tcOpt:32} */
+function x24tcOpt_32($0) {
  switch($0.a3) {
-  case 0n: return {h: 0 /* {TcDone:33} */, a1: $0.a2};
+  case 0n: return {h: 0 /* {TcDone:32} */, a1: $0.a2};
   default: {
    const $4 = ($0.a3-1n);
-   return {h: 1 /* {TcContinue33:1} */, a1: $0.a1, a2: (($0.a2*10n)+(BigInt(Data_Buffer_Core_prim__getByteOffset($0.a1.a1, $0.a4, $0.a1.a2))-48n)), a3: $4, a4: ($0.a4+1n)};
+   return {h: 1 /* {TcContinue32:1} */, a1: $0.a1, a2: (($0.a2*10n)+(BigInt(Data_Buffer_Core_prim__getByteOffset($0.a1.a1, $0.a4, $0.a1.a2))-48n)), a3: $4, a4: ($0.a4+1n)};
   }
  }
 }
 
 /* Text.ILex.Util.decimalBV : ByteVect n -> Integer -> (k : Nat) -> Ix k n => Integer */
 function Text_ILex_Util_decimalBV($0, $1, $2, $3) {
- return __tailRec(x24tcOpt_33, {h: 1 /* {TcContinue33:1} */, a1: $0, a2: $1, a3: $2, a4: $3});
+ return __tailRec(x24tcOpt_32, {h: 1 /* {TcContinue32:1} */, a1: $0, a2: $1, a3: $2, a4: $3});
 }
 
-/* {$tcOpt:34} */
-function x24tcOpt_34($0) {
+/* {$tcOpt:33} */
+function x24tcOpt_33($0) {
  switch($0.a2.h) {
-  case 0: /* Here */ return {h: 0 /* {TcDone:34} */, a1: $0.a1(undefined)($0.a2.a1)};
-  case 1: /* There */ return {h: 1 /* {TcContinue34:1} */, a1: $9 => $0.a1(undefined), a2: $0.a2.a1};
+  case 0: /* Here */ return {h: 0 /* {TcDone:33} */, a1: $0.a1(undefined)($0.a2.a1)};
+  case 1: /* There */ return {h: 1 /* {TcContinue33:1} */, a1: $9 => $0.a1(undefined), a2: $0.a2.a1};
  }
 }
 
 /* Data.List.Quantifiers.Extra.Any.collapse : (f v -> x) -> Any f ks -> x */
 function Data_List_Quantifiers_Extra_Any_collapse($0, $1) {
- return __tailRec(x24tcOpt_34, {h: 1 /* {TcContinue34:1} */, a1: $0, a2: $1});
+ return __tailRec(x24tcOpt_33, {h: 1 /* {TcContinue33:1} */, a1: $0, a2: $1});
 }
 
-/* {$tcOpt:35} */
-function x24tcOpt_35($0) {
+/* {$tcOpt:34} */
+function x24tcOpt_34($0) {
  switch($0.a2.h) {
-  case 0: /* nil */ return {h: 0 /* {TcDone:35} */, a1: undefined};
+  case 0: /* nil */ return {h: 0 /* {TcDone:34} */, a1: undefined};
   case undefined: /* cons */ {
    const $4 = $0.a1($0.a2.a1)($0.a3);
-   return {h: 1 /* {TcContinue35:1} */, a1: $0.a1, a2: $0.a2.a2, a3: undefined};
+   return {h: 1 /* {TcContinue34:1} */, a1: $0.a1, a2: $0.a2.a2, a3: undefined};
   }
  }
 }
 
 /* Data.Linear.Traverse1.traverse1_List : (a -> F1' s) -> List a -> F1' s */
 function Data_Linear_Traverse1_traverse1_List($0, $1, $2) {
- return __tailRec(x24tcOpt_35, {h: 1 /* {TcContinue35:1} */, a1: $0, a2: $1, a3: $2});
+ return __tailRec(x24tcOpt_34, {h: 1 /* {TcContinue34:1} */, a1: $0, a2: $1, a3: $2});
 }
 
-/* {$tcOpt:36} */
-function x24tcOpt_36($0) {
+/* {$tcOpt:35} */
+function x24tcOpt_35($0) {
  switch($0.a3.h) {
-  case undefined: /* cons */ return {h: 1 /* {TcContinue36:1} */, a1: {a1: $0.a1, a2: $0.a2($0.a3.a1)}, a2: $0.a2, a3: $0.a3.a2};
-  case 0: /* nil */ return {h: 0 /* {TcDone:36} */, a1: Prelude_Types_SnocList_x3cx3ex3e($0.a1, {h: 0})};
+  case undefined: /* cons */ return {h: 1 /* {TcContinue35:1} */, a1: {a1: $0.a1, a2: $0.a2($0.a3.a1)}, a2: $0.a2, a3: $0.a3.a2};
+  case 0: /* nil */ return {h: 0 /* {TcDone:35} */, a1: Prelude_Types_SnocList_x3cx3ex3e($0.a1, {h: 0})};
  }
 }
 
 /* Prelude.Types.List.mapAppend : SnocList b -> (a -> b) -> List a -> List b */
 function Prelude_Types_List_mapAppend($0, $1, $2) {
- return __tailRec(x24tcOpt_36, {h: 1 /* {TcContinue36:1} */, a1: $0, a2: $1, a3: $2});
+ return __tailRec(x24tcOpt_35, {h: 1 /* {TcContinue35:1} */, a1: $0, a2: $1, a3: $2});
 }
 
-/* {$tcOpt:37} */
-function x24tcOpt_37($0) {
+/* {$tcOpt:36} */
+function x24tcOpt_36($0) {
  switch($0.a4) {
-  case 0n: return {h: 0 /* {TcDone:37} */, a1: 0};
+  case 0n: return {h: 0 /* {TcDone:36} */, a1: 0};
   default: {
    const $4 = ($0.a4-1n);
    switch($0.a3(Data_Buffer_Core_prim__getByteOffset($0.a2.a1, $0.a5, $0.a2.a2))) {
-    case 1: return {h: 0 /* {TcDone:37} */, a1: 1};
-    case 0: return {h: 1 /* {TcContinue37:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $4, a5: ($0.a5+1n)};
+    case 1: return {h: 0 /* {TcDone:36} */, a1: 1};
+    case 0: return {h: 1 /* {TcContinue36:1} */, a1: $0.a1, a2: $0.a2, a3: $0.a3, a4: $4, a5: ($0.a5+1n)};
    }
   }
  }
@@ -1451,18 +1421,18 @@ function x24tcOpt_37($0) {
 
 /* Data.ByteVect.6150:2653:go */
 function Data_ByteVect_n__6150_2653_go($0, $1, $2, $3, $4) {
- return __tailRec(x24tcOpt_37, {h: 1 /* {TcContinue37:1} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4});
+ return __tailRec(x24tcOpt_36, {h: 1 /* {TcContinue36:1} */, a1: $0, a2: $1, a3: $2, a4: $3, a5: $4});
 }
 
-/* {$tcOpt:38} */
-function x24tcOpt_38($0) {
+/* {$tcOpt:37} */
+function x24tcOpt_37($0) {
  switch($0.a2.h) {
-  case 0: /* nil */ return {h: 0 /* {TcDone:38} */, a1: {h: 1 /* Right */, a1: undefined}};
+  case 0: /* nil */ return {h: 0 /* {TcDone:37} */, a1: {h: 1 /* Right */, a1: undefined}};
   case undefined: /* cons */ {
    const $5 = $0.a1($0.a2.a1)($0.a3);
    switch($5.h) {
-    case 1: /* Right */ return {h: 1 /* {TcContinue38:1} */, a1: $0.a1, a2: $0.a2.a2, a3: undefined};
-    case 0: /* Left */ return {h: 0 /* {TcDone:38} */, a1: {h: 0 /* Left */, a1: $5.a1}};
+    case 1: /* Right */ return {h: 1 /* {TcContinue37:1} */, a1: $0.a1, a2: $0.a2.a2, a3: undefined};
+    case 0: /* Left */ return {h: 0 /* {TcDone:37} */, a1: {h: 0 /* Left */, a1: $5.a1}};
    }
   }
  }
@@ -1470,20 +1440,20 @@ function x24tcOpt_38($0) {
 
 /* Control.Monad.Either.Extra.implList_ : (t -> EitherT e IO ()) -> List t -> PrimIO (Either e ()) */
 function Control_Monad_Either_Extra_implList_($0, $1, $2) {
- return __tailRec(x24tcOpt_38, {h: 1 /* {TcContinue38:1} */, a1: $0, a2: $1, a3: $2});
+ return __tailRec(x24tcOpt_37, {h: 1 /* {TcContinue37:1} */, a1: $0, a2: $1, a3: $2});
 }
 
-/* {$tcOpt:39} */
-function x24tcOpt_39($0) {
+/* {$tcOpt:38} */
+function x24tcOpt_38($0) {
  switch($0.a1.h) {
-  case 0: /* nil */ return {h: 0 /* {TcDone:39} */, a1: $0.a2};
-  case undefined: /* cons */ return {h: 1 /* {TcContinue39:1} */, a1: $0.a1.a1, a2: {a1: $0.a1.a2, a2: $0.a2}};
+  case 0: /* nil */ return {h: 0 /* {TcDone:38} */, a1: $0.a2};
+  case undefined: /* cons */ return {h: 1 /* {TcContinue38:1} */, a1: $0.a1.a1, a2: {a1: $0.a1.a2, a2: $0.a2}};
  }
 }
 
 /* Prelude.Types.SnocList.(<>>) : SnocList a -> List a -> List a */
 function Prelude_Types_SnocList_x3cx3ex3e($0, $1) {
- return __tailRec(x24tcOpt_39, {h: 1 /* {TcContinue39:1} */, a1: $0, a2: $1});
+ return __tailRec(x24tcOpt_38, {h: 1 /* {TcContinue38:1} */, a1: $0, a2: $1});
 }
 
 /* {__mainExpression:0} */
@@ -1496,35 +1466,25 @@ const csegen_0 = __lazy(function () {
  return {a1: $1 => FrontendMain_requestResync($1), a2: {h: 0}};
 });
 
-/* {csegen:12} */
-const csegen_12 = __lazy(function () {
- return {a1: {h: 1 /* Str */, a1: 'style', a2: 'display:flex; gap:10px; flex-wrap:wrap; margin:18px 0;'}, a2: {h: 0}};
-});
-
-/* {csegen:32} */
-const csegen_32 = __lazy(function () {
+/* {csegen:30} */
+const csegen_30 = __lazy(function () {
  return () => b => a => func => $0 => $1 => Prelude_IO_map_Functor_IO(func, $0, $1);
 });
 
-/* {csegen:36} */
-const csegen_36 = __lazy(function () {
+/* {csegen:34} */
+const csegen_34 = __lazy(function () {
  return () => {
   const $6 = b => a => $7 => $8 => $9 => {
    const $a = $7($9);
    const $d = $8($9);
    return $a($d);
   };
-  return {a1: csegen_32()(), a2: a => $4 => $5 => $4, a3: $6};
+  return {a1: csegen_30()(), a2: a => $4 => $5 => $4, a3: $6};
  };
 });
 
-/* {csegen:37} */
-const csegen_37 = __lazy(function () {
- return () => Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), undefined);
-});
-
-/* {csegen:45} */
-const csegen_45 = __lazy(function () {
+/* {csegen:40} */
+const csegen_40 = __lazy(function () {
  return () => {
   const $3 = b => a => $4 => $5 => $6 => {
    const $7 = $4($6);
@@ -1534,32 +1494,32 @@ const csegen_45 = __lazy(function () {
    const $11 = $f($10);
    return $11($10);
   };
-  return {a1: csegen_36()(), a2: $3, a3: $e};
+  return {a1: csegen_34()(), a2: $3, a3: $e};
  };
 });
 
-/* {csegen:56} */
-const csegen_56 = __lazy(function () {
- return () => ({a1: b => a => func => $1 => Control_Monad_Error_Either_map_Functor_x28x28EitherTx20x24ex29x20x24mx29(csegen_32()(), func, $1), a2: a => $9 => Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), $9), a3: b => a => $10 => $11 => Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), $10, $11)});
+/* {csegen:51} */
+const csegen_51 = __lazy(function () {
+ return () => ({a1: b => a => func => $1 => Control_Monad_Error_Either_map_Functor_x28x28EitherTx20x24ex29x20x24mx29(csegen_30()(), func, $1), a2: a => $9 => Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), $9), a3: b => a => $10 => $11 => Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), $10, $11)});
 });
 
-/* {csegen:74} */
-const csegen_74 = __lazy(function () {
+/* {csegen:69} */
+const csegen_69 = __lazy(function () {
  return $0 => $1 => ({a1: $0, a2: $1});
 });
 
-/* {csegen:111} */
-const csegen_111 = __lazy(function () {
- return () => ({a1: csegen_45()(), a2: a => $4 => $4});
+/* {csegen:106} */
+const csegen_106 = __lazy(function () {
+ return () => ({a1: csegen_40()(), a2: a => $4 => $4});
 });
 
-/* {csegen:114} */
-const csegen_114 = __lazy(function () {
+/* {csegen:109} */
+const csegen_109 = __lazy(function () {
  return {a1: $1 => $2 => ($1+$2), a2: ''};
 });
 
-/* {csegen:115} */
-const csegen_115 = __lazy(function () {
+/* {csegen:110} */
+const csegen_110 = __lazy(function () {
  return $0 => $1 => {
   switch($0.h) {
    case 0: /* Left */ return {h: 0 /* Left */, a1: $0.a1};
@@ -1573,118 +1533,118 @@ const csegen_115 = __lazy(function () {
  };
 });
 
-/* {csegen:119} */
-const csegen_119 = __lazy(function () {
+/* {csegen:114} */
+const csegen_114 = __lazy(function () {
  return {a1: $1 => $1, a2: {a1: $4 => $4, a2: {h: 0}}};
 });
 
-/* {csegen:155} */
-const csegen_155 = __lazy(function () {
+/* {csegen:150} */
+const csegen_150 = __lazy(function () {
  return {a1: {a1: $2 => $3 => Prelude_EqOrd_x3dx3d_Eq_Bits32($2, $3), a2: $8 => $9 => Prelude_EqOrd_x2fx3d_Eq_Bits32($8, $9)}, a2: $e => $f => Prelude_EqOrd_compare_Ord_Bits32($e, $f), a3: $14 => $15 => Prelude_EqOrd_x3c_Ord_Bits32($14, $15), a4: $1a => $1b => Prelude_EqOrd_x3e_Ord_Bits32($1a, $1b), a5: $20 => $21 => Prelude_EqOrd_x3cx3d_Ord_Bits32($20, $21), a6: $26 => $27 => Prelude_EqOrd_x3ex3d_Ord_Bits32($26, $27), a7: $2c => $2d => Prelude_EqOrd_max_Ord_Bits32($2c, $2d), a8: $32 => $33 => Prelude_EqOrd_min_Ord_Bits32($32, $33)};
+});
+
+/* {csegen:151} */
+const csegen_151 = __lazy(function () {
+ return {a1: csegen_150(), a2: 0, a3: 4294967295};
+});
+
+/* {csegen:154} */
+const csegen_154 = __lazy(function () {
+ return {a1: $1 => $2 => _add32u($1, $2), a2: $6 => $7 => _mul32u($6, $7), a3: $b => Number(_truncUBigInt32($b))};
 });
 
 /* {csegen:156} */
 const csegen_156 = __lazy(function () {
- return {a1: csegen_155(), a2: 0, a3: 4294967295};
-});
-
-/* {csegen:159} */
-const csegen_159 = __lazy(function () {
- return {a1: $1 => $2 => _add32u($1, $2), a2: $6 => $7 => _mul32u($6, $7), a3: $b => Number(_truncUBigInt32($b))};
+ return {a1: csegen_154(), a2: $3 => _sub32u(0, $3), a3: $7 => $8 => _sub32u($7, $8)};
 });
 
 /* {csegen:161} */
 const csegen_161 = __lazy(function () {
- return {a1: csegen_159(), a2: $3 => _sub32u(0, $3), a3: $7 => $8 => _sub32u($7, $8)};
+ return Text_ILex_RExp_oneof(csegen_151(), csegen_156(), {a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32(' '.codePointAt(0)))}, a2: {a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('\u{9}'.codePointAt(0)))}, a2: {h: 0}}});
 });
 
-/* {csegen:166} */
-const csegen_166 = __lazy(function () {
- return Text_ILex_RExp_oneof(csegen_156(), csegen_161(), {a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32(' '.codePointAt(0)))}, a2: {a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('\u{9}'.codePointAt(0)))}, a2: {h: 0}}});
+/* {csegen:163} */
+const csegen_163 = __lazy(function () {
+ return {h: 2 /* And */, a1: csegen_161(), a2: {h: 4 /* Star */, a1: csegen_161()}};
 });
 
-/* {csegen:168} */
-const csegen_168 = __lazy(function () {
- return {h: 2 /* And */, a1: csegen_166(), a2: {h: 4 /* Star */, a1: csegen_166()}};
-});
-
-/* {csegen:175} */
-const csegen_175 = __lazy(function () {
+/* {csegen:170} */
+const csegen_170 = __lazy(function () {
  return {a1: $1 => $2 => $2.a1, a2: $5 => $6 => $6.a2, a3: $9 => $a => $a.a3};
+});
+
+/* {csegen:172} */
+const csegen_172 = __lazy(function () {
+ return $0 => $1 => $1.a8;
+});
+
+/* {csegen:176} */
+const csegen_176 = __lazy(function () {
+ return {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('\n'.codePointAt(0)))};
 });
 
 /* {csegen:177} */
 const csegen_177 = __lazy(function () {
- return $0 => $1 => $1.a8;
-});
-
-/* {csegen:181} */
-const csegen_181 = __lazy(function () {
- return {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('\n'.codePointAt(0)))};
-});
-
-/* {csegen:182} */
-const csegen_182 = __lazy(function () {
  return {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('\r'.codePointAt(0)))};
 });
 
-/* {csegen:185} */
-const csegen_185 = __lazy(function () {
- return Text_ILex_RExp_x3cx7cx3e(csegen_156(), csegen_161(), csegen_181(), Text_ILex_RExp_x3cx7cx3e(csegen_156(), csegen_161(), csegen_182(), {h: 2 /* And */, a1: csegen_182(), a2: csegen_181()}));
+/* {csegen:180} */
+const csegen_180 = __lazy(function () {
+ return Text_ILex_RExp_x3cx7cx3e(csegen_151(), csegen_156(), csegen_176(), Text_ILex_RExp_x3cx7cx3e(csegen_151(), csegen_156(), csegen_177(), {h: 2 /* And */, a1: csegen_177(), a2: csegen_176()}));
 });
 
-/* {csegen:191} */
-const csegen_191 = __lazy(function () {
+/* {csegen:186} */
+const csegen_186 = __lazy(function () {
  return {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('n'.codePointAt(0)))};
 });
 
-/* {csegen:192} */
-const csegen_192 = __lazy(function () {
+/* {csegen:187} */
+const csegen_187 = __lazy(function () {
  return {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('u'.codePointAt(0)))};
 });
 
-/* {csegen:193} */
-const csegen_193 = __lazy(function () {
+/* {csegen:188} */
+const csegen_188 = __lazy(function () {
  return {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('l'.codePointAt(0)))};
 });
 
-/* {csegen:200} */
-const csegen_200 = __lazy(function () {
+/* {csegen:195} */
+const csegen_195 = __lazy(function () {
  return {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('t'.codePointAt(0)))};
 });
 
-/* {csegen:201} */
-const csegen_201 = __lazy(function () {
+/* {csegen:196} */
+const csegen_196 = __lazy(function () {
  return {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('r'.codePointAt(0)))};
 });
 
-/* {csegen:202} */
-const csegen_202 = __lazy(function () {
+/* {csegen:197} */
+const csegen_197 = __lazy(function () {
  return {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('e'.codePointAt(0)))};
 });
 
-/* {csegen:209} */
-const csegen_209 = __lazy(function () {
+/* {csegen:204} */
+const csegen_204 = __lazy(function () {
  return {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('f'.codePointAt(0)))};
 });
 
-/* {csegen:219} */
-const csegen_219 = __lazy(function () {
+/* {csegen:214} */
+const csegen_214 = __lazy(function () {
  return {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('-'.codePointAt(0)))};
 });
 
-/* {csegen:221} */
-const csegen_221 = __lazy(function () {
- return {h: 2 /* And */, a1: {h: 3 /* Or */, a1: csegen_219(), a2: {h: 0 /* Eps */}}, a2: Text_ILex_RExp_decimal()};
+/* {csegen:216} */
+const csegen_216 = __lazy(function () {
+ return {h: 2 /* And */, a1: {h: 3 /* Or */, a1: csegen_214(), a2: {h: 0 /* Eps */}}, a2: Text_ILex_RExp_decimal()};
 });
 
-/* {csegen:236} */
-const csegen_236 = __lazy(function () {
+/* {csegen:231} */
+const csegen_231 = __lazy(function () {
  return {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('\"'.codePointAt(0)))};
 });
 
-/* {csegen:240} */
-const csegen_240 = __lazy(function () {
+/* {csegen:235} */
+const csegen_235 = __lazy(function () {
  const $4 = $5 => {
   const $9 = ($5.a1.value);
   const $e = ($5.a2.value);
@@ -1697,12 +1657,12 @@ const csegen_240 = __lazy(function () {
   return JSON_Parser_JStr();
  };
  const $3 = {h: 0 /* Go */, a1: $4};
- const $0 = {a1: csegen_236(), a2: $3};
+ const $0 = {a1: csegen_231(), a2: $3};
  return {a1: $0, a2: {h: 0}};
 });
 
-/* {csegen:247} */
-const csegen_247 = __lazy(function () {
+/* {csegen:242} */
+const csegen_242 = __lazy(function () {
  const $d = $e => {
   const $10 = $e.a2;
   const $12 = ($10.value);
@@ -1728,7 +1688,7 @@ const csegen_247 = __lazy(function () {
   }
  };
  const $c = {h: 0 /* Go */, a1: $d};
- const $0 = {a1: {h: 2 /* And */, a1: csegen_191(), a2: {h: 2 /* And */, a1: csegen_192(), a2: {h: 2 /* And */, a1: csegen_193(), a2: csegen_193()}}}, a2: $c};
+ const $0 = {a1: {h: 2 /* And */, a1: csegen_186(), a2: {h: 2 /* And */, a1: csegen_187(), a2: {h: 2 /* And */, a1: csegen_188(), a2: csegen_188()}}}, a2: $c};
  const $5a = $5b => {
   const $5d = $5b.a2;
   const $5f = ($5d.value);
@@ -1754,7 +1714,7 @@ const csegen_247 = __lazy(function () {
   }
  };
  const $59 = {h: 0 /* Go */, a1: $5a};
- const $4d = {a1: {h: 2 /* And */, a1: csegen_200(), a2: {h: 2 /* And */, a1: csegen_201(), a2: {h: 2 /* And */, a1: csegen_192(), a2: csegen_202()}}}, a2: $59};
+ const $4d = {a1: {h: 2 /* And */, a1: csegen_195(), a2: {h: 2 /* And */, a1: csegen_196(), a2: {h: 2 /* And */, a1: csegen_187(), a2: csegen_197()}}}, a2: $59};
  const $b4 = $b5 => {
   const $b7 = $b5.a2;
   const $b9 = ($b7.value);
@@ -1780,7 +1740,7 @@ const csegen_247 = __lazy(function () {
   }
  };
  const $b3 = {h: 0 /* Go */, a1: $b4};
- const $9e = {a1: {h: 2 /* And */, a1: csegen_209(), a2: {h: 2 /* And */, a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('a'.codePointAt(0)))}, a2: {h: 2 /* And */, a1: csegen_193(), a2: {h: 2 /* And */, a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('s'.codePointAt(0)))}, a2: csegen_202()}}}}, a2: $b3};
+ const $9e = {a1: {h: 2 /* And */, a1: csegen_204(), a2: {h: 2 /* And */, a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('a'.codePointAt(0)))}, a2: {h: 2 /* And */, a1: csegen_188(), a2: {h: 2 /* And */, a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('s'.codePointAt(0)))}, a2: csegen_197()}}}}, a2: $b3};
  const $fc = $fd => {
   const $fe = ($fd.a8.value);
   const $104 = ($fd.a4.value);
@@ -1812,7 +1772,7 @@ const csegen_247 = __lazy(function () {
   return $103;
  };
  const $fb = {h: 1 /* Rd */, a1: $fc};
- const $f8 = {a1: csegen_221(), a2: $fb};
+ const $f8 = {a1: csegen_216(), a2: $fb};
  const $15f = $160 => {
   const $161 = ($160.a8.value);
   const $166 = Data_ByteString_toString($161);
@@ -1876,7 +1836,7 @@ const csegen_247 = __lazy(function () {
  };
  const $1fb = {h: 0 /* Go */, a1: $1fc};
  const $1f5 = {a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('['.codePointAt(0)))}, a2: $1fb};
- const $1f4 = {a1: $1f5, a2: csegen_240()};
+ const $1f4 = {a1: $1f5, a2: csegen_235()};
  const $1b5 = {a1: $1b6, a2: $1f4};
  const $15a = {a1: $15b, a2: $1b5};
  const $f7 = {a1: $f8, a2: $15a};
@@ -1885,13 +1845,13 @@ const csegen_247 = __lazy(function () {
  return {a1: $0, a2: $4c};
 });
 
-/* {csegen:248} */
-const csegen_248 = __lazy(function () {
- return Prelude_Types_List_tailRecAppend(csegen_247(), {h: 0});
+/* {csegen:243} */
+const csegen_243 = __lazy(function () {
+ return Prelude_Types_List_tailRecAppend(csegen_242(), {h: 0});
 });
 
-/* {csegen:273} */
-const csegen_273 = __lazy(function () {
+/* {csegen:268} */
+const csegen_268 = __lazy(function () {
  const $0 = $1 => {
   const $4 = $1.a2;
   const $6 = ($4.value);
@@ -1953,43 +1913,43 @@ const csegen_273 = __lazy(function () {
  return {h: 0 /* Go */, a1: $0};
 });
 
-/* {csegen:275} */
-const csegen_275 = __lazy(function () {
- return {a1: {a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32(']'.codePointAt(0)))}, a2: csegen_273()}, a2: {h: 0}};
+/* {csegen:270} */
+const csegen_270 = __lazy(function () {
+ return {a1: {a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32(']'.codePointAt(0)))}, a2: csegen_268()}, a2: {h: 0}};
 });
 
-/* {csegen:299} */
-const csegen_299 = __lazy(function () {
+/* {csegen:294} */
+const csegen_294 = __lazy(function () {
  return {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32(','.codePointAt(0)))};
 });
 
-/* {csegen:316} */
-const csegen_316 = __lazy(function () {
- return {a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('}'.codePointAt(0)))}, a2: csegen_273()};
+/* {csegen:311} */
+const csegen_311 = __lazy(function () {
+ return {a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('}'.codePointAt(0)))}, a2: csegen_268()};
 });
 
-/* {csegen:382} */
-const csegen_382 = __lazy(function () {
+/* {csegen:377} */
+const csegen_377 = __lazy(function () {
  return {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('\u{5c}'.codePointAt(0)))};
 });
 
-/* {csegen:446} */
-const csegen_446 = __lazy(function () {
+/* {csegen:441} */
+const csegen_441 = __lazy(function () {
  return $0 => $1 => $1.a7;
 });
 
-/* {csegen:448} */
-const csegen_448 = __lazy(function () {
- return $0 => $1 => Text_ILex_Interfaces_unclosedIfEOI(csegen_446(), csegen_175(), csegen_177(), '[', {h: 0}, $0, $1);
+/* {csegen:443} */
+const csegen_443 = __lazy(function () {
+ return $0 => $1 => Text_ILex_Interfaces_unclosedIfEOI(csegen_441(), csegen_170(), csegen_172(), '[', {h: 0}, $0, $1);
 });
 
-/* {csegen:479} */
-const csegen_479 = __lazy(function () {
+/* {csegen:474} */
+const csegen_474 = __lazy(function () {
  return {h: 2 /* And */, a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_digit()}, a2: {h: 4 /* Star */, a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_digit()}}};
 });
 
-/* {csegen:512} */
-const csegen_512 = __lazy(function () {
+/* {csegen:507} */
+const csegen_507 = __lazy(function () {
  let $1;
  switch(Prelude_EqOrd_x3cx3d_Ord_Bits32(_truncUInt32('0'.codePointAt(0)), _truncUInt32('9'.codePointAt(0)))) {
   case 1: {
@@ -2004,80 +1964,125 @@ const csegen_512 = __lazy(function () {
  return Text_ILex_Char_Set_range($1);
 });
 
-/* {csegen:536} */
-const csegen_536 = __lazy(function () {
+/* {csegen:531} */
+const csegen_531 = __lazy(function () {
  return {a1: Prelude_Types_prim__integerToNat(BigInt(Data_Buffer_stringByteLength(''))), a2: Data_ByteVect_fromString('')};
 });
 
-/* {csegen:539} */
-const csegen_539 = __lazy(function () {
+/* {csegen:534} */
+const csegen_534 = __lazy(function () {
  return {a1: $1 => $2 => (($1===$2)?1:0), a2: $6 => $7 => Prelude_Types_x2fx3d_Eq_Nat($6, $7)};
 });
 
-/* {csegen:547} */
-const csegen_547 = __lazy(function () {
- return {a1: csegen_539(), a2: $3 => $4 => Prelude_EqOrd_compare_Ord_Integer($3, $4), a3: $9 => $a => Prelude_Types_x3c_Ord_Nat($9, $a), a4: $f => $10 => Prelude_Types_x3e_Ord_Nat($f, $10), a5: $15 => $16 => Prelude_Types_x3cx3d_Ord_Nat($15, $16), a6: $1b => $1c => Prelude_Types_x3ex3d_Ord_Nat($1b, $1c), a7: $21 => $22 => Prelude_Types_max_Ord_Nat($21, $22), a8: $27 => $28 => Prelude_Types_min_Ord_Nat($27, $28)};
+/* {csegen:542} */
+const csegen_542 = __lazy(function () {
+ return {a1: csegen_534(), a2: $3 => $4 => Prelude_EqOrd_compare_Ord_Integer($3, $4), a3: $9 => $a => Prelude_Types_x3c_Ord_Nat($9, $a), a4: $f => $10 => Prelude_Types_x3e_Ord_Nat($f, $10), a5: $15 => $16 => Prelude_Types_x3cx3d_Ord_Nat($15, $16), a6: $1b => $1c => Prelude_Types_x3ex3d_Ord_Nat($1b, $1c), a7: $21 => $22 => Prelude_Types_max_Ord_Nat($21, $22), a8: $27 => $28 => Prelude_Types_min_Ord_Nat($27, $28)};
 });
 
-/* {csegen:553} */
-const csegen_553 = __lazy(function () {
+/* {csegen:548} */
+const csegen_548 = __lazy(function () {
  return {a1: $1 => $2 => Prelude_EqOrd_x3dx3d_Eq_Bits8($1, $2), a2: $7 => $8 => Prelude_EqOrd_x2fx3d_Eq_Bits8($7, $8)};
 });
 
-/* {csegen:561} */
-const csegen_561 = __lazy(function () {
- return {a1: csegen_553(), a2: $3 => $4 => Prelude_EqOrd_compare_Ord_Bits8($3, $4), a3: $9 => $a => Prelude_EqOrd_x3c_Ord_Bits8($9, $a), a4: $f => $10 => Prelude_EqOrd_x3e_Ord_Bits8($f, $10), a5: $15 => $16 => Prelude_EqOrd_x3cx3d_Ord_Bits8($15, $16), a6: $1b => $1c => Prelude_EqOrd_x3ex3d_Ord_Bits8($1b, $1c), a7: $21 => $22 => Prelude_EqOrd_max_Ord_Bits8($21, $22), a8: $27 => $28 => Prelude_EqOrd_min_Ord_Bits8($27, $28)};
+/* {csegen:556} */
+const csegen_556 = __lazy(function () {
+ return {a1: csegen_548(), a2: $3 => $4 => Prelude_EqOrd_compare_Ord_Bits8($3, $4), a3: $9 => $a => Prelude_EqOrd_x3c_Ord_Bits8($9, $a), a4: $f => $10 => Prelude_EqOrd_x3e_Ord_Bits8($f, $10), a5: $15 => $16 => Prelude_EqOrd_x3cx3d_Ord_Bits8($15, $16), a6: $1b => $1c => Prelude_EqOrd_x3ex3d_Ord_Bits8($1b, $1c), a7: $21 => $22 => Prelude_EqOrd_max_Ord_Bits8($21, $22), a8: $27 => $28 => Prelude_EqOrd_min_Ord_Bits8($27, $28)};
 });
 
-/* {csegen:562} */
-const csegen_562 = __lazy(function () {
- return {a1: csegen_561(), a2: 0, a3: 255};
+/* {csegen:557} */
+const csegen_557 = __lazy(function () {
+ return {a1: csegen_556(), a2: 0, a3: 255};
+});
+
+/* {csegen:560} */
+const csegen_560 = __lazy(function () {
+ return {a1: $1 => $2 => _add8u($1, $2), a2: $6 => $7 => _mul8u($6, $7), a3: $b => Number(_truncUBigInt8($b))};
 });
 
 /* {csegen:565} */
 const csegen_565 = __lazy(function () {
- return {a1: $1 => $2 => _add8u($1, $2), a2: $6 => $7 => _mul8u($6, $7), a3: $b => Number(_truncUBigInt8($b))};
+ return {a1: csegen_560(), a2: $3 => _sub8u(0, $3), a3: $7 => $8 => _sub8u($7, $8)};
 });
 
-/* {csegen:570} */
-const csegen_570 = __lazy(function () {
- return {a1: csegen_565(), a2: $3 => _sub8u(0, $3), a3: $7 => $8 => _sub8u($7, $8)};
-});
-
-/* {csegen:573} */
-const csegen_573 = __lazy(function () {
+/* {csegen:568} */
+const csegen_568 = __lazy(function () {
  return $0 => $0.a2;
+});
+
+/* {csegen:601} */
+const csegen_601 = __lazy(function () {
+ return $0 => $1 => Text_ILex_Internal_NFA_joinNNode($0, $1);
 });
 
 /* {csegen:606} */
 const csegen_606 = __lazy(function () {
- return $0 => $1 => Text_ILex_Internal_NFA_joinNNode($0, $1);
-});
-
-/* {csegen:611} */
-const csegen_611 = __lazy(function () {
  const $a = a => b => {
-  switch(Text_ILex_Char_Range_eqRangeOf(csegen_553(), a, b)) {
+  switch(Text_ILex_Char_Range_eqRangeOf(csegen_548(), a, b)) {
    case 1: return 0;
    case 0: return 1;
   }
  };
- const $1 = {a1: $3 => $4 => Text_ILex_Char_Range_eqRangeOf(csegen_553(), $3, $4), a2: $a};
- return Language_Reflection_Derive_mkOrd($1, $12 => $13 => Text_ILex_Char_Range_ordRangeOf(csegen_561(), $12, $13));
+ const $1 = {a1: $3 => $4 => Text_ILex_Char_Range_eqRangeOf(csegen_548(), $3, $4), a2: $a};
+ return Language_Reflection_Derive_mkOrd($1, $12 => $13 => Text_ILex_Char_Range_ordRangeOf(csegen_556(), $12, $13));
 });
 
-/* {csegen:615} */
-const csegen_615 = __lazy(function () {
+/* {csegen:610} */
+const csegen_610 = __lazy(function () {
  return Text_ILex_Char_UTF8_bytes(Text_ILex_Char_UTF8_MinAddByte(), Text_ILex_Char_UTF8_MaxAddByte());
 });
 
-/* {csegen:616} */
-const csegen_616 = __lazy(function () {
+/* {csegen:611} */
+const csegen_611 = __lazy(function () {
  return $0 => Prelude_EqOrd_x3dx3d_Eq_Bits8(10, $0);
+});
+
+/* {csegen:623} */
+const csegen_623 = __lazy(function () {
+ return {a1: $1 => $2 => Prelude_EqOrd_x3dx3d_Eq_String($1, $2), a2: $7 => $8 => Prelude_EqOrd_x2fx3d_Eq_String($7, $8)};
 });
 
 /* {csegen:626} */
 const csegen_626 = __lazy(function () {
+ return $0 => $1 => Web_Internal_DomTypes_safeCast_SafeCast_Element($1);
+});
+
+/* {csegen:627} */
+const csegen_627 = __lazy(function () {
+ return () => Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), undefined);
+});
+
+/* {csegen:628} */
+const csegen_628 = __lazy(function () {
+ return $0 => $1 => Web_Internal_DomTypes_safeCast_SafeCast_Event($1);
+});
+
+/* {csegen:629} */
+const csegen_629 = __lazy(function () {
+ return $0 => $1 => Web_Internal_UIEventsTypes_safeCast_SafeCast_MouseEvent($1);
+});
+
+/* {csegen:630} */
+const csegen_630 = __lazy(function () {
+ return $0 => $1 => Web_Internal_UIEventsTypes_safeCast_SafeCast_KeyboardEvent($1);
+});
+
+/* {csegen:638} */
+const csegen_638 = __lazy(function () {
+ return $0 => $1 => $2 => $3 => $4 => Prelude_IO_map_Functor_IO($2, $3, $4);
+});
+
+/* {csegen:645} */
+const csegen_645 = __lazy(function () {
+ return $0 => JS_Union_toFFI_ToFFI_x28HSumx20x28x28x3ax3ax20x24ax29x20x28x28x3ax3ax20x24bx29x20Nilx29x29x29_x28x28Union2x20x24mx29x20x24nx29(csegen_114(), $0);
+});
+
+/* {csegen:653} */
+const csegen_653 = __lazy(function () {
+ return () => Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), {a1: 0.0, a2: 0, a3: 0});
+});
+
+/* {csegen:670} */
+const csegen_670 = __lazy(function () {
  return $0 => {
   switch($0.h) {
    case 6: /* JObject */ return {a1: $0.a1};
@@ -2086,86 +2091,36 @@ const csegen_626 = __lazy(function () {
  };
 });
 
-/* {csegen:627} */
-const csegen_627 = __lazy(function () {
- return $0 => {
-  switch($0.h) {
-   case 4: /* JString */ return {a1: $0.a1};
-   default: return {h: 0};
-  }
- };
-});
-
-/* {csegen:631} */
-const csegen_631 = __lazy(function () {
- return {a1: $1 => $2 => Prelude_EqOrd_x3dx3d_Eq_String($1, $2), a2: $7 => $8 => Prelude_EqOrd_x2fx3d_Eq_String($7, $8)};
-});
-
-/* {csegen:634} */
-const csegen_634 = __lazy(function () {
- return $0 => $1 => Web_Internal_DomTypes_safeCast_SafeCast_Element($1);
-});
-
-/* {csegen:635} */
-const csegen_635 = __lazy(function () {
- return $0 => $1 => Web_Internal_DomTypes_safeCast_SafeCast_Event($1);
-});
-
-/* {csegen:636} */
-const csegen_636 = __lazy(function () {
- return $0 => $1 => Web_Internal_UIEventsTypes_safeCast_SafeCast_MouseEvent($1);
-});
-
-/* {csegen:637} */
-const csegen_637 = __lazy(function () {
- return $0 => $1 => Web_Internal_UIEventsTypes_safeCast_SafeCast_KeyboardEvent($1);
-});
-
-/* {csegen:645} */
-const csegen_645 = __lazy(function () {
- return $0 => $1 => $2 => $3 => $4 => Prelude_IO_map_Functor_IO($2, $3, $4);
-});
-
-/* {csegen:652} */
-const csegen_652 = __lazy(function () {
- return $0 => JS_Union_toFFI_ToFFI_x28HSumx20x28x28x3ax3ax20x24ax29x20x28x28x3ax3ax20x24bx29x20Nilx29x29x29_x28x28Union2x20x24mx29x20x24nx29(csegen_119(), $0);
-});
-
-/* {csegen:660} */
-const csegen_660 = __lazy(function () {
- return () => Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), {a1: 0.0, a2: 0, a3: 0});
-});
-
 /* prim__sub_Integer : Integer -> Integer -> Integer */
 function prim__sub_Integer($0, $1) {
  return ($0-$1);
 }
 
 /* FrontendMain.case block in controller */
-function FrontendMain_case__controller_3443($0, $1, $2) {
+function FrontendMain_case__controller_3209($0, $1, $2) {
  switch($2.h) {
   case 0: /* Left */ {
-   const $4 = {a1: $1.a1, a2: $1.a2, a3: 'Live decode failed. Resyncing stream...', a4: 1, a5: $1.a5};
-   return {a1: $4, a2: $d => $e => Web_MVC_Cmd_batch({a1: $12 => FrontendMain_updateView($4, $12), a2: csegen_0()}, $d, $e)};
+   const $4 = {a1: $1.a1, a2: 'Live decode failed. Resyncing stream...', a3: 1, a4: $1.a4};
+   return {a1: $4, a2: $c => $d => Web_MVC_Cmd_batch({a1: $11 => FrontendMain_updateView($4, $11), a2: csegen_0()}, $c, $d)};
   }
   case 1: /* Right */ {
-   const $1a = Domain_applyDetailEvent($2.a1.a1, $2.a1.a2, $1.a1);
-   switch($1a.h) {
+   const $19 = Domain_applyDetailEvent($2.a1.a1, $2.a1.a2, $1.a1);
+   switch($19.h) {
     case 0: /* Left */ {
-     const $22 = {a1: $1.a1, a2: $1.a2, a3: ($1a.a1+' Resyncing stream...'), a4: 1, a5: $1.a5};
-     return {a1: $22, a2: $2d => $2e => Web_MVC_Cmd_batch({a1: $32 => FrontendMain_updateView($22, $32), a2: csegen_0()}, $2d, $2e)};
+     const $21 = {a1: $1.a1, a2: ($19.a1+' Resyncing stream...'), a3: 1, a4: $1.a4};
+     return {a1: $21, a2: $2b => $2c => Web_MVC_Cmd_batch({a1: $30 => FrontendMain_updateView($21, $30), a2: csegen_0()}, $2b, $2c)};
     }
     case 1: /* Right */ {
-     const $3a = {a1: $1a.a1, a2: $1.a2, a3: 'Live update applied.', a4: 0, a5: $1.a5};
-     return {a1: $3a, a2: $43 => FrontendMain_updateView($3a, $43)};
+     const $38 = {a1: $19.a1, a2: 'Live update applied.', a3: 0, a4: $1.a4};
+     return {a1: $38, a2: $40 => FrontendMain_updateView($38, $40)};
     }
    }
   }
  }
 }
 
-/* FrontendMain.13631:2606:matches */
-function FrontendMain_n__13631_2606_matches($0, $1, $2) {
+/* FrontendMain.13017:2546:matches */
+function FrontendMain_n__13017_2546_matches($0, $1, $2) {
  switch($1) {
   case 0: {
    switch($2) {
@@ -2179,23 +2134,17 @@ function FrontendMain_n__13631_2606_matches($0, $1, $2) {
     default: return 0;
    }
   }
-  case 2: {
-   switch($2) {
-    case 2: return 1;
-    default: return 0;
-   }
-  }
   default: return 0;
  }
 }
 
-/* FrontendMain.13794:2761:historyRow */
-function FrontendMain_n__13794_2761_historyRow($0, $1, $2) {
+/* FrontendMain.13159:2681:historyRow */
+function FrontendMain_n__13159_2681_historyRow($0, $1, $2) {
  return {h: 0 /* El */, a1: 'li', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'margin-bottom:6px;'}, a2: {h: 0}}, a3: {a1: {h: 2 /* Text */, a1: ('v'+(Prelude_Show_show_Show_Nat($1)+(' '+FrontendMain_renderHistoryEvent($2))))}, a2: {h: 0}}};
 }
 
-/* FrontendMain.13794:2760:feedStatus */
-function FrontendMain_n__13794_2760_feedStatus($0, $1) {
+/* FrontendMain.13159:2680:feedStatus */
+function FrontendMain_n__13159_2680_feedStatus($0, $1) {
  switch($1.h) {
   case 0: /* nothing */ return ' \u{b7} disconnected';
   case undefined: /* just */ return ' \u{b7} connected';
@@ -2205,68 +2154,44 @@ function FrontendMain_n__13794_2760_feedStatus($0, $1) {
 /* FrontendMain.viewNode : State -> Node Msg */
 function FrontendMain_viewNode($0) {
  const $1 = FrontendMain_currentModel($0);
- const $4 = FrontendMain_hasAction(0, $0);
- const $8 = FrontendMain_hasAction(1, $0);
- const $c = FrontendMain_hasAction(2, $0);
- const $10 = Data_List_zipWith_Zippable_List($13 => $14 => FrontendMain_n__13794_2761_historyRow($0, $13, $14), Prelude_Types_rangeFromTo_Range_Nat(1n, Prelude_Types_List_lengthTR($0.a1.a3)), $0.a1.a3);
- let $94;
+ const $4 = FrontendMain_hasAction(1, $0);
+ const $8 = Data_List_zipWith_Zippable_List($b => $c => FrontendMain_n__13159_2681_historyRow($0, $b, $c), Prelude_Types_rangeFromTo_Range_Nat(1n, Prelude_Types_List_lengthTR($0.a1.a3)), $0.a1.a3);
+ let $8d;
  switch($4) {
   case 1: {
-   $94 = {h: 0 /* El */, a1: 'div', a2: csegen_12(), a3: {a1: {h: 0 /* El */, a1: 'input', a2: {a1: Text_HTML_Attribute_onInput($a0 => ({h: 4 /* CreateNameChanged */, a1: $a0})), a2: {a1: {h: 1 /* Str */, a1: 'value', a2: $0.a2}, a2: {a1: {h: 1 /* Str */, a1: 'placeholder', a2: 'counter name'}, a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'padding:10px; border:1px solid #98aaba; border-radius:10px; min-width:240px;'}, a2: {h: 0}}}}}, a3: {h: 0}}, a2: {a1: FrontendMain_actionButton($0.a4, 0), a2: {h: 0}}}};
+   $8d = {a1: FrontendMain_actionButton($0.a3, 1), a2: {h: 0}};
    break;
   }
   case 0: {
-   let $bd;
-   switch($8) {
-    case 1: {
-     $bd = {a1: FrontendMain_actionButton($0.a4, 1), a2: {h: 0}};
-     break;
-    }
-    case 0: {
-     $bd = {h: 0};
-     break;
-    }
-   }
-   let $c5;
-   switch($c) {
-    case 1: {
-     $c5 = {a1: FrontendMain_actionButton($0.a4, 2), a2: {h: 0}};
-     break;
-    }
-    case 0: {
-     $c5 = {h: 0};
-     break;
-    }
-   }
-   const $bb = Prelude_Types_List_tailRecAppend($bd, $c5);
-   $94 = {h: 0 /* El */, a1: 'div', a2: csegen_12(), a3: $bb};
+   $8d = {h: 0};
    break;
   }
  }
- let $da;
- switch(Prelude_Types_null_Foldable_List($10)) {
+ const $84 = Prelude_Types_List_tailRecAppend({a1: FrontendMain_actionButton($0.a3, 0), a2: {h: 0}}, $8d);
+ const $7d = {h: 0 /* El */, a1: 'div', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'display:flex; gap:10px; flex-wrap:wrap; margin:18px 0;'}, a2: {h: 0}}, a3: $84};
+ let $a2;
+ switch(Prelude_Types_null_Foldable_List($8)) {
   case 1: {
-   $da = {h: 2 /* Text */, a1: 'No events yet.'};
+   $a2 = {h: 2 /* Text */, a1: 'No events yet.'};
    break;
   }
   case 0: {
-   $da = {h: 0 /* El */, a1: 'ul', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'margin:0; padding-left:20px;'}, a2: {h: 0}}, a3: $10};
+   $a2 = {h: 0 /* El */, a1: 'ul', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'margin:0; padding-left:20px;'}, a2: {h: 0}}, a3: $8};
    break;
   }
  }
- const $d9 = {a1: $da, a2: {h: 0}};
- const $cd = {a1: {h: 0 /* El */, a1: 'h2', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'margin:0 0 8px 0;'}, a2: {h: 0}}, a3: {a1: {h: 2 /* Text */, a1: 'Event History'}, a2: {h: 0}}}, a2: $d9};
- const $93 = {a1: $94, a2: $cd};
- const $86 = {a1: {h: 0 /* El */, a1: 'div', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'font-size:28px; letter-spacing:1px; margin-top:6px; color:#406657; min-height:34px;'}, a2: {h: 0}}, a3: {a1: {h: 2 /* Text */, a1: $1.a4}, a2: {h: 0}}}, a2: $93};
- const $77 = {a1: {h: 0 /* El */, a1: 'div', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'font-size:84px; font-weight:700; line-height:0.9; color:#1b4f3e;'}, a2: {h: 0}}, a3: {a1: {h: 2 /* Text */, a1: Prelude_Show_show_Show_Nat($1.a3)}, a2: {h: 0}}}, a2: $86};
- const $6a = {a1: {h: 0 /* El */, a1: 'h1', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'margin:8px 0 6px 0; font-size:30px;'}, a2: {h: 0}}, a3: {a1: {h: 2 /* Text */, a1: $1.a2}, a2: {h: 0}}}, a2: $77};
- const $5e = {a1: {h: 0 /* El */, a1: 'div', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'font-size:12px; opacity:0.65; text-transform:uppercase; letter-spacing:1px;'}, a2: {h: 0}}, a3: {a1: {h: 2 /* Text */, a1: 'ClientProjectionOnly'}, a2: {h: 0}}}, a2: $6a};
- const $57 = {h: 0 /* El */, a1: 'div', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'background:#ffffffd9; border:1px solid #ced8e2; border-radius:18px; padding:18px;'}, a2: {h: 0}}, a3: $5e};
- const $56 = {a1: $57, a2: {h: 0}};
- const $32 = {a1: {h: 0 /* El */, a1: 'div', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'background:#ffffffd9; border:1px solid #ced8e2; border-radius:14px; padding:12px 14px; margin-bottom:18px; display:flex; gap:12px; flex-wrap:wrap;'}, a2: {h: 0}}, a3: {a1: {h: 2 /* Text */, a1: ('Status: '+FrontendMain_statusText($0))}, a2: {a1: {h: 0 /* El */, a1: 'div', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'margin-left:auto; font-size:12px; opacity:0.72;'}, a2: {h: 0}}, a3: {a1: {h: 2 /* Text */, a1: ('Stream: '+('counter-main'+FrontendMain_n__13794_2760_feedStatus($0, $0.a5)))}, a2: {h: 0}}}, a2: {h: 0}}}}, a2: $56};
- const $2b = {h: 0 /* El */, a1: 'div', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'max-width:860px; margin:0 auto;'}, a2: {h: 0}}, a3: $32};
- const $2a = {a1: $2b, a2: {h: 0}};
- return {h: 0 /* El */, a1: 'div', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'min-height:100vh; padding:24px; background:linear-gradient(135deg,#f1eee8 0%, #e5eef7 55%, #dde7d8 100%); font-family:Georgia,serif; color:#20303b;'}, a2: {h: 0}}, a3: $2a};
+ const $a1 = {a1: $a2, a2: {h: 0}};
+ const $95 = {a1: {h: 0 /* El */, a1: 'h2', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'margin:0 0 8px 0;'}, a2: {h: 0}}, a3: {a1: {h: 2 /* Text */, a1: 'Event History'}, a2: {h: 0}}}, a2: $a1};
+ const $7c = {a1: $7d, a2: $95};
+ const $6e = {a1: {h: 0 /* El */, a1: 'div', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'font-size:84px; font-weight:700; line-height:0.9; color:#1b4f3e;'}, a2: {h: 0}}, a3: {a1: {h: 2 /* Text */, a1: Prelude_Show_show_Show_Nat($1)}, a2: {h: 0}}}, a2: $7c};
+ const $62 = {a1: {h: 0 /* El */, a1: 'h1', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'margin:8px 0 6px 0; font-size:30px;'}, a2: {h: 0}}, a3: {a1: {h: 2 /* Text */, a1: 'Counter'}, a2: {h: 0}}}, a2: $6e};
+ const $56 = {a1: {h: 0 /* El */, a1: 'div', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'font-size:12px; opacity:0.65; text-transform:uppercase; letter-spacing:1px;'}, a2: {h: 0}}, a3: {a1: {h: 2 /* Text */, a1: 'ClientProjectionOnly'}, a2: {h: 0}}}, a2: $62};
+ const $4f = {h: 0 /* El */, a1: 'div', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'background:#ffffffd9; border:1px solid #ced8e2; border-radius:18px; padding:18px;'}, a2: {h: 0}}, a3: $56};
+ const $4e = {a1: $4f, a2: {h: 0}};
+ const $2a = {a1: {h: 0 /* El */, a1: 'div', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'background:#ffffffd9; border:1px solid #ced8e2; border-radius:14px; padding:12px 14px; margin-bottom:18px; display:flex; gap:12px; flex-wrap:wrap;'}, a2: {h: 0}}, a3: {a1: {h: 2 /* Text */, a1: ('Status: '+FrontendMain_statusText($0))}, a2: {a1: {h: 0 /* El */, a1: 'div', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'margin-left:auto; font-size:12px; opacity:0.72;'}, a2: {h: 0}}, a3: {a1: {h: 2 /* Text */, a1: ('Stream: '+('counter-main'+FrontendMain_n__13159_2680_feedStatus($0, $0.a4)))}, a2: {h: 0}}}, a2: {h: 0}}}}, a2: $4e};
+ const $23 = {h: 0 /* El */, a1: 'div', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'max-width:860px; margin:0 auto;'}, a2: {h: 0}}, a3: $2a};
+ const $22 = {a1: $23, a2: {h: 0}};
+ return {h: 0 /* El */, a1: 'div', a2: {a1: {h: 1 /* Str */, a1: 'style', a2: 'min-height:100vh; padding:24px; background:linear-gradient(135deg,#f1eee8 0%, #e5eef7 55%, #dde7d8 100%); font-family:Georgia,serif; color:#20303b;'}, a2: {h: 0}}, a3: $22};
 }
 
 /* FrontendMain.updateView : State -> Cmd Msg */
@@ -2281,9 +2206,9 @@ function FrontendMain_subscribeLive($0, $1) {
 
 /* FrontendMain.statusText : State -> String */
 function FrontendMain_statusText($0) {
- switch($0.a4) {
-  case 1: return ('Working: '+$0.a3);
-  case 0: return $0.a3;
+ switch($0.a3) {
+  case 1: return ('Working: '+$0.a2);
+  case 0: return $0.a2;
  }
 }
 
@@ -2299,26 +2224,20 @@ function FrontendMain_requestResync($0) {
 
 /* FrontendMain.renderHistoryEvent : CounterEvent -> String */
 function FrontendMain_renderHistoryEvent($0) {
- switch($0.h) {
-  case 0: /* Created */ return ('Created ('+($0.a1+')'));
-  case 1: /* Incremented */ return 'Incremented';
-  case 2: /* Decremented */ return 'Decremented';
+ switch($0) {
+  case 0: return 'Incremented';
+  case 1: return 'Decremented';
  }
 }
 
 /* FrontendMain.postIncrement : Nat -> Cmd Msg */
 function FrontendMain_postIncrement($0, $1) {
- return EmKit_Frontend_Execute_postExecuteSingle($4 => Domain_JSON_Simple_toJsonCommand($4), $8 => FrontendMain_executeUrl($8), $c => ({h: 8 /* IncrementFinished */, a1: $c}), 'counter-main', $0, {h: 1 /* Increment */}, $1);
+ return EmKit_Frontend_Execute_postExecuteSingle($4 => Domain_JSON_Simple_toJsonCommand($4), $8 => FrontendMain_executeUrl($8), $c => ({h: 5 /* IncrementFinished */, a1: $c}), 'counter-main', $0, 0, $1);
 }
 
 /* FrontendMain.postDecrement : Nat -> Cmd Msg */
 function FrontendMain_postDecrement($0, $1) {
- return EmKit_Frontend_Execute_postExecuteSingle($4 => Domain_JSON_Simple_toJsonCommand($4), $8 => FrontendMain_executeUrl($8), $c => ({h: 10 /* DecrementFinished */, a1: $c}), 'counter-main', $0, {h: 2 /* Decrement */}, $1);
-}
-
-/* FrontendMain.postCreate : Nat -> String -> Cmd Msg */
-function FrontendMain_postCreate($0, $1, $2) {
- return EmKit_Frontend_Execute_postExecuteSingle($5 => Domain_JSON_Simple_toJsonCommand($5), $9 => FrontendMain_executeUrl($9), $d => ({h: 6 /* CreateFinished */, a1: $d}), 'counter-main', $0, {h: 0 /* Create */, a1: $1}, $2);
+ return EmKit_Frontend_Execute_postExecuteSingle($4 => Domain_JSON_Simple_toJsonCommand($4), $8 => FrontendMain_executeUrl($8), $c => ({h: 7 /* DecrementFinished */, a1: $c}), 'counter-main', $0, 1, $1);
 }
 
 /* FrontendMain.onError : JSErr -> IO () */
@@ -2329,9 +2248,8 @@ function FrontendMain_onError($0, $1) {
 /* FrontendMain.msgForAction : Action -> Msg */
 function FrontendMain_msgForAction($0) {
  switch($0) {
-  case 0: return {h: 5 /* CreateClicked */};
-  case 1: return {h: 7 /* IncrementClicked */};
-  case 2: return {h: 9 /* DecrementClicked */};
+  case 0: return {h: 4 /* IncrementClicked */};
+  case 1: return {h: 6 /* DecrementClicked */};
  }
 }
 
@@ -2342,7 +2260,7 @@ function FrontendMain_main($0) {
 
 /* FrontendMain.initialState : State */
 const FrontendMain_initialState = __lazy(function () {
- return {a1: Domain_emptyDetail(), a2: 'Kitchen', a3: 'Connecting live feed...', a4: 1, a5: {h: 0}};
+ return {a1: Domain_emptyDetail(), a2: 'Connecting live feed...', a3: 1, a4: {h: 0}};
 });
 
 /* FrontendMain.httpErrorMessage : HTTPError -> String */
@@ -2357,7 +2275,7 @@ function FrontendMain_httpErrorMessage($0) {
 
 /* FrontendMain.hasAction : Action -> State -> Bool */
 function FrontendMain_hasAction($0, $1) {
- return Prelude_Types_foldMap_Foldable_List({a1: $5 => $6 => Prelude_Interfaces_Bool_Semigroup_x3cx2bx3e_Semigroup_AnyBool($5, $6), a2: 0}, $c => FrontendMain_n__13631_2606_matches($1, $0, $c), FrontendMain_availableActions($1));
+ return Prelude_Types_foldMap_Foldable_List({a1: $5 => $6 => Prelude_Interfaces_Bool_Semigroup_x3cx2bx3e_Semigroup_AnyBool($5, $6), a2: 0}, $c => FrontendMain_n__13017_2546_matches($1, $0, $c), FrontendMain_availableActions($1));
 }
 
 /* FrontendMain.executeUrl : String -> String */
@@ -2379,98 +2297,71 @@ function FrontendMain_currentModel($0) {
 function FrontendMain_controller($0, $1) {
  switch($0.h) {
   case 0: /* Initialized */ {
-   const $3 = {a1: $1.a1, a2: $1.a2, a3: 'Connecting live feed...', a4: 1, a5: $1.a5};
-   return {a1: $3, a2: $c => $d => Web_MVC_Cmd_batch({a1: $11 => FrontendMain_updateView($3, $11), a2: {a1: $17 => EmKit_Frontend_SSE_requestClientId($1a => ({h: 1 /* ClientIdReady */, a1: $1a}), $17), a2: {h: 0}}}, $c, $d)};
+   const $3 = {a1: $1.a1, a2: 'Connecting live feed...', a3: 1, a4: $1.a4};
+   return {a1: $3, a2: $b => $c => Web_MVC_Cmd_batch({a1: $10 => FrontendMain_updateView($3, $10), a2: {a1: $16 => EmKit_Frontend_SSE_requestClientId($19 => ({h: 1 /* ClientIdReady */, a1: $19}), $16), a2: {h: 0}}}, $b, $c)};
   }
   case 1: /* ClientIdReady */ {
-   const $20 = {a1: $1.a1, a2: $1.a2, a3: 'Syncing stream...', a4: 1, a5: {a1: $0.a1}};
-   return {a1: $20, a2: $2a => $2b => Web_MVC_Cmd_batch({a1: $2f => FrontendMain_updateView($20, $2f), a2: {a1: $35 => FrontendMain_subscribeLive($0.a1, $35), a2: csegen_0()}}, $2a, $2b)};
+   const $1f = {a1: $1.a1, a2: 'Syncing stream...', a3: 1, a4: {a1: $0.a1}};
+   return {a1: $1f, a2: $28 => $29 => Web_MVC_Cmd_batch({a1: $2d => FrontendMain_updateView($1f, $2d), a2: {a1: $33 => FrontendMain_subscribeLive($0.a1, $33), a2: csegen_0()}}, $28, $29)};
   }
   case 2: /* ResyncFinished */ {
    switch($0.a1.h) {
     case 0: /* Left */ {
-     const $3e = {a1: $1.a1, a2: $1.a2, a3: FrontendMain_httpErrorMessage($0.a1.a1), a4: 0, a5: $1.a5};
-     return {a1: $3e, a2: $49 => FrontendMain_updateView($3e, $49)};
+     const $3c = {a1: $1.a1, a2: FrontendMain_httpErrorMessage($0.a1.a1), a3: 0, a4: $1.a4};
+     return {a1: $3c, a2: $46 => FrontendMain_updateView($3c, $46)};
     }
     case 1: /* Right */ {
-     const $4d = Domain_detailFromEvents($0.a1.a1.a1, $0.a1.a1.a2);
-     const $53 = {a1: $4d, a2: $1.a2, a3: 'Stream synced.', a4: 0, a5: $1.a5};
-     return {a1: $53, a2: $5c => FrontendMain_updateView($53, $5c)};
+     const $4a = Domain_detailFromEvents($0.a1.a1.a1, $0.a1.a1.a2);
+     const $50 = {a1: $4a, a2: 'Stream synced.', a3: 0, a4: $1.a4};
+     return {a1: $50, a2: $58 => FrontendMain_updateView($50, $58)};
     }
    }
   }
   case 3: /* LiveEventReceived */ {
-   const $6f = Text_ILex_Runner_runFrom(Prelude_Types_prim__integerToNat(BigInt(Data_Buffer_stringByteLength($0.a1))), $78 => JSON_Parser_json(), Prelude_Types_prim__integerToNat(BigInt(Data_Buffer_stringByteLength($0.a1))), 0n, Data_Buffer_Core_fromString($0.a1));
-   let $6e;
-   switch($6f.h) {
+   const $6b = Text_ILex_Runner_runFrom(Prelude_Types_prim__integerToNat(BigInt(Data_Buffer_stringByteLength($0.a1))), $74 => JSON_Parser_json(), Prelude_Types_prim__integerToNat(BigInt(Data_Buffer_stringByteLength($0.a1))), 0n, Data_Buffer_Core_fromString($0.a1));
+   let $6a;
+   switch($6b.h) {
     case 0: /* Left */ {
-     $6e = {h: 0 /* Left */, a1: Text_ParseError_toParseError({h: 0}, Data_Buffer_Core_toString(Data_Buffer_Core_fromString($0.a1), 0n, Prelude_Types_prim__integerToNat(BigInt(Data_Buffer_stringByteLength($0.a1)))), $6f.a1)};
+     $6a = {h: 0 /* Left */, a1: Text_ParseError_toParseError({h: 0}, Data_Buffer_Core_toString(Data_Buffer_Core_fromString($0.a1), 0n, Prelude_Types_prim__integerToNat(BigInt(Data_Buffer_stringByteLength($0.a1)))), $6b.a1)};
      break;
     }
     case 1: /* Right */ {
-     $6e = {h: 1 /* Right */, a1: $6f.a1};
+     $6a = {h: 1 /* Right */, a1: $6b.a1};
      break;
     }
    }
-   const $63 = JSON_Simple_FromJSON_case__decode_14999($66 => EmKit_Wire_JSON_Simple_fromJsonStreamEvent($69 => Domain_JSON_Simple_fromJsonCounterEvent($69), $66), $0.a1, $6e);
-   return FrontendMain_case__controller_3443($0.a1, $1, $63);
+   const $5f = JSON_Simple_FromJSON_case__decode_14999($62 => EmKit_Wire_JSON_Simple_fromJsonStreamEvent($65 => Domain_JSON_Simple_fromJsonCounterEvent($65), $62), $0.a1, $6a);
+   return FrontendMain_case__controller_3209($0.a1, $1, $5f);
   }
-  case 4: /* CreateNameChanged */ return {a1: {a1: $1.a1, a2: $0.a1, a3: $1.a3, a4: $1.a4, a5: $1.a5}, a2: $9d => csegen_37()()};
-  case 5: /* CreateClicked */ {
-   const $a0 = Data_String_trim($1.a2);
-   const $a4 = $1.a1.a1;
-   switch(Prelude_EqOrd_x3dx3d_Eq_String($a0, '')) {
-    case 1: {
-     const $ab = {a1: $1.a1, a2: $1.a2, a3: 'Counter name is required.', a4: 0, a5: $1.a5};
-     return {a1: $ab, a2: $b4 => FrontendMain_updateView($ab, $b4)};
+  case 4: /* IncrementClicked */ {
+   const $91 = {a1: $1.a1, a2: 'Incrementing counter...', a3: 1, a4: $1.a4};
+   return {a1: $91, a2: $99 => $9a => Web_MVC_Cmd_batch({a1: $9e => FrontendMain_updateView($91, $9e), a2: {a1: $a4 => FrontendMain_postIncrement($1.a1.a1, $a4), a2: {h: 0}}}, $99, $9a)};
+  }
+  case 5: /* IncrementFinished */ {
+   switch($0.a1.h) {
+    case 0: /* Left */ {
+     const $ae = {a1: $1.a1, a2: FrontendMain_httpErrorMessage($0.a1.a1), a3: 0, a4: $1.a4};
+     return {a1: $ae, a2: $b8 => FrontendMain_updateView($ae, $b8)};
     }
-    case 0: {
-     const $b8 = {a1: $1.a1, a2: $1.a2, a3: 'Creating counter...', a4: 1, a5: $1.a5};
-     return {a1: $b8, a2: $c1 => $c2 => Web_MVC_Cmd_batch({a1: $c6 => FrontendMain_updateView($b8, $c6), a2: {a1: $cc => FrontendMain_postCreate($a4, $a0, $cc), a2: {h: 0}}}, $c1, $c2)};
+    case 1: /* Right */ {
+     const $bc = {a1: $1.a1, a2: 'Increment accepted. Waiting for live update...', a3: 0, a4: $1.a4};
+     return {a1: $bc, a2: $c4 => FrontendMain_updateView($bc, $c4)};
     }
    }
   }
-  case 6: /* CreateFinished */ {
+  case 6: /* DecrementClicked */ {
+   const $c8 = {a1: $1.a1, a2: 'Decrementing counter...', a3: 1, a4: $1.a4};
+   return {a1: $c8, a2: $d0 => $d1 => Web_MVC_Cmd_batch({a1: $d5 => FrontendMain_updateView($c8, $d5), a2: {a1: $db => FrontendMain_postDecrement($1.a1.a1, $db), a2: {h: 0}}}, $d0, $d1)};
+  }
+  case 7: /* DecrementFinished */ {
    switch($0.a1.h) {
     case 0: /* Left */ {
-     const $d5 = {a1: $1.a1, a2: $1.a2, a3: FrontendMain_httpErrorMessage($0.a1.a1), a4: 0, a5: $1.a5};
-     return {a1: $d5, a2: $e0 => FrontendMain_updateView($d5, $e0)};
+     const $e5 = {a1: $1.a1, a2: FrontendMain_httpErrorMessage($0.a1.a1), a3: 0, a4: $1.a4};
+     return {a1: $e5, a2: $ef => FrontendMain_updateView($e5, $ef)};
     }
     case 1: /* Right */ {
-     const $e4 = {a1: $1.a1, a2: '', a3: 'Create accepted. Waiting for live update...', a4: 0, a5: $1.a5};
-     return {a1: $e4, a2: $ed => FrontendMain_updateView($e4, $ed)};
-    }
-   }
-  }
-  case 7: /* IncrementClicked */ {
-   const $f1 = {a1: $1.a1, a2: $1.a2, a3: 'Incrementing counter...', a4: 1, a5: $1.a5};
-   return {a1: $f1, a2: $fa => $fb => Web_MVC_Cmd_batch({a1: $ff => FrontendMain_updateView($f1, $ff), a2: {a1: $105 => FrontendMain_postIncrement($1.a1.a1, $105), a2: {h: 0}}}, $fa, $fb)};
-  }
-  case 8: /* IncrementFinished */ {
-   switch($0.a1.h) {
-    case 0: /* Left */ {
-     const $10f = {a1: $1.a1, a2: $1.a2, a3: FrontendMain_httpErrorMessage($0.a1.a1), a4: 0, a5: $1.a5};
-     return {a1: $10f, a2: $11a => FrontendMain_updateView($10f, $11a)};
-    }
-    case 1: /* Right */ {
-     const $11e = {a1: $1.a1, a2: $1.a2, a3: 'Increment accepted. Waiting for live update...', a4: 0, a5: $1.a5};
-     return {a1: $11e, a2: $127 => FrontendMain_updateView($11e, $127)};
-    }
-   }
-  }
-  case 9: /* DecrementClicked */ {
-   const $12b = {a1: $1.a1, a2: $1.a2, a3: 'Decrementing counter...', a4: 1, a5: $1.a5};
-   return {a1: $12b, a2: $134 => $135 => Web_MVC_Cmd_batch({a1: $139 => FrontendMain_updateView($12b, $139), a2: {a1: $13f => FrontendMain_postDecrement($1.a1.a1, $13f), a2: {h: 0}}}, $134, $135)};
-  }
-  case 10: /* DecrementFinished */ {
-   switch($0.a1.h) {
-    case 0: /* Left */ {
-     const $149 = {a1: $1.a1, a2: $1.a2, a3: FrontendMain_httpErrorMessage($0.a1.a1), a4: 0, a5: $1.a5};
-     return {a1: $149, a2: $154 => FrontendMain_updateView($149, $154)};
-    }
-    case 1: /* Right */ {
-     const $158 = {a1: $1.a1, a2: $1.a2, a3: 'Decrement accepted. Waiting for live update...', a4: 0, a5: $1.a5};
-     return {a1: $158, a2: $161 => FrontendMain_updateView($158, $161)};
+     const $f3 = {a1: $1.a1, a2: 'Decrement accepted. Waiting for live update...', a3: 0, a4: $1.a4};
+     return {a1: $f3, a2: $fb => FrontendMain_updateView($f3, $fb)};
     }
    }
   }
@@ -2493,7 +2384,7 @@ function Web_MVC_Http_xsend($0, $1) {
   case 0: /* Empty */ return Web_Raw_Xhr_XMLHttpRequest_send($1);
   case 1: /* StringBody */ return Web_Raw_Xhr_XMLHttpRequest_sendx27($1, {a1: {a1: Data_List_Quantifiers_Extra_inject(15n, $0.a2)}});
   case 2: /* JSONBody */ return Web_Raw_Xhr_XMLHttpRequest_sendx27($1, {a1: {a1: Data_List_Quantifiers_Extra_inject(15n, JSON_Parser_showImpl($0.a1($0.a2)))}});
-  case 3: /* FormBody */ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Raw_Xhr_FormData_new$(), fd => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), $25 => Control_Monad_Either_Extra_traverseList_($28 => Web_MVC_Http_append(fd, $28), $0.a1, $25), $2f => Web_Raw_Xhr_XMLHttpRequest_sendx27($1, {a1: {a1: Data_List_Quantifiers_Extra_inject(13n, fd)}})));
+  case 3: /* FormBody */ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Raw_Xhr_FormData_new$(), fd => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), $25 => Control_Monad_Either_Extra_traverseList_($28 => Web_MVC_Http_append(fd, $28), $0.a1, $25), $2f => Web_Raw_Xhr_XMLHttpRequest_sendx27($1, {a1: {a1: Data_List_Quantifiers_Extra_inject(13n, fd)}})));
  }
 }
 
@@ -2516,24 +2407,24 @@ function Web_MVC_Http_request($0, $1, $2, $3, $4, $5, $6) {
      const $4e = Web_Raw_Xhr_XMLHttpRequest_open_(x, $51, $2);
      const $5d = $5e => {
       const $60 = Prelude_Types_List_tailRecAppend(Web_MVC_Http_bodyHeaders($3), $1);
-      const $5f = () => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), $6b => Control_Monad_Either_Extra_traverseList_($6e => Web_Raw_Xhr_XMLHttpRequest_setRequestHeader(x, $6e.a1, $6e.a2), $60, $6b), $77 => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Prelude_Interfaces_traverse_(csegen_56()(), {a1: acc => elem => func => init => input => Prelude_Types_foldr_Foldable_Maybe(func, init, input), a2: elem => acc => func => init => input => Prelude_Types_foldl_Foldable_Maybe(func, init, input), a3: elem => $8e => Prelude_Types_null_Foldable_Maybe($8e), a4: elem => acc => m => $92 => funcM => init => input => Prelude_Types_foldlM_Foldable_Maybe($92, funcM, init, input), a5: elem => $99 => Prelude_Types_toList_Foldable_Maybe($99), a6: a => m => $9d => f => $9e => Prelude_Types_foldMap_Foldable_Maybe($9d, f, $9e)}, $a4 => JS_Attribute_set(Web_Raw_Xhr_XMLHttpRequest_timeout(x), $a4))($5), $ac => Web_MVC_Http_xsend($3, x)));
+      const $5f = () => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), $6b => Control_Monad_Either_Extra_traverseList_($6e => Web_Raw_Xhr_XMLHttpRequest_setRequestHeader(x, $6e.a1, $6e.a2), $60, $6b), $77 => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Prelude_Interfaces_traverse_(csegen_51()(), {a1: acc => elem => func => init => input => Prelude_Types_foldr_Foldable_Maybe(func, init, input), a2: elem => acc => func => init => input => Prelude_Types_foldl_Foldable_Maybe(func, init, input), a3: elem => $8e => Prelude_Types_null_Foldable_Maybe($8e), a4: elem => acc => m => $92 => funcM => init => input => Prelude_Types_foldlM_Foldable_Maybe($92, funcM, init, input), a5: elem => $99 => Prelude_Types_toList_Foldable_Maybe($99), a6: a => m => $9d => f => $9e => Prelude_Types_foldMap_Foldable_Maybe($9d, f, $9e)}, $a4 => JS_Attribute_set(Web_Raw_Xhr_XMLHttpRequest_timeout(x), $a4))($5), $ac => Web_MVC_Http_xsend($3, x)));
       return $5f();
      };
-     return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), $4e, $5d);
+     return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), $4e, $5d);
     };
-    return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), JS_Attribute_x3fx3e($3d => Web_Html_callback_Callback_EventHandlerNonNull_x28x25pix20RigWx20Explicitx20Nothingx20Eventx20x28JSIOx20x28x7cUnitx2cMkUnitx7cx29x29x29($3d), Web_Raw_Xhr_XMLHttpRequestEventTarget_ontimeout(x), Web_MVC_Http_onerror($6, $4, {h: 0 /* Timeout */})), $48);
+    return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), JS_Attribute_x3fx3e($3d => Web_Html_callback_Callback_EventHandlerNonNull_x28x25pix20RigWx20Explicitx20Nothingx20Eventx20x28JSIOx20x28x7cUnitx2cMkUnitx7cx29x29x29($3d), Web_Raw_Xhr_XMLHttpRequestEventTarget_ontimeout(x), Web_MVC_Http_onerror($6, $4, {h: 0 /* Timeout */})), $48);
    };
-   return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), JS_Attribute_x3fx3e($29 => Web_Html_callback_Callback_EventHandlerNonNull_x28x25pix20RigWx20Explicitx20Nothingx20Eventx20x28JSIOx20x28x7cUnitx2cMkUnitx7cx29x29x29($29), Web_Raw_Xhr_XMLHttpRequestEventTarget_onload(x), Web_MVC_Http_onload($6, $4, x)), $34);
+   return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), JS_Attribute_x3fx3e($29 => Web_Html_callback_Callback_EventHandlerNonNull_x28x25pix20RigWx20Explicitx20Nothingx20Eventx20x28JSIOx20x28x7cUnitx2cMkUnitx7cx29x29x29($29), Web_Raw_Xhr_XMLHttpRequestEventTarget_onload(x), Web_MVC_Http_onload($6, $4, x)), $34);
   };
-  return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), JS_Attribute_x3fx3e($15 => Web_Html_callback_Callback_EventHandlerNonNull_x28x25pix20RigWx20Explicitx20Nothingx20Eventx20x28JSIOx20x28x7cUnitx2cMkUnitx7cx29x29x29($15), Web_Raw_Xhr_XMLHttpRequestEventTarget_onerror(x), Web_MVC_Http_onerror($6, $4, {h: 1 /* NetworkError */})), $20);
+  return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), JS_Attribute_x3fx3e($15 => Web_Html_callback_Callback_EventHandlerNonNull_x28x25pix20RigWx20Explicitx20Nothingx20Eventx20x28JSIOx20x28x7cUnitx2cMkUnitx7cx29x29x29($15), Web_Raw_Xhr_XMLHttpRequestEventTarget_onerror(x), Web_MVC_Http_onerror($6, $4, {h: 1 /* NetworkError */})), $20);
  };
- return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Raw_Xhr_XMLHttpRequest_new$(), $d);
+ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Raw_Xhr_XMLHttpRequest_new$(), $d);
 }
 
 /* Web.MVC.Http.onsuccess : (r -> JSIO ()) -> Expect r -> XMLHttpRequest -> JSIO () */
 function Web_MVC_Http_onsuccess($0, $1, $2) {
  switch($1.h) {
-  case 1: /* ExpectString */ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Raw_Xhr_XMLHttpRequest_responseText($2), $c => $0($1.a1({h: 1 /* Right */, a1: $c})));
+  case 1: /* ExpectString */ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Raw_Xhr_XMLHttpRequest_responseText($2), $c => $0($1.a1({h: 1 /* Right */, a1: $c})));
   case 2: /* ExpectAny */ return $0($1.a1({h: 1 /* Right */, a1: undefined}));
   case 0: /* ExpectJSON */ {
    const $1e = s => {
@@ -2564,7 +2455,7 @@ function Web_MVC_Http_onsuccess($0, $1, $2) {
     const $20 = $1.a2($22);
     return $0($20);
    };
-   return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Raw_Xhr_XMLHttpRequest_responseText($2), $1e);
+   return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Raw_Xhr_XMLHttpRequest_responseText($2), $1e);
   }
  }
 }
@@ -2588,7 +2479,7 @@ function Web_MVC_Http_onload($0, $1, $2) {
    case 1: return Web_MVC_Http_onsuccess($0, $1, $2);
   }
  };
- return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Raw_Xhr_XMLHttpRequest_status($2), $a);
+ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Raw_Xhr_XMLHttpRequest_status($2), $a);
 }
 
 /* Web.MVC.Http.onerror : (r -> JSIO ()) -> Expect r -> HTTPError -> JSIO () */
@@ -2657,13 +2548,13 @@ function Builtin_fst($0) {
 function Prelude_Types_traverse_Traversable_List($0, $1, $2) {
  switch($2.h) {
   case 0: /* nil */ return $0.a2(undefined)({h: 0});
-  case undefined: /* cons */ return $0.a3(undefined)(undefined)($0.a3(undefined)(undefined)($0.a2(undefined)(csegen_74()))($1($2.a1)))(Prelude_Types_traverse_Traversable_List($0, $1, $2.a2));
+  case undefined: /* cons */ return $0.a3(undefined)(undefined)($0.a3(undefined)(undefined)($0.a2(undefined)(csegen_69()))($1($2.a1)))(Prelude_Types_traverse_Traversable_List($0, $1, $2.a2));
  }
 }
 
 /* Prelude.Types.toList */
 function Prelude_Types_toList_Foldable_Maybe($0) {
- return Prelude_Types_foldr_Foldable_Maybe(csegen_74(), {h: 0}, $0);
+ return Prelude_Types_foldr_Foldable_Maybe(csegen_69(), {h: 0}, $0);
 }
 
 /* Prelude.Types.rangeFromTo */
@@ -2832,14 +2723,6 @@ function Prelude_Types_x3ex3ex3d_Monad_Maybe($0, $1) {
  }
 }
 
-/* Prelude.Types.>>= */
-function Prelude_Types_x3ex3ex3d_Monad_x28Eitherx20x24ex29($0, $1) {
- switch($0.h) {
-  case 0: /* Left */ return {h: 0 /* Left */, a1: $0.a1};
-  case 1: /* Right */ return $1($0.a1);
- }
-}
-
 /* Prelude.Types.>= */
 function Prelude_Types_x3ex3d_Ord_Nat($0, $1) {
  return Prelude_EqOrd_x2fx3d_Eq_Ordering(Prelude_EqOrd_compare_Ord_Integer($0, $1), 0);
@@ -2933,20 +2816,6 @@ function Prelude_Types_List_lengthTR($0) {
 /* Prelude.Types.String.length : String -> Nat */
 function Prelude_Types_String_length($0) {
  return Prelude_Types_prim__integerToNat(BigInt($0.length));
-}
-
-/* Prelude.Types.isSpace : Char -> Bool */
-function Prelude_Types_isSpace($0) {
- switch($0) {
-  case ' ': return 1;
-  case '\u{9}': return 1;
-  case '\r': return 1;
-  case '\n': return 1;
-  case '\u{c}': return 1;
-  case '\u{b}': return 1;
-  case '\u{a0}': return 1;
-  default: return 0;
- }
 }
 
 /* Prelude.Types.isDigit : Char -> Bool */
@@ -3559,11 +3428,11 @@ function PrimIO_unsafeCreateWorld($0) {
 function JS_Util_unMaybe($0, $1) {
  const $7 = $8 => {
   switch($8.h) {
-   case undefined: /* just */ return Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), $8.a1);
-   case 0: /* nothing */ return Control_Monad_Error_Interface_throwError_MonadError_x24e_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), {h: 2 /* IsNothing */, a1: $0});
+   case undefined: /* just */ return Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), $8.a1);
+   case 0: /* nothing */ return Control_Monad_Error_Interface_throwError_MonadError_x24e_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), {h: 2 /* IsNothing */, a1: $0});
   }
  };
- return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), $1, $7);
+ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), $1, $7);
 }
 
 /* JS.Util.runJSWith : Lazy (JSErr -> IO a) -> JSIO a -> IO a */
@@ -3574,14 +3443,14 @@ function JS_Util_runJSWith($0, $1, $2) {
 
 /* JS.Util.runJS : JSIO () -> IO () */
 function JS_Util_runJS($0, $1) {
- return JS_Util_runJSWith(() => $4 => JS_Util_consoleLog(csegen_111()(), JS_Util_dispErr($4)), $0, $1);
+ return JS_Util_runJSWith(() => $4 => JS_Util_consoleLog(csegen_106()(), JS_Util_dispErr($4)), $0, $1);
 }
 
 /* JS.Util.dispErr : JSErr -> String */
 function JS_Util_dispErr($0) {
  switch($0.h) {
-  case 1: /* CastErr */ return Prelude_Types_foldMap_Foldable_List(csegen_114(), $6 => $6, {a1: 'Error when casting a Javascript value in function ', a2: {a1: $0.a1, a2: {a1: '.\n  The value was: ', a2: {a1: JS_Util_prim__show($0.a2), a2: {a1: '.\n  The value\'s type was ', a2: {a1: JS_Util_prim__typeOf($0.a2), a2: {a1: '.', a2: {h: 0}}}}}}}});
-  case 2: /* IsNothing */ return Prelude_Types_foldMap_Foldable_List(csegen_114(), $1e => $1e, {a1: 'Trying to extract a value from Nothing at ', a2: {a1: $0.a1, a2: {h: 0}}});
+  case 1: /* CastErr */ return Prelude_Types_foldMap_Foldable_List(csegen_109(), $6 => $6, {a1: 'Error when casting a Javascript value in function ', a2: {a1: $0.a1, a2: {a1: '.\n  The value was: ', a2: {a1: JS_Util_prim__show($0.a2), a2: {a1: '.\n  The value\'s type was ', a2: {a1: JS_Util_prim__typeOf($0.a2), a2: {a1: '.', a2: {h: 0}}}}}}}});
+  case 2: /* IsNothing */ return Prelude_Types_foldMap_Foldable_List(csegen_109(), $1e => $1e, {a1: 'Trying to extract a value from Nothing at ', a2: {a1: $0.a1, a2: {h: 0}}});
   case 0: /* Caught */ return $0.a1;
  }
 }
@@ -3737,7 +3606,7 @@ function Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x2
 
 /* Control.Monad.Error.Either.<*> */
 function Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29($0, $1, $2) {
- return $0.a3(undefined)(undefined)($0.a3(undefined)(undefined)($0.a2(undefined)(csegen_115()))($1))($2);
+ return $0.a3(undefined)(undefined)($0.a3(undefined)(undefined)($0.a2(undefined)(csegen_110()))($1))($2);
 }
 
 /* JS.Union.toFFI */
@@ -3805,15 +3674,15 @@ function JS_Marshall_fromFFI_FromFFI_Bits32_Bits32($0) {
 
 /* JS.Marshall.tryJS : FromFFI a ffiRepr => Lazy String -> PrimIO ffiRepr -> JSIO a */
 function JS_Marshall_tryJS($0, $1, $2) {
- return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $2), $e => JS_Marshall_tryFromFFI($0, $1, $e));
+ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $2), $e => JS_Marshall_tryFromFFI($0, $1, $e));
 }
 
 /* JS.Marshall.tryFromFFI : FromFFI a ffiRepr => Lazy String -> ffiRepr -> JSIO a */
 function JS_Marshall_tryFromFFI($0, $1, $2) {
  const $3 = $0($2);
  switch($3.h) {
-  case 0: /* nothing */ return Control_Monad_Error_Interface_throwError_MonadError_x24e_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), {h: 1 /* CastErr */, a1: $1(), a2: $2});
-  case undefined: /* just */ return Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), $3.a1);
+  case 0: /* nothing */ return Control_Monad_Error_Interface_throwError_MonadError_x24e_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), {h: 1 /* CastErr */, a1: $1(), a2: $2});
+  case undefined: /* just */ return Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), $3.a1);
  }
 }
 
@@ -3834,55 +3703,14 @@ function JS_Inheritance_tryCast_($0, $1, $2) {
 function JS_Inheritance_tryCast($0, $1, $2) {
  const $3 = $0(undefined)($2);
  switch($3.h) {
-  case undefined: /* just */ return Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), $3.a1);
-  case 0: /* nothing */ return Control_Monad_Error_Interface_throwError_MonadError_x24e_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), {h: 1 /* CastErr */, a1: $1(), a2: $2});
- }
-}
-
-/* Data.String.with block in asList */
-function Data_String_with__asList_9840($0, $1) {
- switch($0) {
-  case '': {
-   switch($1.h) {
-    case 0: /* nil */ return {h: 0 /* Nil */};
-    default: return {h: 1 /* :: */, a1: $1.a1, a2: $1.a2, a3: () => Data_String_asList($1.a2)};
-   }
-  }
-  default: return {h: 1 /* :: */, a1: $1.a1, a2: $1.a2, a3: () => Data_String_asList($1.a2)};
- }
-}
-
-/* Data.String.trim : String -> String */
-function Data_String_trim($0) {
- return Data_String_ltrim(Data_String_rtrim($0));
-}
-
-/* Data.String.strM : (x : String) -> StrM x */
-function Data_String_strM($0) {
- switch($0) {
-  case '': return {h: 0};
-  default: return {a1: ($0.charAt(0)), a2: ($0.slice(1))};
+  case undefined: /* just */ return Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), $3.a1);
+  case 0: /* nothing */ return Control_Monad_Error_Interface_throwError_MonadError_x24e_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), {h: 1 /* CastErr */, a1: $1(), a2: $2});
  }
 }
 
 /* Data.String.singleton : Char -> String */
 function Data_String_singleton($0) {
  return ($0+'');
-}
-
-/* Data.String.rtrim : String -> String */
-function Data_String_rtrim($0) {
- return _strReverse(Data_String_ltrim(_strReverse($0)));
-}
-
-/* Data.String.ltrim : String -> String */
-function Data_String_ltrim($0) {
- return Data_String_with__ltrim_9864($0, Data_String_asList($0));
-}
-
-/* Data.String.asList : (str : String) -> AsList str */
-function Data_String_asList($0) {
- return Data_String_with__asList_9840($0, Data_String_strM($0));
 }
 
 /* Data.List.Quantifiers.Extra.inject : Has t ts => f t -> Any f ts */
@@ -3995,7 +3823,7 @@ function JS_Array_n__5323_8128_fill($0, $1, $2, $3, $4) {
 
 /* JS.Array.toFFI */
 function JS_Array_toFFI_ToFFI_x28Listx20x24ax29_x28IOx20x28Arrayx20x24bx29x29($0, $1) {
- return JS_Array_fromListIO(csegen_111()(), Prelude_Types_List_mapAppend({h: 0}, $0, $1));
+ return JS_Array_fromListIO(csegen_106()(), Prelude_Types_List_mapAppend({h: 0}, $0, $1));
 }
 
 /* JS.Array.writeIO : HasIO io => Array a -> Bits32 -> a -> io () */
@@ -4043,13 +3871,13 @@ function JS_Attribute_get($0, $1) {
 /* JS.Attribute.fromPrim : ToFFI a b => FromFFI a b =>
 String -> (obj -> PrimIO b) -> (obj -> b -> PrimIO ()) -> obj -> Attribute True id a */
 function JS_Attribute_fromPrim($0, $1, $2, $3, $4, $5) {
- return {h: 0 /* Attr */, a1: JS_Marshall_tryJS($1, () => $2, $3($5)), a2: a => Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $4($5)($0(a)))};
+ return {h: 0 /* Attr */, a1: JS_Marshall_tryJS($1, () => $2, $3($5)), a2: a => Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $4($5)($0(a)))};
 }
 
 /* JS.Attribute.fromNullablePrim : ToFFI a b => FromFFI a b =>
 String -> (obj -> PrimIO (Nullable b)) -> (obj -> Nullable b -> PrimIO ()) -> obj -> Attribute False Maybe a */
 function JS_Attribute_fromNullablePrim($0, $1, $2, $3, $4, $5) {
- return {h: 1 /* NullableAttr */, a1: JS_Marshall_tryJS($9 => JS_Nullable_fromFFI_FromFFI_x28Maybex20x24ax29_x28Nullablex20x24bx29($1, $9), () => $2, $3($5)), a2: a => Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $4($5)(JS_Nullable_toFFI_ToFFI_x28Maybex20x24ax29_x28Nullablex20x24bx29($0, a)))};
+ return {h: 1 /* NullableAttr */, a1: JS_Marshall_tryJS($9 => JS_Nullable_fromFFI_FromFFI_x28Maybex20x24ax29_x28Nullablex20x24bx29($1, $9), () => $2, $3($5)), a2: a => Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $4($5)(JS_Nullable_toFFI_ToFFI_x28Maybex20x24ax29_x28Nullablex20x24bx29($0, a)))};
 }
 
 /* JS.Attribute.(?>) : Callback a (x -> y) => Attribute b f a -> y -> JSIO () */
@@ -4064,7 +3892,7 @@ function JS_Attribute_x2ex3d($0, $1) {
 
 /* JS.Attribute.(!>) : Callback a fun => Attribute b f a -> fun -> JSIO () */
 function JS_Attribute_x21x3e($0, $1, $2) {
- return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), $0($2), $b => JS_Attribute_set($1, $b));
+ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), $0($2), $b => JS_Attribute_set($1, $b));
 }
 
 /* Control.Monad.Either.Extra.traverseList_ : (t -> EitherT e IO ()) -> List t -> EitherT e IO () */
@@ -4079,12 +3907,12 @@ function Web_Raw_Xhr_XMLHttpRequest_timeout($0) {
 
 /* Web.Raw.Xhr.XMLHttpRequest.status : XMLHttpRequest -> JSIO Bits16 */
 function Web_Raw_Xhr_XMLHttpRequest_status($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_XhrPrim_XMLHttpRequest_prim__status($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_XhrPrim_XMLHttpRequest_prim__status($0, $6));
 }
 
 /* Web.Raw.Xhr.XMLHttpRequest.setRequestHeader : XMLHttpRequest -> ByteString -> ByteString -> JSIO () */
 function Web_Raw_Xhr_XMLHttpRequest_setRequestHeader($0, $1, $2) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $8 => Web_Internal_XhrPrim_XMLHttpRequest_prim__setRequestHeader($0, $1, $2, $8));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $8 => Web_Internal_XhrPrim_XMLHttpRequest_prim__setRequestHeader($0, $1, $2, $8));
 }
 
 /* Web.Raw.Xhr.XMLHttpRequest.send' : XMLHttpRequest -> Optional (Maybe (HSum [Document,
@@ -4104,22 +3932,22 @@ function Web_Raw_Xhr_XMLHttpRequest_setRequestHeader($0, $1, $2) {
                                          URLSearchParams,
                                          String])) -> JSIO () */
 function Web_Raw_Xhr_XMLHttpRequest_sendx27($0, $1) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $7 => Web_Internal_XhrPrim_XMLHttpRequest_prim__send($0, JS_Undefined_toFFI_ToFFI_x28Optionalx20x24ax29_x28UndefOrx20x24bx29($d => JS_Nullable_toFFI_ToFFI_x28Maybex20x24ax29_x28Nullablex20x24bx29($10 => JS_Union_toFFI_ToFFI_x28HSumx20x28x28x3ax3ax20x24ax29x20x28x28x3ax3ax20x24bx29x20x28x28x3ax3ax20x24cx29x20x28x28x3ax3ax20x24dx29x20x28x28x3ax3ax20x24ex29x20x28x28x3ax3ax20x24fx29x20x28x28x3ax3ax20x24gx29x20x28x28x3ax3ax20x24hx29x20x28x28x3ax3ax20x24ix29x20x28x28x3ax3ax20x24jx29x20x28x28x3ax3ax20x24kx29x20x28x28x3ax3ax20x24lx29x20x28x28x3ax3ax20x24a1x29x20x28x28x3ax3ax20x24a2x29x20x28x28x3ax3ax20x24a3x29x20x28x28x3ax3ax20x24a4x29x20Nilx29x29x29x29x29x29x29x29x29x29x29x29x29x29x29x29x29_x28x28x28x28x28x28x28x28x28x28x28x28x28x28x28x28Union16x20x24mx29x20x24nx29x20x24ox29x20x24px29x20x24qx29x20x24rx29x20x24sx29x20x24tx29x20x24ux29x20x24vx29x20x24wx29x20x24xx29x20x24yx29x20x24zx29x20x24z1x29x20x24z2x29({a1: $14 => $14, a2: {a1: $17 => $17, a2: {a1: $1a => $1a, a2: {a1: $1d => $1d, a2: {a1: $20 => $20, a2: {a1: $23 => $23, a2: {a1: $26 => $26, a2: {a1: $29 => $29, a2: {a1: $2c => $2c, a2: {a1: $2f => $2f, a2: {a1: $32 => $32, a2: {a1: $35 => $35, a2: {a1: $38 => $38, a2: {a1: $3b => $3b, a2: csegen_119()}}}}}}}}}}}}}}, $10), $d), $1), $7));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $7 => Web_Internal_XhrPrim_XMLHttpRequest_prim__send($0, JS_Undefined_toFFI_ToFFI_x28Optionalx20x24ax29_x28UndefOrx20x24bx29($d => JS_Nullable_toFFI_ToFFI_x28Maybex20x24ax29_x28Nullablex20x24bx29($10 => JS_Union_toFFI_ToFFI_x28HSumx20x28x28x3ax3ax20x24ax29x20x28x28x3ax3ax20x24bx29x20x28x28x3ax3ax20x24cx29x20x28x28x3ax3ax20x24dx29x20x28x28x3ax3ax20x24ex29x20x28x28x3ax3ax20x24fx29x20x28x28x3ax3ax20x24gx29x20x28x28x3ax3ax20x24hx29x20x28x28x3ax3ax20x24ix29x20x28x28x3ax3ax20x24jx29x20x28x28x3ax3ax20x24kx29x20x28x28x3ax3ax20x24lx29x20x28x28x3ax3ax20x24a1x29x20x28x28x3ax3ax20x24a2x29x20x28x28x3ax3ax20x24a3x29x20x28x28x3ax3ax20x24a4x29x20Nilx29x29x29x29x29x29x29x29x29x29x29x29x29x29x29x29x29_x28x28x28x28x28x28x28x28x28x28x28x28x28x28x28x28Union16x20x24mx29x20x24nx29x20x24ox29x20x24px29x20x24qx29x20x24rx29x20x24sx29x20x24tx29x20x24ux29x20x24vx29x20x24wx29x20x24xx29x20x24yx29x20x24zx29x20x24z1x29x20x24z2x29({a1: $14 => $14, a2: {a1: $17 => $17, a2: {a1: $1a => $1a, a2: {a1: $1d => $1d, a2: {a1: $20 => $20, a2: {a1: $23 => $23, a2: {a1: $26 => $26, a2: {a1: $29 => $29, a2: {a1: $2c => $2c, a2: {a1: $2f => $2f, a2: {a1: $32 => $32, a2: {a1: $35 => $35, a2: {a1: $38 => $38, a2: {a1: $3b => $3b, a2: csegen_114()}}}}}}}}}}}}}}, $10), $d), $1), $7));
 }
 
 /* Web.Raw.Xhr.XMLHttpRequest.send : XMLHttpRequest -> JSIO () */
 function Web_Raw_Xhr_XMLHttpRequest_send($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_XhrPrim_XMLHttpRequest_prim__send($0, JS_Undefined_undef(), $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_XhrPrim_XMLHttpRequest_prim__send($0, JS_Undefined_undef(), $6));
 }
 
 /* Web.Raw.Xhr.XMLHttpRequest.responseText : XMLHttpRequest -> JSIO String */
 function Web_Raw_Xhr_XMLHttpRequest_responseText($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_XhrPrim_XMLHttpRequest_prim__responseText($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_XhrPrim_XMLHttpRequest_prim__responseText($0, $6));
 }
 
 /* Web.Raw.Xhr.XMLHttpRequest.open_ : XMLHttpRequest -> ByteString -> String -> JSIO () */
 function Web_Raw_Xhr_XMLHttpRequest_open_($0, $1, $2) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $8 => Web_Internal_XhrPrim_XMLHttpRequest_prim__open($0, $1, $2, $8));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $8 => Web_Internal_XhrPrim_XMLHttpRequest_prim__open($0, $1, $2, $8));
 }
 
 /* Web.Raw.Xhr.XMLHttpRequestEventTarget.ontimeout : {auto 0 conArg : JSType t} ->
@@ -4145,23 +3973,23 @@ function Web_Raw_Xhr_XMLHttpRequestEventTarget_onerror($0) {
 
 /* Web.Raw.Xhr.XMLHttpRequest.new : JSIO XMLHttpRequest */
 const Web_Raw_Xhr_XMLHttpRequest_new$ = __lazy(function () {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $5 => Web_Internal_XhrPrim_XMLHttpRequest_prim__new($5));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $5 => Web_Internal_XhrPrim_XMLHttpRequest_prim__new($5));
 });
 
 /* Web.Raw.Xhr.FormData.new : JSIO FormData */
 const Web_Raw_Xhr_FormData_new$ = __lazy(function () {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $5 => Web_Internal_XhrPrim_FormData_prim__new(JS_Undefined_undef(), $5));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $5 => Web_Internal_XhrPrim_FormData_prim__new(JS_Undefined_undef(), $5));
 });
 
 /* Web.Raw.Xhr.FormData.append1 : {auto 0 conArg : JSType t3} -> {auto 0 _ : Elem Blob (Types t3)} ->
 FormData -> String -> t3 -> JSIO () */
 function Web_Raw_Xhr_FormData_append1($0, $1, $2) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $8 => Web_Internal_XhrPrim_FormData_prim__append1($0, $1, $2, JS_Undefined_undef(), $8));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $8 => Web_Internal_XhrPrim_FormData_prim__append1($0, $1, $2, JS_Undefined_undef(), $8));
 }
 
 /* Web.Raw.Xhr.FormData.append : FormData -> String -> String -> JSIO () */
 function Web_Raw_Xhr_FormData_append($0, $1, $2) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $8 => Web_Internal_XhrPrim_FormData_prim__append($0, $1, $2, $8));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $8 => Web_Internal_XhrPrim_FormData_prim__append($0, $1, $2, $8));
 }
 
 /* Web.Internal.UIEventsTypes.safeCast */
@@ -4221,17 +4049,12 @@ function Web_Html_callback_Callback_EventHandlerNonNull_x28x25pix20RigWx20Explic
 
 /* Web.Raw.Html.EventHandlerNonNull.toEventHandlerNonNull : (Event -> IO AnyPtr) -> JSIO EventHandlerNonNull */
 function Web_Raw_Html_EventHandlerNonNull_toEventHandlerNonNull($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_HtmlPrim_EventHandlerNonNull_prim__toEventHandlerNonNull($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_HtmlPrim_EventHandlerNonNull_prim__toEventHandlerNonNull($0, $6));
 }
 
 /* Web.Raw.Html.HTMLTemplateElement.content : HTMLTemplateElement -> JSIO DocumentFragment */
 function Web_Raw_Html_HTMLTemplateElement_content($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_HtmlPrim_HTMLTemplateElement_prim__content($0, $6));
-}
-
-/* JSON.Simple.ToJSON.taggedObject : String -> String -> String -> JSON -> JSON */
-function JSON_Simple_ToJSON_taggedObject($0, $1, $2, $3) {
- return {h: 6 /* JObject */, a1: {a1: {a1: $0, a2: {h: 4 /* JString */, a1: $2}}, a2: {a1: {a1: $1, a2: $3}, a2: {h: 0}}}};
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_HtmlPrim_HTMLTemplateElement_prim__content($0, $6));
 }
 
 /* Language.Reflection.Derive.mkShowPrec : (Prec -> a -> String) -> Show a */
@@ -4309,10 +4132,10 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_JIni();
  };
  const $29 = {h: 0 /* Go */, a1: $2a};
- const $26 = {a1: csegen_185(), a2: $29};
+ const $26 = {a1: csegen_180(), a2: $29};
  const $25 = {a1: $26, a2: {h: 0}};
- const $d = {a1: {a1: csegen_168(), a2: {h: 1 /* Rd */, a1: $13 => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_168(), csegen_175(), csegen_177(), $1c => $1c, JSON_Parser_JIni(), $13, ($13.a8.value))}}, a2: $25};
- const $b = Prelude_Types_List_tailRecAppend($d, csegen_248());
+ const $d = {a1: {a1: csegen_163(), a2: {h: 1 /* Rd */, a1: $13 => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_163(), csegen_170(), csegen_172(), $1c => $1c, JSON_Parser_JIni(), $13, ($13.a8.value))}}, a2: $25};
+ const $b = Prelude_Types_List_tailRecAppend($d, csegen_243());
  const $9 = Text_ILex_Lexer_dfa($b);
  const $6 = {a1: JSON_Parser_JIni(), a2: $9};
  const $68 = $69 => {
@@ -4322,9 +4145,9 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_JDone();
  };
  const $67 = {h: 0 /* Go */, a1: $68};
- const $64 = {a1: csegen_185(), a2: $67};
+ const $64 = {a1: csegen_180(), a2: $67};
  const $63 = {a1: $64, a2: {h: 0}};
- const $4b = {a1: {a1: csegen_168(), a2: {h: 1 /* Rd */, a1: $51 => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_168(), csegen_175(), csegen_177(), $5a => $5a, JSON_Parser_JDone(), $51, ($51.a8.value))}}, a2: $63};
+ const $4b = {a1: {a1: csegen_163(), a2: {h: 1 /* Rd */, a1: $51 => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_163(), csegen_170(), csegen_172(), $5a => $5a, JSON_Parser_JDone(), $51, ($51.a8.value))}}, a2: $63};
  const $49 = Prelude_Types_List_tailRecAppend($4b, {h: 0});
  const $47 = Text_ILex_Lexer_dfa($49);
  const $44 = {a1: JSON_Parser_JDone(), a2: $47};
@@ -4335,10 +4158,10 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_ANew();
  };
  const $a4 = {h: 0 /* Go */, a1: $a5};
- const $a1 = {a1: csegen_185(), a2: $a4};
+ const $a1 = {a1: csegen_180(), a2: $a4};
  const $a0 = {a1: $a1, a2: {h: 0}};
- const $88 = {a1: {a1: csegen_168(), a2: {h: 1 /* Rd */, a1: $8e => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_168(), csegen_175(), csegen_177(), $97 => $97, JSON_Parser_ANew(), $8e, ($8e.a8.value))}}, a2: $a0};
- const $86 = Prelude_Types_List_tailRecAppend($88, Prelude_Types_List_tailRecAppend(csegen_247(), csegen_275()));
+ const $88 = {a1: {a1: csegen_163(), a2: {h: 1 /* Rd */, a1: $8e => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_163(), csegen_170(), csegen_172(), $97 => $97, JSON_Parser_ANew(), $8e, ($8e.a8.value))}}, a2: $a0};
+ const $86 = Prelude_Types_List_tailRecAppend($88, Prelude_Types_List_tailRecAppend(csegen_242(), csegen_270()));
  const $84 = Text_ILex_Lexer_dfa($86);
  const $81 = {a1: JSON_Parser_ANew(), a2: $84};
  const $e7 = $e8 => {
@@ -4348,10 +4171,10 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_ACom();
  };
  const $e6 = {h: 0 /* Go */, a1: $e7};
- const $e3 = {a1: csegen_185(), a2: $e6};
+ const $e3 = {a1: csegen_180(), a2: $e6};
  const $e2 = {a1: $e3, a2: {h: 0}};
- const $ca = {a1: {a1: csegen_168(), a2: {h: 1 /* Rd */, a1: $d0 => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_168(), csegen_175(), csegen_177(), $d9 => $d9, JSON_Parser_ACom(), $d0, ($d0.a8.value))}}, a2: $e2};
- const $c8 = Prelude_Types_List_tailRecAppend($ca, csegen_248());
+ const $ca = {a1: {a1: csegen_163(), a2: {h: 1 /* Rd */, a1: $d0 => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_163(), csegen_170(), csegen_172(), $d9 => $d9, JSON_Parser_ACom(), $d0, ($d0.a8.value))}}, a2: $e2};
+ const $c8 = Prelude_Types_List_tailRecAppend($ca, csegen_243());
  const $c6 = Text_ILex_Lexer_dfa($c8);
  const $c3 = {a1: JSON_Parser_ACom(), a2: $c6};
  const $125 = $126 => {
@@ -4361,9 +4184,9 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_AVal();
  };
  const $124 = {h: 0 /* Go */, a1: $125};
- const $121 = {a1: csegen_185(), a2: $124};
+ const $121 = {a1: csegen_180(), a2: $124};
  const $120 = {a1: $121, a2: {h: 0}};
- const $108 = {a1: {a1: csegen_168(), a2: {h: 1 /* Rd */, a1: $10e => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_168(), csegen_175(), csegen_177(), $117 => $117, JSON_Parser_AVal(), $10e, ($10e.a8.value))}}, a2: $120};
+ const $108 = {a1: {a1: csegen_163(), a2: {h: 1 /* Rd */, a1: $10e => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_163(), csegen_170(), csegen_172(), $117 => $117, JSON_Parser_AVal(), $10e, ($10e.a8.value))}}, a2: $120};
  const $141 = $142 => {
   const $144 = $142.a2;
   const $146 = ($144.value);
@@ -4371,8 +4194,8 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_ACom();
  };
  const $140 = {h: 0 /* Go */, a1: $141};
- const $13d = {a1: csegen_299(), a2: $140};
- const $13c = {a1: $13d, a2: csegen_275()};
+ const $13d = {a1: csegen_294(), a2: $140};
+ const $13c = {a1: $13d, a2: csegen_270()};
  const $106 = Prelude_Types_List_tailRecAppend($108, $13c);
  const $104 = Text_ILex_Lexer_dfa($106);
  const $101 = {a1: JSON_Parser_AVal(), a2: $104};
@@ -4383,10 +4206,10 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_ONew();
  };
  const $177 = {h: 0 /* Go */, a1: $178};
- const $174 = {a1: csegen_185(), a2: $177};
+ const $174 = {a1: csegen_180(), a2: $177};
  const $173 = {a1: $174, a2: {h: 0}};
- const $15b = {a1: {a1: csegen_168(), a2: {h: 1 /* Rd */, a1: $161 => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_168(), csegen_175(), csegen_177(), $16a => $16a, JSON_Parser_ONew(), $161, ($161.a8.value))}}, a2: $173};
- const $159 = Prelude_Types_List_tailRecAppend($15b, {a1: csegen_316(), a2: csegen_240()});
+ const $15b = {a1: {a1: csegen_163(), a2: {h: 1 /* Rd */, a1: $161 => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_163(), csegen_170(), csegen_172(), $16a => $16a, JSON_Parser_ONew(), $161, ($161.a8.value))}}, a2: $173};
+ const $159 = Prelude_Types_List_tailRecAppend($15b, {a1: csegen_311(), a2: csegen_235()});
  const $157 = Text_ILex_Lexer_dfa($159);
  const $154 = {a1: JSON_Parser_ONew(), a2: $157};
  const $1b9 = $1ba => {
@@ -4396,9 +4219,9 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_OVal();
  };
  const $1b8 = {h: 0 /* Go */, a1: $1b9};
- const $1b5 = {a1: csegen_185(), a2: $1b8};
+ const $1b5 = {a1: csegen_180(), a2: $1b8};
  const $1b4 = {a1: $1b5, a2: {h: 0}};
- const $19c = {a1: {a1: csegen_168(), a2: {h: 1 /* Rd */, a1: $1a2 => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_168(), csegen_175(), csegen_177(), $1ab => $1ab, JSON_Parser_OVal(), $1a2, ($1a2.a8.value))}}, a2: $1b4};
+ const $19c = {a1: {a1: csegen_163(), a2: {h: 1 /* Rd */, a1: $1a2 => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_163(), csegen_170(), csegen_172(), $1ab => $1ab, JSON_Parser_OVal(), $1a2, ($1a2.a8.value))}}, a2: $1b4};
  const $1d8 = $1d9 => {
   const $1db = $1d9.a2;
   const $1dd = ($1db.value);
@@ -4406,9 +4229,9 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_OCom();
  };
  const $1d7 = {h: 0 /* Go */, a1: $1d8};
- const $1d4 = {a1: csegen_299(), a2: $1d7};
+ const $1d4 = {a1: csegen_294(), a2: $1d7};
  const $1d3 = {a1: $1d4, a2: {h: 0}};
- const $1d0 = {a1: csegen_316(), a2: $1d3};
+ const $1d0 = {a1: csegen_311(), a2: $1d3};
  const $19a = Prelude_Types_List_tailRecAppend($19c, $1d0);
  const $198 = Text_ILex_Lexer_dfa($19a);
  const $195 = {a1: JSON_Parser_OVal(), a2: $198};
@@ -4419,10 +4242,10 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_OCom();
  };
  const $20d = {h: 0 /* Go */, a1: $20e};
- const $20a = {a1: csegen_185(), a2: $20d};
+ const $20a = {a1: csegen_180(), a2: $20d};
  const $209 = {a1: $20a, a2: {h: 0}};
- const $1f1 = {a1: {a1: csegen_168(), a2: {h: 1 /* Rd */, a1: $1f7 => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_168(), csegen_175(), csegen_177(), $200 => $200, JSON_Parser_OCom(), $1f7, ($1f7.a8.value))}}, a2: $209};
- const $1ef = Prelude_Types_List_tailRecAppend($1f1, csegen_240());
+ const $1f1 = {a1: {a1: csegen_163(), a2: {h: 1 /* Rd */, a1: $1f7 => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_163(), csegen_170(), csegen_172(), $200 => $200, JSON_Parser_OCom(), $1f7, ($1f7.a8.value))}}, a2: $209};
+ const $1ef = Prelude_Types_List_tailRecAppend($1f1, csegen_235());
  const $1ed = Text_ILex_Lexer_dfa($1ef);
  const $1ea = {a1: JSON_Parser_OCom(), a2: $1ed};
  const $24c = $24d => {
@@ -4432,9 +4255,9 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_OLbl();
  };
  const $24b = {h: 0 /* Go */, a1: $24c};
- const $248 = {a1: csegen_185(), a2: $24b};
+ const $248 = {a1: csegen_180(), a2: $24b};
  const $247 = {a1: $248, a2: {h: 0}};
- const $22f = {a1: {a1: csegen_168(), a2: {h: 1 /* Rd */, a1: $235 => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_168(), csegen_175(), csegen_177(), $23e => $23e, JSON_Parser_OLbl(), $235, ($235.a8.value))}}, a2: $247};
+ const $22f = {a1: {a1: csegen_163(), a2: {h: 1 /* Rd */, a1: $235 => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_163(), csegen_170(), csegen_172(), $23e => $23e, JSON_Parser_OLbl(), $235, ($235.a8.value))}}, a2: $247};
  const $26b = $26c => {
   const $26e = $26c.a2;
   const $270 = ($26e.value);
@@ -4454,10 +4277,10 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_OCol();
  };
  const $2a0 = {h: 0 /* Go */, a1: $2a1};
- const $29d = {a1: csegen_185(), a2: $2a0};
+ const $29d = {a1: csegen_180(), a2: $2a0};
  const $29c = {a1: $29d, a2: {h: 0}};
- const $284 = {a1: {a1: csegen_168(), a2: {h: 1 /* Rd */, a1: $28a => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_168(), csegen_175(), csegen_177(), $293 => $293, JSON_Parser_OCol(), $28a, ($28a.a8.value))}}, a2: $29c};
- const $282 = Prelude_Types_List_tailRecAppend($284, csegen_248());
+ const $284 = {a1: {a1: csegen_163(), a2: {h: 1 /* Rd */, a1: $28a => Text_ILex_Interfaces_case__casex20blockx20inx20convx27_15874(csegen_163(), csegen_170(), csegen_172(), $293 => $293, JSON_Parser_OCol(), $28a, ($28a.a8.value))}}, a2: $29c};
+ const $282 = Prelude_Types_List_tailRecAppend($284, csegen_243());
  const $280 = Text_ILex_Lexer_dfa($282);
  const $27d = {a1: JSON_Parser_OCol(), a2: $280};
  const $2c5 = $2c6 => {
@@ -4506,7 +4329,7 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   }
  };
  const $2c4 = {h: 0 /* Go */, a1: $2c5};
- const $2c1 = {a1: csegen_236(), a2: $2c4};
+ const $2c1 = {a1: csegen_231(), a2: $2c4};
  const $337 = $338 => {
   const $339 = ($338.a8.value);
   const $33e = Data_ByteString_toString($339);
@@ -4529,7 +4352,7 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_JStr();
  };
  const $366 = {h: 0 /* Go */, a1: $367};
- const $360 = {a1: {h: 2 /* And */, a1: csegen_382(), a2: csegen_236()}, a2: $366};
+ const $360 = {a1: {h: 2 /* And */, a1: csegen_377(), a2: csegen_231()}, a2: $366};
  const $38c = $38d => {
   const $38f = $38d.a2;
   const $391 = ($38f.value);
@@ -4539,7 +4362,7 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_JStr();
  };
  const $38b = {h: 0 /* Go */, a1: $38c};
- const $385 = {a1: {h: 2 /* And */, a1: csegen_382(), a2: csegen_191()}, a2: $38b};
+ const $385 = {a1: {h: 2 /* And */, a1: csegen_377(), a2: csegen_186()}, a2: $38b};
  const $3b1 = $3b2 => {
   const $3b4 = $3b2.a2;
   const $3b6 = ($3b4.value);
@@ -4549,7 +4372,7 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_JStr();
  };
  const $3b0 = {h: 0 /* Go */, a1: $3b1};
- const $3aa = {a1: {h: 2 /* And */, a1: csegen_382(), a2: csegen_209()}, a2: $3b0};
+ const $3aa = {a1: {h: 2 /* And */, a1: csegen_377(), a2: csegen_204()}, a2: $3b0};
  const $3d9 = $3da => {
   const $3dc = $3da.a2;
   const $3de = ($3dc.value);
@@ -4559,7 +4382,7 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_JStr();
  };
  const $3d8 = {h: 0 /* Go */, a1: $3d9};
- const $3cf = {a1: {h: 2 /* And */, a1: csegen_382(), a2: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('b'.codePointAt(0)))}}, a2: $3d8};
+ const $3cf = {a1: {h: 2 /* And */, a1: csegen_377(), a2: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('b'.codePointAt(0)))}}, a2: $3d8};
  const $3fe = $3ff => {
   const $401 = $3ff.a2;
   const $403 = ($401.value);
@@ -4569,7 +4392,7 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_JStr();
  };
  const $3fd = {h: 0 /* Go */, a1: $3fe};
- const $3f7 = {a1: {h: 2 /* And */, a1: csegen_382(), a2: csegen_201()}, a2: $3fd};
+ const $3f7 = {a1: {h: 2 /* And */, a1: csegen_377(), a2: csegen_196()}, a2: $3fd};
  const $423 = $424 => {
   const $426 = $424.a2;
   const $428 = ($426.value);
@@ -4579,7 +4402,7 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_JStr();
  };
  const $422 = {h: 0 /* Go */, a1: $423};
- const $41c = {a1: {h: 2 /* And */, a1: csegen_382(), a2: csegen_200()}, a2: $422};
+ const $41c = {a1: {h: 2 /* And */, a1: csegen_377(), a2: csegen_195()}, a2: $422};
  const $448 = $449 => {
   const $44b = $449.a2;
   const $44d = ($44b.value);
@@ -4589,7 +4412,7 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_JStr();
  };
  const $447 = {h: 0 /* Go */, a1: $448};
- const $441 = {a1: {h: 2 /* And */, a1: csegen_382(), a2: csegen_382()}, a2: $447};
+ const $441 = {a1: {h: 2 /* And */, a1: csegen_377(), a2: csegen_377()}, a2: $447};
  const $470 = $471 => {
   const $473 = $471.a2;
   const $475 = ($473.value);
@@ -4599,7 +4422,7 @@ const JSON_Parser_jsonTrans = __lazy(function () {
   return JSON_Parser_JStr();
  };
  const $46f = {h: 0 /* Go */, a1: $470};
- const $466 = {a1: {h: 2 /* And */, a1: csegen_382(), a2: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('/'.codePointAt(0)))}}, a2: $46f};
+ const $466 = {a1: {h: 2 /* And */, a1: csegen_377(), a2: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('/'.codePointAt(0)))}}, a2: $46f};
  const $492 = $493 => {
   const $494 = ($493.a8.value);
   const $49b = ($493.a6.value);
@@ -4641,7 +4464,7 @@ const JSON_Parser_jsonTrans = __lazy(function () {
 
 /* JSON.Parser.jsonErr : Arr32 JSz (SK q -> F1 q (BoundedErr Void)) */
 const JSON_Parser_jsonErr = __lazy(function () {
- return Text_ILex_Parser_arr32(11, $3 => $4 => Text_ILex_Interfaces_unexpected(csegen_446(), csegen_175(), csegen_177(), {h: 0}, $3, $4), {a1: {a1: JSON_Parser_ANew(), a2: csegen_448()}, a2: {a1: {a1: JSON_Parser_AVal(), a2: $1a => $1b => Text_ILex_Interfaces_unclosedIfEOI(csegen_446(), csegen_175(), csegen_177(), '[', {a1: ',', a2: {a1: ']', a2: {h: 0}}}, $1a, $1b)}, a2: {a1: {a1: JSON_Parser_ACom(), a2: csegen_448()}, a2: {a1: {a1: JSON_Parser_ONew(), a2: $36 => $37 => Text_ILex_Interfaces_unclosedIfEOI(csegen_446(), csegen_175(), csegen_177(), '{', {a1: '\"', a2: {a1: '}', a2: {h: 0}}}, $36, $37)}, a2: {a1: {a1: JSON_Parser_OVal(), a2: $4c => $4d => Text_ILex_Interfaces_unclosedIfEOI(csegen_446(), csegen_175(), csegen_177(), '{', {a1: ',', a2: {a1: '}', a2: {h: 0}}}, $4c, $4d)}, a2: {a1: {a1: JSON_Parser_OCom(), a2: $62 => $63 => Text_ILex_Interfaces_unclosedIfEOI(csegen_446(), csegen_175(), csegen_177(), '{', {a1: '\"', a2: {h: 0}}, $62, $63)}, a2: {a1: {a1: JSON_Parser_OLbl(), a2: $76 => $77 => Text_ILex_Interfaces_unclosedIfEOI(csegen_446(), csegen_175(), csegen_177(), '{', {a1: ':', a2: {h: 0}}, $76, $77)}, a2: {a1: {a1: JSON_Parser_OCol(), a2: $8a => $8b => Text_ILex_Interfaces_unclosedIfEOI(csegen_446(), csegen_175(), csegen_177(), '{', {h: 0}, $8a, $8b)}, a2: {a1: {a1: JSON_Parser_JStr(), a2: $9c => $9d => Text_ILex_Interfaces_unclosedIfNLorEOI(csegen_446(), csegen_175(), csegen_177(), '\"', {h: 0}, $9c, $9d)}, a2: {h: 0}}}}}}}}}});
+ return Text_ILex_Parser_arr32(11, $3 => $4 => Text_ILex_Interfaces_unexpected(csegen_441(), csegen_170(), csegen_172(), {h: 0}, $3, $4), {a1: {a1: JSON_Parser_ANew(), a2: csegen_443()}, a2: {a1: {a1: JSON_Parser_AVal(), a2: $1a => $1b => Text_ILex_Interfaces_unclosedIfEOI(csegen_441(), csegen_170(), csegen_172(), '[', {a1: ',', a2: {a1: ']', a2: {h: 0}}}, $1a, $1b)}, a2: {a1: {a1: JSON_Parser_ACom(), a2: csegen_443()}, a2: {a1: {a1: JSON_Parser_ONew(), a2: $36 => $37 => Text_ILex_Interfaces_unclosedIfEOI(csegen_441(), csegen_170(), csegen_172(), '{', {a1: '\"', a2: {a1: '}', a2: {h: 0}}}, $36, $37)}, a2: {a1: {a1: JSON_Parser_OVal(), a2: $4c => $4d => Text_ILex_Interfaces_unclosedIfEOI(csegen_441(), csegen_170(), csegen_172(), '{', {a1: ',', a2: {a1: '}', a2: {h: 0}}}, $4c, $4d)}, a2: {a1: {a1: JSON_Parser_OCom(), a2: $62 => $63 => Text_ILex_Interfaces_unclosedIfEOI(csegen_441(), csegen_170(), csegen_172(), '{', {a1: '\"', a2: {h: 0}}, $62, $63)}, a2: {a1: {a1: JSON_Parser_OLbl(), a2: $76 => $77 => Text_ILex_Interfaces_unclosedIfEOI(csegen_441(), csegen_170(), csegen_172(), '{', {a1: ':', a2: {h: 0}}, $76, $77)}, a2: {a1: {a1: JSON_Parser_OCol(), a2: $8a => $8b => Text_ILex_Interfaces_unclosedIfEOI(csegen_441(), csegen_170(), csegen_172(), '{', {h: 0}, $8a, $8b)}, a2: {a1: {a1: JSON_Parser_JStr(), a2: $9c => $9d => Text_ILex_Interfaces_unclosedIfNLorEOI(csegen_441(), csegen_170(), csegen_172(), '\"', {h: 0}, $9c, $9d)}, a2: {h: 0}}}}}}}}}});
 });
 
 /* JSON.Parser.jsonEOI : JST -> SK q -> F1 q (Either (BoundedErr Void) JSON) */
@@ -4660,14 +4483,14 @@ function JSON_Parser_jsonEOI($0, $1, $2) {
 
 /* JSON.Parser.jsonDouble : RExp True */
 const JSON_Parser_jsonDouble = __lazy(function () {
- const $0 = {h: 2 /* And */, a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('.'.codePointAt(0)))}, a2: csegen_479()};
- const $8 = {h: 2 /* And */, a1: {h: 2 /* And */, a1: Text_ILex_RExp_oneof(csegen_156(), csegen_161(), {a1: csegen_202(), a2: {a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('E'.codePointAt(0)))}, a2: {h: 0}}}), a2: {h: 3 /* Or */, a1: Text_ILex_RExp_oneof(csegen_156(), csegen_161(), {a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('+'.codePointAt(0)))}, a2: {a1: csegen_219(), a2: {h: 0}}}), a2: {h: 0 /* Eps */}}}, a2: csegen_479()};
- return {h: 2 /* And */, a1: {h: 2 /* And */, a1: csegen_221(), a2: {h: 3 /* Or */, a1: $0, a2: {h: 0 /* Eps */}}}, a2: {h: 3 /* Or */, a1: $8, a2: {h: 0 /* Eps */}}};
+ const $0 = {h: 2 /* And */, a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('.'.codePointAt(0)))}, a2: csegen_474()};
+ const $8 = {h: 2 /* And */, a1: {h: 2 /* And */, a1: Text_ILex_RExp_oneof(csegen_151(), csegen_156(), {a1: csegen_197(), a2: {a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('E'.codePointAt(0)))}, a2: {h: 0}}}), a2: {h: 3 /* Or */, a1: Text_ILex_RExp_oneof(csegen_151(), csegen_156(), {a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('+'.codePointAt(0)))}, a2: {a1: csegen_214(), a2: {h: 0}}}), a2: {h: 0 /* Eps */}}}, a2: csegen_474()};
+ return {h: 2 /* And */, a1: {h: 2 /* And */, a1: csegen_216(), a2: {h: 3 /* Or */, a1: $0, a2: {h: 0 /* Eps */}}}, a2: {h: 3 /* Or */, a1: $8, a2: {h: 0 /* Eps */}}};
 });
 
 /* JSON.Parser.json : P1 q (BoundedErr Void) JSz SK JSON */
 const JSON_Parser_json = __lazy(function () {
- return {a1: JSON_Parser_JIni(), a2: $3 => Text_ILex_Stack_init({h: 3 /* PI */}, $3), a3: JSON_Parser_jsonTrans(), a4: x => $a => ({h: 0}), a5: JSON_Parser_jsonErr(), a6: $e => $f => $10 => JSON_Parser_jsonEOI($e, $f, $10), a7: csegen_177()};
+ return {a1: JSON_Parser_JIni(), a2: $3 => Text_ILex_Stack_init({h: 3 /* PI */}, $3), a3: JSON_Parser_jsonTrans(), a4: x => $a => ({h: 0}), a5: JSON_Parser_jsonErr(), a6: $e => $f => $10 => JSON_Parser_jsonEOI($e, $f, $10), a7: csegen_172()};
 });
 
 /* JSON.Parser.jchar : RExp True */
@@ -4684,7 +4507,7 @@ const JSON_Parser_jchar = __lazy(function () {
   }
  }
  const $7 = Text_ILex_Char_Set_range($9);
- const $0 = Text_ILex_Char_Set_inters(csegen_156(), csegen_161(), {h: 0}, $7, Text_ILex_Char_Set_inters(csegen_156(), csegen_161(), {h: 0}, Text_ILex_Char_Set_negation(csegen_156(), csegen_161(), Text_ILex_Char_Set_singleton(_truncUInt32('\"'.codePointAt(0)))), Text_ILex_Char_Set_negation(csegen_156(), csegen_161(), Text_ILex_Char_Set_singleton(_truncUInt32('\u{5c}'.codePointAt(0))))));
+ const $0 = Text_ILex_Char_Set_inters(csegen_151(), csegen_156(), {h: 0}, $7, Text_ILex_Char_Set_inters(csegen_151(), csegen_156(), {h: 0}, Text_ILex_Char_Set_negation(csegen_151(), csegen_156(), Text_ILex_Char_Set_singleton(_truncUInt32('\"'.codePointAt(0)))), Text_ILex_Char_Set_negation(csegen_151(), csegen_156(), Text_ILex_Char_Set_singleton(_truncUInt32('\u{5c}'.codePointAt(0))))));
  return {h: 1 /* Ch */, a1: $0};
 });
 
@@ -4771,7 +4594,7 @@ function JSON_Parser_decode($0) {
 
 /* JSON.Parser.codepoint : RExp True */
 const JSON_Parser_codepoint = __lazy(function () {
- return {h: 2 /* And */, a1: {h: 2 /* And */, a1: {h: 2 /* And */, a1: {h: 2 /* And */, a1: {h: 2 /* And */, a1: csegen_382(), a2: csegen_192()}, a2: Text_ILex_RExp_hexdigit()}, a2: Text_ILex_RExp_hexdigit()}, a2: Text_ILex_RExp_hexdigit()}, a2: Text_ILex_RExp_hexdigit()};
+ return {h: 2 /* And */, a1: {h: 2 /* And */, a1: {h: 2 /* And */, a1: {h: 2 /* And */, a1: {h: 2 /* And */, a1: csegen_377(), a2: csegen_187()}, a2: Text_ILex_RExp_hexdigit()}, a2: Text_ILex_RExp_hexdigit()}, a2: Text_ILex_RExp_hexdigit()}, a2: Text_ILex_RExp_hexdigit()};
 });
 
 /* JSON.Parser.OVal : JST */
@@ -4918,13 +4741,13 @@ const Text_ILex_RExp_hexdigit = __lazy(function () {
  }
  const $1d = Text_ILex_Char_Set_range($1f);
  const $1c = {h: 1 /* Ch */, a1: $1d};
- const $8 = Text_ILex_RExp_x3cx7cx3e(csegen_156(), csegen_161(), $e, $1c);
- return Text_ILex_RExp_x3cx7cx3e(csegen_156(), csegen_161(), {h: 1 /* Ch */, a1: csegen_512()}, $8);
+ const $8 = Text_ILex_RExp_x3cx7cx3e(csegen_151(), csegen_156(), $e, $1c);
+ return Text_ILex_RExp_x3cx7cx3e(csegen_151(), csegen_156(), {h: 1 /* Ch */, a1: csegen_507()}, $8);
 });
 
 /* Text.ILex.RExp.decimal : RExp True */
 const Text_ILex_RExp_decimal = __lazy(function () {
- return Text_ILex_RExp_x3cx7cx3e(csegen_156(), csegen_161(), {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('0'.codePointAt(0)))}, {h: 2 /* And */, a1: Text_ILex_RExp_posdigit(), a2: {h: 4 /* Star */, a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_digit()}}});
+ return Text_ILex_RExp_x3cx7cx3e(csegen_151(), csegen_156(), {h: 1 /* Ch */, a1: Text_ILex_Char_Set_singleton(_truncUInt32('0'.codePointAt(0)))}, {h: 2 /* And */, a1: Text_ILex_RExp_posdigit(), a2: {h: 4 /* Star */, a1: {h: 1 /* Ch */, a1: Text_ILex_Char_Set_digit()}}});
 });
 
 /* Text.ILex.RExp.adjRanges : (SetOf t -> RExpOf True s) -> RExpOf b t -> RExpOf b s */
@@ -4958,7 +4781,7 @@ function Text_ILex_Char_Set_union($0, $1, $2, $3) {
 
 /* Text.ILex.Char.Set.unicode : Set32 */
 const Text_ILex_Char_Set_unicode = __lazy(function () {
- return Text_ILex_Char_Set_difference(csegen_156(), csegen_161(), Text_ILex_Char_Set_range(Text_ILex_Char_Range_codepoint()), Text_ILex_Char_Set_range(Text_ILex_Char_Range_surrogate()));
+ return Text_ILex_Char_Set_difference(csegen_151(), csegen_156(), Text_ILex_Char_Set_range(Text_ILex_Char_Range_codepoint()), Text_ILex_Char_Set_range(Text_ILex_Char_Range_surrogate()));
 });
 
 /* Text.ILex.Char.Set.singleton : t -> SetOf t */
@@ -5025,7 +4848,7 @@ const Text_ILex_Char_Set_empty = __lazy(function () {
 
 /* Text.ILex.Char.Set.digit : Set32 */
 const Text_ILex_Char_Set_digit = __lazy(function () {
- return csegen_512();
+ return csegen_507();
 });
 
 /* Text.ILex.Char.Set.difference : WithBounds t => Neg t => SetOf t -> SetOf t -> SetOf t */
@@ -5522,7 +5345,7 @@ function Text_ILex_Parser_lastStep($0, $1, $2, $3, $4) {
  const $c = $0.a7;
  const $b = $c(undefined);
  const $a = $b($3);
- const $8 = ($a.value=csegen_536());
+ const $8 = ($a.value=csegen_531());
  return $0.a6($5)($3)(undefined);
 }
 
@@ -5558,7 +5381,7 @@ function Text_ILex_Lexer_case__casex20blockx20inx20byteDFA_3342($0, $1, $2, $3, 
 
 /* Text.ILex.Lexer.case block in byteDFA */
 function Text_ILex_Lexer_case__byteDFA_3282($0, $1) {
- const $3 = Data_SortedMap_fromList(csegen_547(), Prelude_Types_List_mapMaybeAppend({h: 0}, $b => Text_ILex_Lexer_terminals($1.a1, Builtin_snd($b)), $1.a2));
+ const $3 = Data_SortedMap_fromList(csegen_542(), Prelude_Types_List_mapMaybeAppend({h: 0}, $b => Text_ILex_Lexer_terminals($1.a1, Builtin_snd($b)), $1.a2));
  const $12 = Data_Linear_Ref1_withRef1(0n, $16 => r => $17 => Data_Linear_Traverse1_traverse1List({h: 0}, $1b => $1c => Data_Linear_Traverse1_pairIx(r, $1b, $1c), Prelude_Types_List_mapMaybeAppend({h: 0}, $25 => Text_ILex_Lexer_nonFinal($3, Builtin_snd($25)), $1.a2), $17));
  return Text_ILex_Lexer_case__casex20blockx20inx20byteDFA_3342($0, $1.a2, $1.a1, $3, $12, Prelude_Types_List_lengthTR($12));
 }
@@ -5642,7 +5465,7 @@ function Text_ILex_Lexer_node($0, $1, $2) {
 
 /* Text.ILex.Lexer.index : List (Nat, Node) -> SortedMap Nat (Fin (S n)) */
 function Text_ILex_Lexer_index($0, $1) {
- return Data_SortedMap_fromList(csegen_547(), Prelude_Types_List_mapMaybeAppend({h: 0}, $9 => Prelude_Types_map_Functor_Maybe($d => ({a1: $9.a2.a1, a2: $d}), Data_Array_Index_tryNatToFin(($0+1n), $9.a1)), $1));
+ return Data_SortedMap_fromList(csegen_542(), Prelude_Types_List_mapMaybeAppend({h: 0}, $9 => Prelude_Types_map_Functor_Maybe($d => ({a1: $9.a2.a1, a2: $d}), Data_Array_Index_tryNatToFin(($0+1n), $9.a1)), $1));
 }
 
 /* Text.ILex.Lexer.emptyRow : ByteStep n q r s */
@@ -5678,10 +5501,10 @@ function Text_ILex_Internal_Types_n__11747_11880_translate($0, $1, $2, $3) {
 
 /* Text.ILex.Internal.Types.transitions : Edge -> List (Bits8, Nat) */
 function Text_ILex_Internal_Types_transitions($0) {
- const $2 = Text_ILex_Char_Range_lowerBound(csegen_562(), $0.a1);
- const $7 = Text_ILex_Char_Range_upperBound(csegen_562(), $0.a1);
+ const $2 = Text_ILex_Char_Range_lowerBound(csegen_557(), $0.a1);
+ const $7 = Text_ILex_Char_Range_upperBound(csegen_557(), $0.a1);
  switch(Prelude_EqOrd_compare_Ord_Bits8($2, $7)) {
-  case 0: return Prelude_Types_List_mapAppend({h: 0}, $13 => ({a1: $13, a2: $0.a2}), Prelude_Types_rangeFromTo_Range_x24a({a1: {a1: csegen_565(), a2: $1d => $1e => Prelude_Num_div_Integral_Bits8($1d, $1e), a3: $23 => $24 => Prelude_Num_mod_Integral_Bits8($23, $24)}, a2: {a1: csegen_561(), a2: csegen_570()}}, $2, $7));
+  case 0: return Prelude_Types_List_mapAppend({h: 0}, $13 => ({a1: $13, a2: $0.a2}), Prelude_Types_rangeFromTo_Range_x24a({a1: {a1: csegen_560(), a2: $1d => $1e => Prelude_Num_div_Integral_Bits8($1d, $1e), a3: $23 => $24 => Prelude_Num_mod_Integral_Bits8($23, $24)}, a2: {a1: csegen_556(), a2: csegen_565()}}, $2, $7));
   case 1: return {a1: {a1: $2, a2: $0.a2}, a2: {h: 0}};
   case 2: return {h: 0};
  }
@@ -5705,7 +5528,7 @@ function Text_ILex_Internal_Types_normalizeGraph($0, $1) {
 
 /* Text.ILex.Internal.Types.nchildren : NNode -> List Nat */
 function Text_ILex_Internal_Types_nchildren($0) {
- return Prelude_Types_listBind($0.a3, csegen_573());
+ return Prelude_Types_listBind($0.a3, csegen_568());
 }
 
 /* Text.ILex.Internal.Types.machine : (DFAState s a => F1 s b) -> Machine a b */
@@ -5714,7 +5537,7 @@ function Text_ILex_Internal_Types_machine($0) {
   const $5 = Text_ILex_Internal_Types_init($4);
   const $8 = $0(undefined)($5)(undefined);
   const $f = Text_ILex_Internal_Types_pairs1($5.a1, undefined);
-  return {a1: Data_SortedMap_fromList(csegen_547(), $f), a2: $8};
+  return {a1: Data_SortedMap_fromList(csegen_542(), $f), a2: $8};
  };
  return Data_Linear_Token_run1($2);
 }
@@ -5764,7 +5587,7 @@ function Text_ILex_Internal_Types_insert1($0, $1, $2, $3) {
 /* Text.ILex.Internal.Types.init : F1 s (DFAState s a) */
 function Text_ILex_Internal_Types_init($0) {
  const $1 = Text_ILex_Internal_Types_empty(256n, $0);
- const $5 = ({value:Data_SortedMap_empty({a1: {a1: $c => $d => Prelude_Types_x3dx3d_Eq_x28Listx20x24ax29(csegen_539(), $c, $d), a2: $14 => $15 => Prelude_Types_x2fx3d_Eq_x28Listx20x24ax29(csegen_539(), $14, $15)}, a2: $1c => $1d => Prelude_Types_compare_Ord_x28Listx20x24ax29(csegen_547(), $1c, $1d), a3: $24 => $25 => Prelude_Types_x3c_Ord_x28Listx20x24ax29(csegen_547(), $24, $25), a4: $2c => $2d => Prelude_Types_x3e_Ord_x28Listx20x24ax29(csegen_547(), $2c, $2d), a5: $34 => $35 => Prelude_Types_x3cx3d_Ord_x28Listx20x24ax29(csegen_547(), $34, $35), a6: $3c => $3d => Prelude_Types_x3ex3d_Ord_x28Listx20x24ax29(csegen_547(), $3c, $3d), a7: $44 => $45 => Prelude_Types_max_Ord_x28Listx20x24ax29(csegen_547(), $44, $45), a8: $4c => $4d => Prelude_Types_min_Ord_x28Listx20x24ax29(csegen_547(), $4c, $4d)})});
+ const $5 = ({value:Data_SortedMap_empty({a1: {a1: $c => $d => Prelude_Types_x3dx3d_Eq_x28Listx20x24ax29(csegen_534(), $c, $d), a2: $14 => $15 => Prelude_Types_x2fx3d_Eq_x28Listx20x24ax29(csegen_534(), $14, $15)}, a2: $1c => $1d => Prelude_Types_compare_Ord_x28Listx20x24ax29(csegen_542(), $1c, $1d), a3: $24 => $25 => Prelude_Types_x3c_Ord_x28Listx20x24ax29(csegen_542(), $24, $25), a4: $2c => $2d => Prelude_Types_x3e_Ord_x28Listx20x24ax29(csegen_542(), $2c, $2d), a5: $34 => $35 => Prelude_Types_x3cx3d_Ord_x28Listx20x24ax29(csegen_542(), $34, $35), a6: $3c => $3d => Prelude_Types_x3ex3d_Ord_x28Listx20x24ax29(csegen_542(), $3c, $3d), a7: $44 => $45 => Prelude_Types_max_Ord_x28Listx20x24ax29(csegen_542(), $44, $45), a8: $4c => $4d => Prelude_Types_min_Ord_x28Listx20x24ax29(csegen_542(), $4c, $4d)})});
  const $54 = Text_ILex_Internal_Types_empty(256n, undefined);
  const $58 = Text_ILex_Internal_Types_empty(256n, undefined);
  const $5c = Text_ILex_Internal_Types_empty(256n, undefined);
@@ -5803,7 +5626,7 @@ function Text_ILex_Internal_Types_connectedComponent($0, $1, $2, $3) {
 
 /* Text.ILex.Internal.Types.children : Node -> List Nat */
 function Text_ILex_Internal_Types_children($0) {
- return Prelude_Types_List_mapAppend({h: 0}, csegen_573(), $0.a3);
+ return Prelude_Types_List_mapAppend({h: 0}, csegen_568(), $0.a3);
 }
 
 /* Text.ILex.Internal.Types.addSet : DFAState s a => NSet -> F1 s Nat */
@@ -5971,7 +5794,7 @@ function Text_ILex_Internal_DFA_discrete($0, $1, $2) {
 function Text_ILex_Internal_NFA_case__casex20blockx20inx20split_13738($0, $1, $2, $3, $4, $5) {
  switch($5.h) {
   case 0: /* Left */ {
-   const $8 = csegen_611();
+   const $8 = csegen_606();
    const $7 = $8.a3($4)($5.a1);
    switch($7) {
     case 1: return {a1: {a1: $4, a2: $1.a2}, a2: {a1: $3, a2: {a1: $5.a1, a2: $0.a2}}};
@@ -5991,11 +5814,11 @@ function Text_ILex_Internal_NFA_toNFA($0, $1, $2) {
 
 /* Text.ILex.Internal.NFA.split : NEdge -> NEdge -> (NEdge, (NEdge, NEdge)) */
 function Text_ILex_Internal_NFA_split($0, $1) {
- const $2 = Text_ILex_Char_Range_intersection(csegen_561(), $0.a1, $1.a1);
+ const $2 = Text_ILex_Char_Range_intersection(csegen_556(), $0.a1, $1.a1);
  const $a = {a1: $2, a2: Text_ILex_Internal_Types_union_({h: 0}, $0.a2, $1.a2)};
- const $13 = Text_ILex_Char_Range_difference(csegen_561(), csegen_570(), $0.a1, $2);
+ const $13 = Text_ILex_Char_Range_difference(csegen_556(), csegen_565(), $0.a1, $2);
  switch($13.h) {
-  case 0: /* Left */ return Text_ILex_Internal_NFA_case__casex20blockx20inx20split_13738($1, $0, $2, $a, $13.a1, Text_ILex_Char_Range_difference(csegen_561(), csegen_570(), $1.a1, $2));
+  case 0: /* Left */ return Text_ILex_Internal_NFA_case__casex20blockx20inx20split_13738($1, $0, $2, $a, $13.a1, Text_ILex_Char_Range_difference(csegen_556(), csegen_565(), $1.a1, $2));
   case 1: /* Right */ return {a1: {a1: $13.a1.a1, a2: $0.a2}, a2: {a1: $a, a2: {a1: $13.a1.a2, a2: $0.a2}}};
  }
 }
@@ -6056,11 +5879,11 @@ function Text_ILex_Internal_NFA_insertEdge($0, $1) {
    switch($b) {
     case 1: return $8;
     case 0: {
-     switch(Prelude_Types_x3dx3d_Eq_x28Listx20x24ax29(csegen_539(), $1.a2, $0.a1.a2)) {
+     switch(Prelude_Types_x3dx3d_Eq_x28Listx20x24ax29(csegen_534(), $1.a2, $0.a1.a2)) {
       case 0: {
-       switch(Text_ILex_Char_Range_overlap(csegen_561(), $1.a1, $0.a1.a1)) {
+       switch(Text_ILex_Char_Range_overlap(csegen_556(), $1.a1, $0.a1.a1)) {
         case 0: {
-         const $1f = csegen_611();
+         const $1f = csegen_606();
          const $1e = $1f.a3($1.a1)($0.a1.a1);
          switch($1e) {
           case 1: return Text_ILex_Internal_NFA_prep($1, $8);
@@ -6075,26 +5898,26 @@ function Text_ILex_Internal_NFA_insertEdge($0, $1) {
       }
       case 1: {
        let $3d;
-       switch(Text_ILex_Char_Range_overlap(csegen_561(), $1.a1, $0.a1.a1)) {
+       switch(Text_ILex_Char_Range_overlap(csegen_556(), $1.a1, $0.a1.a1)) {
         case 1: {
          $3d = 1;
          break;
         }
         case 0: {
-         $3d = Text_ILex_Char_Range_adjacent(csegen_561(), csegen_570(), $1.a1, $0.a1.a1);
+         $3d = Text_ILex_Char_Range_adjacent(csegen_556(), csegen_565(), $1.a1, $0.a1.a1);
          break;
         }
        }
        switch($3d) {
         case 0: {
-         const $50 = csegen_611();
+         const $50 = csegen_606();
          const $4f = $50.a3($1.a1)($0.a1.a1);
          switch($4f) {
           case 1: return Text_ILex_Internal_NFA_prep($1, $8);
           case 0: return {a1: $0.a1, a2: Text_ILex_Internal_NFA_insertEdge($0.a2, $1)};
          }
         }
-        case 1: return {a1: {a1: Text_ILex_Char_Range_span(csegen_561(), $1.a1, $0.a1.a1), a2: $1.a2}, a2: $0.a2};
+        case 1: return {a1: {a1: Text_ILex_Char_Range_span(csegen_556(), $1.a1, $0.a1.a1), a2: $1.a2}, a2: $0.a2};
        }
       }
      }
@@ -6121,7 +5944,7 @@ function Text_ILex_Internal_NFA_eclosure($0, $1, $2) {
   case 0: /* nothing */ {
    const $a = Text_ILex_Internal_Types_lookupDflt1($1, () => ({a1: {h: 0}, a2: {h: 0}, a3: {h: 0}}), $0.a3, undefined);
    const $14 = Data_Linear_Traverse1_traverse1List({h: 0}, $18 => $19 => Text_ILex_Internal_NFA_eclosure($0, $18, $19), $a.a2, undefined);
-   const $21 = Prelude_Types_foldl_Foldable_List(csegen_606(), Text_ILex_Internal_NFA_fromENode($1, $a), $14);
+   const $21 = Prelude_Types_foldl_Foldable_List(csegen_601(), Text_ILex_Internal_NFA_fromENode($1, $a), $14);
    const $2a = Text_ILex_Internal_Types_insert1($1, $21, $0.a4, undefined);
    return $21;
   }
@@ -6167,8 +5990,8 @@ function Text_ILex_Char_UTF8_n__8539_17871_go($0, $1, $2, $3) {
      const $21 = {h: 2 /* And */, a1: Text_ILex_Char_UTF8_bytes($2.a1, $2.a1), a2: Text_ILex_Char_UTF8_n__8539_17871_go($0, $1, $d, Data_Vect_map_Functor_x28Vectx20x24nx29($2e => Text_ILex_Char_UTF8_MaxAddByte(), $10))};
      const $31 = {h: 2 /* And */, a1: Text_ILex_Char_UTF8_bytes($3.a1, $3.a1), a2: Text_ILex_Char_UTF8_n__8539_17871_go($0, $1, Data_Vect_map_Functor_x28Vectx20x24nx29($3d => Text_ILex_Char_UTF8_MinAddByte(), $d), $10)};
      switch(Prelude_EqOrd_x3c_Ord_Bits8(_add8u($2.a1, 1), $3.a1)) {
-      case 0: return Text_ILex_RExp_x3cx7cx3e(csegen_562(), csegen_570(), $21, $31);
-      case 1: return Text_ILex_RExp_x3cx7cx3e(csegen_562(), csegen_570(), $21, Text_ILex_RExp_x3cx7cx3e(csegen_562(), csegen_570(), $31, {h: 2 /* And */, a1: Text_ILex_Char_UTF8_bytes(_add8u($2.a1, 1), _sub8u($3.a1, 1)), a2: Text_ILex_Char_UTF8_anyBytes($d)}));
+      case 0: return Text_ILex_RExp_x3cx7cx3e(csegen_557(), csegen_565(), $21, $31);
+      case 1: return Text_ILex_RExp_x3cx7cx3e(csegen_557(), csegen_565(), $21, Text_ILex_RExp_x3cx7cx3e(csegen_557(), csegen_565(), $31, {h: 2 /* And */, a1: Text_ILex_Char_UTF8_bytes(_add8u($2.a1, 1), _sub8u($3.a1, 1)), a2: Text_ILex_Char_UTF8_anyBytes($d)}));
      }
     }
    }
@@ -6183,7 +6006,7 @@ function Text_ILex_Char_UTF8_toUTF8($0) {
 
 /* Text.ILex.Char.UTF8.toByteRanges : Set32 -> RExp8 True */
 function Text_ILex_Char_UTF8_toByteRanges($0) {
- return Text_ILex_Char_UTF8_convert(Text_ILex_Char_Set_inters(csegen_156(), csegen_161(), {h: 0}, Text_ILex_Char_Set_unicode(), $0));
+ return Text_ILex_Char_UTF8_convert(Text_ILex_Char_Set_inters(csegen_151(), csegen_156(), {h: 0}, Text_ILex_Char_Set_unicode(), $0));
 }
 
 /* Text.ILex.Char.UTF8.spans : Vect m Bits8 -> Vect n Bits8 -> List Span */
@@ -6316,10 +6139,10 @@ function Text_ILex_Char_UTF8_fromRange($0) {
  switch($1) {
   case 1: return {h: 1 /* Ch */, a1: Text_ILex_Char_Set_empty()};
   case 0: {
-   const $5 = Text_ILex_Char_UTF8_spans(Text_ILex_Char_UTF8_encodeSP(Text_ILex_Char_Range_lowerBound(csegen_156(), $0)), Text_ILex_Char_UTF8_encodeSP(Text_ILex_Char_Range_upperBound(csegen_156(), $0)));
+   const $5 = Text_ILex_Char_UTF8_spans(Text_ILex_Char_UTF8_encodeSP(Text_ILex_Char_Range_lowerBound(csegen_151(), $0)), Text_ILex_Char_UTF8_encodeSP(Text_ILex_Char_Range_upperBound(csegen_151(), $0)));
    switch($5.h) {
     case 0: /* nil */ return {h: 1 /* Ch */, a1: Text_ILex_Char_Set_empty()};
-    case undefined: /* cons */ return Prelude_Types_foldr_Foldable_List(x => y => Text_ILex_RExp_x3cx7cx3e(csegen_562(), csegen_570(), Text_ILex_Char_UTF8_fromSpan(x), y), Text_ILex_Char_UTF8_fromSpan($5.a1), $5.a2);
+    case undefined: /* cons */ return Prelude_Types_foldr_Foldable_List(x => y => Text_ILex_RExp_x3cx7cx3e(csegen_557(), csegen_565(), Text_ILex_Char_UTF8_fromSpan(x), y), Text_ILex_Char_UTF8_fromSpan($5.a1), $5.a2);
    }
   }
  }
@@ -6352,7 +6175,7 @@ function Text_ILex_Char_UTF8_encode($0) {
 function Text_ILex_Char_UTF8_convert($0) {
  switch($0.h) {
   case 0: /* nil */ return {h: 1 /* Ch */, a1: Text_ILex_Char_Set_empty()};
-  case undefined: /* cons */ return Prelude_Types_foldr_Foldable_List(r => y => Text_ILex_RExp_x3cx7cx3e(csegen_562(), csegen_570(), Text_ILex_Char_UTF8_fromRange(r), y), Text_ILex_Char_UTF8_fromRange($0.a1), $0.a2);
+  case undefined: /* cons */ return Prelude_Types_foldr_Foldable_List(r => y => Text_ILex_RExp_x3cx7cx3e(csegen_557(), csegen_565(), Text_ILex_Char_UTF8_fromRange(r), y), Text_ILex_Char_UTF8_fromRange($0.a1), $0.a2);
  }
 }
 
@@ -6376,8 +6199,8 @@ function Text_ILex_Char_UTF8_bytes($0, $1) {
 /* Text.ILex.Char.UTF8.anyBytes : Vect (S n) Bits8 -> RExp8 True */
 function Text_ILex_Char_UTF8_anyBytes($0) {
  switch($0.a2.h) {
-  case 0: /* nil */ return csegen_615();
-  case undefined: /* cons */ return {h: 2 /* And */, a1: csegen_615(), a2: Text_ILex_Char_UTF8_anyBytes($0.a2)};
+  case 0: /* nil */ return csegen_610();
+  case undefined: /* cons */ return {h: 2 /* And */, a1: csegen_610(), a2: Text_ILex_Char_UTF8_anyBytes($0.a2)};
  }
 }
 
@@ -6499,7 +6322,7 @@ function Text_ILex_Interfaces_unclosedIfNLorEOI($0, $1, $2, $3, $4, $5, $6) {
    switch($7.a1) {
     case 0n: return Text_ILex_Interfaces_unclosed($0, $1, $2, $3, $5, undefined);
     default: {
-     switch(Data_ByteVect_any($7.a1, csegen_616(), $7.a2)) {
+     switch(Data_ByteVect_any($7.a1, csegen_611(), $7.a2)) {
       case 1: return Text_ILex_Interfaces_unclosed($0, $1, $2, $3, $5, undefined);
       case 0: return Text_ILex_Interfaces_unexpected($0, $1, $2, $4, $5, undefined);
      }
@@ -6507,7 +6330,7 @@ function Text_ILex_Interfaces_unclosedIfNLorEOI($0, $1, $2, $3, $4, $5, $6) {
    }
   }
   default: {
-   switch(Data_ByteVect_any($7.a1, csegen_616(), $7.a2)) {
+   switch(Data_ByteVect_any($7.a1, csegen_611(), $7.a2)) {
     case 1: return Text_ILex_Interfaces_unclosed($0, $1, $2, $3, $5, undefined);
     case 0: return Text_ILex_Interfaces_unexpected($0, $1, $2, $4, $5, undefined);
    }
@@ -6583,7 +6406,7 @@ function JSON_Simple_FromJSON_fromJSON_FromJSON_Nat($0) {
  const $3 = n => {
   switch(Prelude_EqOrd_x3ex3d_Ord_Integer(n, 0n)) {
    case 1: return {h: 1 /* Right */, a1: Prelude_Types_prim__integerToNat(n)};
-   case 0: return {h: 0 /* Left */, a1: {a1: {h: 0}, a2: Prelude_Types_foldMap_Foldable_List(csegen_114(), $12 => $12, {a1: 'not a natural number: ', a2: {a1: Prelude_Show_show_Show_Integer(n), a2: {h: 0}}})}};
+   case 0: return {h: 0 /* Left */, a1: {a1: {h: 0}, a2: Prelude_Types_foldMap_Foldable_List(csegen_109(), $12 => $12, {a1: 'not a natural number: ', a2: {a1: Prelude_Show_show_Show_Integer(n), a2: {h: 0}}})}};
   }
  };
  return JSON_Simple_FromJSON_withInteger(() => 'Nat', $3, $0);
@@ -6598,7 +6421,7 @@ function JSON_Simple_FromJSON_fromJSON_FromJSON_x28Listx20x24ax29($0, $1) {
     case 1: /* Right */ return {h: 1 /* Right */, a1: func($9.a1)};
    }
   };
-  const $7 = {a1: $8, a2: a => $10 => ({h: 1 /* Right */, a1: $10}), a3: b => a => csegen_115()};
+  const $7 = {a1: $8, a2: a => $10 => ({h: 1 /* Right */, a1: $10}), a3: b => a => csegen_110()};
   return Prelude_Types_traverse_Traversable_List($7, $0, $5);
  };
  return JSON_Simple_FromJSON_withArray(() => 'List', $4, $1);
@@ -6612,7 +6435,7 @@ function JSON_Simple_FromJSON_withValue($0, $1, $2, $3, $4) {
   case 0: /* nothing */ {
    const $a = JSON_Simple_FromJSON_typeMismatch($0, $4);
    switch($a.h) {
-    case 0: /* Left */ return {h: 0 /* Left */, a1: {a1: $a.a1.a1, a2: (Prelude_Types_foldMap_Foldable_List(csegen_114(), $17 => $17, {a1: 'parsing ', a2: {a1: $2(), a2: {a1: ' failed, ', a2: {h: 0}}}})+$a.a1.a2)}};
+    case 0: /* Left */ return {h: 0 /* Left */, a1: {a1: $a.a1.a1, a2: (Prelude_Types_foldMap_Foldable_List(csegen_109(), $17 => $17, {a1: 'parsing ', a2: {a1: $2(), a2: {a1: ' failed, ', a2: {h: 0}}}})+$a.a1.a2)}};
     case 1: /* Right */ return {h: 1 /* Right */, a1: $a.a1};
    }
   }
@@ -6656,27 +6479,14 @@ function JSON_Simple_FromJSON_typeOf($0) {
 
 /* JSON.Simple.FromJSON.typeMismatch : String -> Parser JSON a */
 function JSON_Simple_FromJSON_typeMismatch($0, $1) {
- return {h: 0 /* Left */, a1: {a1: {h: 0}, a2: Prelude_Types_foldMap_Foldable_List(csegen_114(), $9 => $9, {a1: 'expected ', a2: {a1: $0, a2: {a1: ', but encountered ', a2: {a1: JSON_Simple_FromJSON_typeOf($1), a2: {h: 0}}}}})}};
-}
-
-/* JSON.Simple.FromJSON.orElse : Either a b -> Lazy (Either a b) -> Either a b */
-function JSON_Simple_FromJSON_orElse($0, $1) {
- switch($0.h) {
-  case 1: /* Right */ return $0;
-  default: return $1();
- }
-}
-
-/* JSON.Simple.FromJSON.fromTaggedObject : Lazy String -> String -> String -> Parser (String, JSON) a -> Parser JSON a */
-function JSON_Simple_FromJSON_fromTaggedObject($0, $1, $2, $3, $4) {
- return JSON_Simple_FromJSON_withValue('Object', csegen_626(), $0, o => Prelude_Types_x3ex3ex3d_Monad_x28Eitherx20x24ex29(JSON_Simple_FromJSON_explicitParseField($f => JSON_Simple_FromJSON_withValue('String', csegen_627(), () => 'String', $16 => ({h: 1 /* Right */, a1: $16}), $f), o, $1), s => Prelude_Types_x3ex3ex3d_Monad_x28Eitherx20x24ex29(JSON_Simple_FromJSON_explicitParseField($20 => ({h: 1 /* Right */, a1: $20}), o, $2), v => $3({a1: s, a2: v}))), $4);
+ return {h: 0 /* Left */, a1: {a1: {h: 0}, a2: Prelude_Types_foldMap_Foldable_List(csegen_109(), $9 => $9, {a1: 'expected ', a2: {a1: $0, a2: {a1: ', but encountered ', a2: {a1: JSON_Simple_FromJSON_typeOf($1), a2: {h: 0}}}}})}};
 }
 
 /* JSON.Simple.FromJSON.explicitParseField : Parser JSON a -> List (String, JSON) -> Parser String a */
 function JSON_Simple_FromJSON_explicitParseField($0, $1, $2) {
- const $3 = Data_List_lookup(csegen_631(), $2, $1);
+ const $3 = Data_List_lookup(csegen_623(), $2, $1);
  switch($3.h) {
-  case 0: /* nothing */ return {h: 0 /* Left */, a1: {a1: {h: 0}, a2: Prelude_Types_foldMap_Foldable_List(csegen_114(), $10 => $10, {a1: 'key ', a2: {a1: Prelude_Show_show_Show_String($2), a2: {a1: ' not found', a2: {h: 0}}}})}};
+  case 0: /* nothing */ return {h: 0 /* Left */, a1: {a1: {h: 0}, a2: Prelude_Types_foldMap_Foldable_List(csegen_109(), $10 => $10, {a1: 'key ', a2: {a1: Prelude_Show_show_Show_String($2), a2: {a1: ' not found', a2: {h: 0}}}})}};
   case undefined: /* just */ {
    const $1a = $0($3.a1);
    switch($1a.h) {
@@ -6687,27 +6497,17 @@ function JSON_Simple_FromJSON_explicitParseField($0, $1, $2) {
  }
 }
 
-/* JSON.Simple.FromJSON.(<|>) : Parser v a -> Parser v a -> Parser v a */
-function JSON_Simple_FromJSON_x3cx7cx3e($0, $1, $2) {
- return JSON_Simple_FromJSON_orElse($0($2), () => $1($2));
-}
-
 /* Web.MVC.runController : (e -> s -> (s, Cmd e)) -> (JSErr -> IO ()) -> e -> s -> IO () */
 function Web_MVC_runController($0, $1, $2, $3, $4) {
- const $5 = Data_IORef_newIORef(csegen_111()(), $3)($4);
- const $d = Data_IORef_newIORef(csegen_111()(), 0)($4);
- const $15 = Data_IORef_newIORef(csegen_111()(), {a1: {h: 0}, a2: {h: 0}})($4);
+ const $5 = Data_IORef_newIORef(csegen_106()(), $3)($4);
+ const $d = Data_IORef_newIORef(csegen_106()(), 0)($4);
+ const $15 = Data_IORef_newIORef(csegen_106()(), {a1: {h: 0}, a2: {h: 0}})($4);
  return Web_MVC_n__6231_4025_handle($2, $3, $1, $0, $5, $d, $15, $2, $4);
-}
-
-/* Text.HTML.Attribute.onInput : (String -> ev) -> Attribute t ev */
-function Text_HTML_Attribute_onInput($0) {
- return {h: 3 /* Event_ */, a1: 0, a2: 0, a3: {h: 14 /* Input */, a1: $5 => ({a1: $0($5.a1)})}};
 }
 
 /* Web.MVC.View.21642:9785:onresize */
 function Web_MVC_View_n__21642_9785_onresize($0, $1, $2, $3, $4, $5) {
- return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), JS_Inheritance_tryCast_(csegen_634(), () => 'Web.MVC.View.onresize', $1), va => Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $16 => Web_MVC_View_prim__observeResize(va, r => $1a => JS_Util_runJS(Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_MVC_Util_toRect(r), rect => Prelude_Types_maybe(() => csegen_37()(), () => $4, $5(rect))), $1a), $16)));
+ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), JS_Inheritance_tryCast_(csegen_626(), () => 'Web.MVC.View.onresize', $1), va => Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $16 => Web_MVC_View_prim__observeResize(va, r => $1a => JS_Util_runJS(Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_MVC_Util_toRect(r), rect => Prelude_Types_maybe(() => csegen_627()(), () => $4, $5(rect))), $1a), $16)));
 }
 
 /* Web.MVC.View.21642:9784:inst */
@@ -6726,7 +6526,7 @@ function Web_MVC_View_n__21642_9784_inst($0, $1, $2, $3, $4, $5, $6, $7, $8) {
       break;
      }
     }
-    const $24 = Prelude_Interfaces_when(csegen_56()(), $29, () => Web_Raw_Dom_Event_preventDefault(e));
+    const $24 = Prelude_Interfaces_when(csegen_51()(), $29, () => Web_Raw_Dom_Event_preventDefault(e));
     const $2e = $2f => {
      let $39;
      switch(bubl) {
@@ -6739,22 +6539,22 @@ function Web_MVC_View_n__21642_9784_inst($0, $1, $2, $3, $4, $5, $6, $7, $8) {
        break;
       }
      }
-     const $34 = Prelude_Interfaces_when(csegen_56()(), $39, () => Web_Raw_Dom_Event_stopPropagation(e));
-     return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), $34, $3f => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), JS_Inheritance_tryCast_($5, () => 'Web.MVC.View.inst', e), va => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), $7(va), $52 => Prelude_Types_maybe(() => csegen_37()(), () => $4, $8($52)))));
+     const $34 = Prelude_Interfaces_when(csegen_51()(), $39, () => Web_Raw_Dom_Event_stopPropagation(e));
+     return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), $34, $3f => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), JS_Inheritance_tryCast_($5, () => 'Web.MVC.View.inst', e), va => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), $7(va), $52 => Prelude_Types_maybe(() => csegen_627()(), () => $4, $8($52)))));
     };
-    return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), $24, $2e);
+    return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), $24, $2e);
    };
-   return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Raw_Dom_Event_bubbles(e), $1f);
+   return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Raw_Dom_Event_bubbles(e), $1f);
   };
-  return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Raw_Dom_Event_cancelable(e), $17);
+  return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Raw_Dom_Event_cancelable(e), $17);
  };
  const $d = Web_Dom_callback_Callback_EventListener_x28x25pix20RigWx20Explicitx20Nothingx20Eventx20x28JSIOx20x28x7cUnitx2cMkUnitx7cx29x29x29($f);
- return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), $d, c => Web_Raw_Dom_EventTarget_addEventListener($1, $6, {a1: c}));
+ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), $d, c => Web_Raw_Dom_EventTarget_addEventListener($1, $6, {a1: c}));
 }
 
 /* Web.MVC.View.setupNodes : (Element -> DocumentFragment -> JSIO ()) -> Ref t -> List (Node e) -> Cmd e */
 function Web_MVC_View_setupNodes($0, $1, $2, $3) {
- return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Dom_document(), doc => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_MVC_Util_castElementByRef(csegen_634(), $1), elem => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Raw_Dom_Document_createDocumentFragment(doc), df => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), $22 => Web_MVC_View_addNodes($3, doc, df, $2, $22), $2a => $0(elem)(df)))));
+ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Dom_document(), doc => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_MVC_Util_castElementByRef(csegen_626(), $1), elem => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Raw_Dom_Document_createDocumentFragment(doc), df => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), $22 => Web_MVC_View_addNodes($3, doc, df, $2, $22), $2a => $0(elem)(df)))));
 }
 
 /* Web.MVC.View.setAttribute : (e -> JSIO ()) -> Element -> Attribute t e -> JSIO () */
@@ -6769,30 +6569,30 @@ function Web_MVC_View_setAttribute($0, $1, $2) {
    }
   }
   case 3: /* Event_ */ return Web_MVC_View_registerDOMEvent($0, $2.a1, $2.a2, $1, $2.a3);
-  case 4: /* Empty */ return csegen_37()();
+  case 4: /* Empty */ return csegen_627()();
  }
 }
 
 /* Web.MVC.View.registerDOMEvent : (e -> JSIO ()) -> Bool -> Bool -> EventTarget -> DOMEvent e -> JSIO () */
 function Web_MVC_View_registerDOMEvent($0, $1, $2, $3, $4) {
  switch($4.h) {
-  case 14: /* Input */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_635(), 'input', $10 => Web_MVC_Event_changeInfo($10), $4.a1);
-  case 13: /* Change */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_635(), 'change', $1e => Web_MVC_Event_changeInfo($1e), $4.a1);
-  case 0: /* Click */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_636(), 'click', $2c => Web_MVC_Event_mouseInfo($2c), $4.a1);
-  case 1: /* DblClick */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_636(), 'dblclick', $3a => Web_MVC_Event_mouseInfo($3a), $4.a1);
-  case 11: /* KeyDown */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_637(), 'keydown', $48 => Web_MVC_Event_keyInfo($48), $4.a1);
-  case 12: /* KeyUp */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_637(), 'keyup', $56 => Web_MVC_Event_keyInfo($56), $4.a1);
-  case 9: /* Blur */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_635(), 'blur', $64 => Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), $4.a1), $6b => ({a1: $6b}));
-  case 10: /* Focus */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_635(), 'focus', $77 => Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), $4.a1), $7e => ({a1: $7e}));
-  case 2: /* MouseDown */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_636(), 'mousedown', $8a => Web_MVC_Event_mouseInfo($8a), $4.a1);
-  case 3: /* MouseUp */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_636(), 'mouseup', $98 => Web_MVC_Event_mouseInfo($98), $4.a1);
-  case 4: /* MouseEnter */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_636(), 'mouseenter', $a6 => Web_MVC_Event_mouseInfo($a6), $4.a1);
-  case 5: /* MouseLeave */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_636(), 'mouseleave', $b4 => Web_MVC_Event_mouseInfo($b4), $4.a1);
-  case 6: /* MouseOver */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_636(), 'mouseover', $c2 => Web_MVC_Event_mouseInfo($c2), $4.a1);
-  case 7: /* MouseOut */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_636(), 'mouseout', $d0 => Web_MVC_Event_mouseInfo($d0), $4.a1);
-  case 8: /* MouseMove */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_636(), 'mousemove', $de => Web_MVC_Event_mouseInfo($de), $4.a1);
-  case 15: /* HashChange */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_635(), 'hashchange', $ec => Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), $4.a1), $f3 => ({a1: $f3}));
-  case 16: /* Scroll */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_635(), 'scroll', $ff => Web_MVC_Event_scrollInfo($ff), $4.a1);
+  case 14: /* Input */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_628(), 'input', $10 => Web_MVC_Event_changeInfo($10), $4.a1);
+  case 13: /* Change */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_628(), 'change', $1e => Web_MVC_Event_changeInfo($1e), $4.a1);
+  case 0: /* Click */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_629(), 'click', $2c => Web_MVC_Event_mouseInfo($2c), $4.a1);
+  case 1: /* DblClick */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_629(), 'dblclick', $3a => Web_MVC_Event_mouseInfo($3a), $4.a1);
+  case 11: /* KeyDown */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_630(), 'keydown', $48 => Web_MVC_Event_keyInfo($48), $4.a1);
+  case 12: /* KeyUp */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_630(), 'keyup', $56 => Web_MVC_Event_keyInfo($56), $4.a1);
+  case 9: /* Blur */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_628(), 'blur', $64 => Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), $4.a1), $6b => ({a1: $6b}));
+  case 10: /* Focus */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_628(), 'focus', $77 => Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), $4.a1), $7e => ({a1: $7e}));
+  case 2: /* MouseDown */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_629(), 'mousedown', $8a => Web_MVC_Event_mouseInfo($8a), $4.a1);
+  case 3: /* MouseUp */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_629(), 'mouseup', $98 => Web_MVC_Event_mouseInfo($98), $4.a1);
+  case 4: /* MouseEnter */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_629(), 'mouseenter', $a6 => Web_MVC_Event_mouseInfo($a6), $4.a1);
+  case 5: /* MouseLeave */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_629(), 'mouseleave', $b4 => Web_MVC_Event_mouseInfo($b4), $4.a1);
+  case 6: /* MouseOver */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_629(), 'mouseover', $c2 => Web_MVC_Event_mouseInfo($c2), $4.a1);
+  case 7: /* MouseOut */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_629(), 'mouseout', $d0 => Web_MVC_Event_mouseInfo($d0), $4.a1);
+  case 8: /* MouseMove */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_629(), 'mousemove', $de => Web_MVC_Event_mouseInfo($de), $4.a1);
+  case 15: /* HashChange */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_628(), 'hashchange', $ec => Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), $4.a1), $f3 => ({a1: $f3}));
+  case 16: /* Scroll */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, csegen_628(), 'scroll', $ff => Web_MVC_Event_scrollInfo($ff), $4.a1);
   case 17: /* Wheel */ return Web_MVC_View_n__21642_9784_inst($4, $3, $2, $1, $0, $10a => $10b => Web_Internal_UIEventsTypes_safeCast_SafeCast_WheelEvent($10b), 'wheel', $110 => Web_MVC_Event_wheelInfo($110), $4.a1);
   case 18: /* Resize */ return Web_MVC_View_n__21642_9785_onresize($4, $3, $2, $1, $0, $4.a1);
  }
@@ -6808,27 +6608,27 @@ function Web_MVC_View_addNodes($0, $1, $2, $3, $4) {
 (e -> JSIO ()) -> Document -> t -> Node e -> JSIO () */
 function Web_MVC_View_addNode($0, $1, $2, $3) {
  switch($3.h) {
-  case 0: /* El */ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Raw_Dom_Document_createElement($1, $3.a1), n => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Raw_Dom_ParentNode_append($2, {a1: Data_List_Quantifiers_Extra_inject(0n, n), a2: {h: 0}}), $1c => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), $22 => Web_MVC_View_addNodes($0, $1, n, $3.a3, $22), $2a => $2b => Control_Monad_Either_Extra_traverseList_($2e => Web_MVC_View_setAttribute($0, n, $2e), $3.a2, $2b))));
+  case 0: /* El */ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Raw_Dom_Document_createElement($1, $3.a1), n => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Raw_Dom_ParentNode_append($2, {a1: Data_List_Quantifiers_Extra_inject(0n, n), a2: {h: 0}}), $1c => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), $22 => Web_MVC_View_addNodes($0, $1, n, $3.a3, $22), $2a => $2b => Control_Monad_Either_Extra_traverseList_($2e => Web_MVC_View_setAttribute($0, n, $2e), $3.a2, $2b))));
   case 1: /* Raw */ {
    const $3d = el => {
     const $4a = $4b => {
      switch($4b.h) {
-      case undefined: /* just */ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), JS_Attribute_x2ex3d(Web_Raw_Dom_InnerHTML_innerHTML($4b.a1), $3.a1), $58 => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Raw_Html_HTMLTemplateElement_content($4b.a1), c => Web_Raw_Dom_ParentNode_append($2, {a1: Data_List_Quantifiers_Extra_inject(0n, c), a2: {h: 0}})));
-      case 0: /* nothing */ return csegen_37()();
+      case undefined: /* just */ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), JS_Attribute_x2ex3d(Web_Raw_Dom_InnerHTML_innerHTML($4b.a1), $3.a1), $58 => Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Raw_Html_HTMLTemplateElement_content($4b.a1), c => Web_Raw_Dom_ParentNode_append($2, {a1: Data_List_Quantifiers_Extra_inject(0n, c), a2: {h: 0}})));
+      case 0: /* nothing */ return csegen_627()();
      }
     };
-    return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Web_Internal_HtmlTypes_safeCast_SafeCast_HTMLTemplateElement(el)), $4a);
+    return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Web_Internal_HtmlTypes_safeCast_SafeCast_HTMLTemplateElement(el)), $4a);
    };
-   return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Raw_Dom_Document_createElement($1, 'template'), $3d);
+   return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Raw_Dom_Document_createElement($1, 'template'), $3d);
   }
   case 2: /* Text */ return Web_Raw_Dom_ParentNode_append($2, {a1: Data_List_Quantifiers_Extra_inject(1n, $3.a1), a2: {h: 0}});
-  case 3: /* Empty */ return csegen_37()();
+  case 3: /* Empty */ return csegen_627()();
  }
 }
 
 /* Web.MVC.Util.toRect : DOMRect -> JSIO Rect */
 function Web_MVC_Util_toRect($0) {
- return Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), $2e => $2f => $30 => $31 => $32 => $33 => $34 => $35 => ({a1: $2e, a2: $2f, a3: $30, a4: $31, a5: $32, a6: $33, a7: $34, a8: $35})), Web_Raw_Geometry_DOMRectReadOnly_x($0)), Web_Raw_Geometry_DOMRectReadOnly_y($0)), Web_Raw_Geometry_DOMRectReadOnly_height($0)), Web_Raw_Geometry_DOMRectReadOnly_width($0)), Web_Raw_Geometry_DOMRectReadOnly_top($0)), Web_Raw_Geometry_DOMRectReadOnly_bottom($0)), Web_Raw_Geometry_DOMRectReadOnly_left($0)), Web_Raw_Geometry_DOMRectReadOnly_right($0));
+ return Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), $2e => $2f => $30 => $31 => $32 => $33 => $34 => $35 => ({a1: $2e, a2: $2f, a3: $30, a4: $31, a5: $32, a6: $33, a7: $34, a8: $35})), Web_Raw_Geometry_DOMRectReadOnly_x($0)), Web_Raw_Geometry_DOMRectReadOnly_y($0)), Web_Raw_Geometry_DOMRectReadOnly_height($0)), Web_Raw_Geometry_DOMRectReadOnly_width($0)), Web_Raw_Geometry_DOMRectReadOnly_top($0)), Web_Raw_Geometry_DOMRectReadOnly_bottom($0)), Web_Raw_Geometry_DOMRectReadOnly_left($0)), Web_Raw_Geometry_DOMRectReadOnly_right($0));
 }
 
 /* Web.MVC.Util.strictGetElementById : SafeCast t => Maybe String -> String -> JSIO t */
@@ -6837,13 +6637,13 @@ function Web_MVC_Util_strictGetElementById($0, $1, $2) {
   switch($c.h) {
    case 0: /* nothing */ {
     const $13 = Data_Maybe_fromMaybe(() => 'element', $1);
-    const $12 = {h: 0 /* Caught */, a1: Prelude_Types_foldMap_Foldable_List(csegen_114(), $1c => $1c, {a1: 'Web.MVC.Output.strictGetElementById: Could not find ', a2: {a1: $13, a2: {a1: ' with id ', a2: {a1: $2, a2: {h: 0}}}}})};
-    return Control_Monad_Error_Interface_throwError_MonadError_x24e_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), $12);
+    const $12 = {h: 0 /* Caught */, a1: Prelude_Types_foldMap_Foldable_List(csegen_109(), $1c => $1c, {a1: 'Web.MVC.Output.strictGetElementById: Could not find ', a2: {a1: $13, a2: {a1: ' with id ', a2: {a1: $2, a2: {h: 0}}}}})};
+    return Control_Monad_Error_Interface_throwError_MonadError_x24e_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), $12);
    }
-   case undefined: /* just */ return Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), $c.a1);
+   case undefined: /* just */ return Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), $c.a1);
   }
  };
- return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Dom_castElementById_($0, $2), $b);
+ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Dom_castElementById_($0, $2), $b);
 }
 
 /* Web.MVC.Util.nodeList : DocumentFragment -> List (HSum [Node, String]) */
@@ -6861,58 +6661,58 @@ function Web_MVC_Util_castElementByRef($0, $1) {
  switch($1.h) {
   case 0: /* Id */ return Web_MVC_Util_strictGetElementById($0, {a1: $1.a1}, $1.a2);
   case 1: /* Elem */ return Web_MVC_Util_strictGetElementById($0, {h: 0}, $1.a1);
-  case 2: /* Body */ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Dom_body(), $13 => JS_Inheritance_tryCast($0, () => Web_MVC_Util_err(), $13));
-  case 3: /* Document */ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Dom_document(), $20 => JS_Inheritance_tryCast($0, () => Web_MVC_Util_err(), $20));
-  case 4: /* Window */ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Dom_window(), $2d => JS_Inheritance_tryCast($0, () => Web_MVC_Util_err(), $2d));
+  case 2: /* Body */ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Dom_body(), $13 => JS_Inheritance_tryCast($0, () => Web_MVC_Util_err(), $13));
+  case 3: /* Document */ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Dom_document(), $20 => JS_Inheritance_tryCast($0, () => Web_MVC_Util_err(), $20));
+  case 4: /* Window */ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Dom_window(), $2d => JS_Inheritance_tryCast($0, () => Web_MVC_Util_err(), $2d));
  }
 }
 
 /* Web.Raw.Geometry.DOMRectReadOnly.y : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem DOMRectReadOnly (Types t1)} ->
 t1 -> JSIO Double */
 function Web_Raw_Geometry_DOMRectReadOnly_y($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_GeometryPrim_DOMRectReadOnly_prim__y($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_GeometryPrim_DOMRectReadOnly_prim__y($0, $6));
 }
 
 /* Web.Raw.Geometry.DOMRectReadOnly.x : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem DOMRectReadOnly (Types t1)} ->
 t1 -> JSIO Double */
 function Web_Raw_Geometry_DOMRectReadOnly_x($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_GeometryPrim_DOMRectReadOnly_prim__x($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_GeometryPrim_DOMRectReadOnly_prim__x($0, $6));
 }
 
 /* Web.Raw.Geometry.DOMRectReadOnly.width : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem DOMRectReadOnly (Types t1)} ->
 t1 -> JSIO Double */
 function Web_Raw_Geometry_DOMRectReadOnly_width($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_GeometryPrim_DOMRectReadOnly_prim__width($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_GeometryPrim_DOMRectReadOnly_prim__width($0, $6));
 }
 
 /* Web.Raw.Geometry.DOMRectReadOnly.top : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem DOMRectReadOnly (Types t1)} ->
 t1 -> JSIO Double */
 function Web_Raw_Geometry_DOMRectReadOnly_top($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_GeometryPrim_DOMRectReadOnly_prim__top($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_GeometryPrim_DOMRectReadOnly_prim__top($0, $6));
 }
 
 /* Web.Raw.Geometry.DOMRectReadOnly.right : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem DOMRectReadOnly (Types t1)} ->
 t1 -> JSIO Double */
 function Web_Raw_Geometry_DOMRectReadOnly_right($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_GeometryPrim_DOMRectReadOnly_prim__right($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_GeometryPrim_DOMRectReadOnly_prim__right($0, $6));
 }
 
 /* Web.Raw.Geometry.DOMRectReadOnly.left : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem DOMRectReadOnly (Types t1)} ->
 t1 -> JSIO Double */
 function Web_Raw_Geometry_DOMRectReadOnly_left($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_GeometryPrim_DOMRectReadOnly_prim__left($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_GeometryPrim_DOMRectReadOnly_prim__left($0, $6));
 }
 
 /* Web.Raw.Geometry.DOMRectReadOnly.height : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem DOMRectReadOnly (Types t1)} ->
 t1 -> JSIO Double */
 function Web_Raw_Geometry_DOMRectReadOnly_height($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_GeometryPrim_DOMRectReadOnly_prim__height($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_GeometryPrim_DOMRectReadOnly_prim__height($0, $6));
 }
 
 /* Web.Raw.Geometry.DOMRectReadOnly.bottom : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem DOMRectReadOnly (Types t1)} ->
 t1 -> JSIO Double */
 function Web_Raw_Geometry_DOMRectReadOnly_bottom($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_GeometryPrim_DOMRectReadOnly_prim__bottom($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_GeometryPrim_DOMRectReadOnly_prim__bottom($0, $6));
 }
 
 /* Web.Dom.callback */
@@ -6922,32 +6722,32 @@ function Web_Dom_callback_Callback_EventListener_x28x25pix20RigWx20Explicitx20No
 
 /* Web.Dom.window : JSIO Window */
 const Web_Dom_window = __lazy(function () {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $5 => Web_Dom_prim__window($5));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $5 => Web_Dom_prim__window($5));
 });
 
 /* Web.Dom.getElementById : String -> JSIO (Maybe Element) */
 function Web_Dom_getElementById($0) {
- return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Dom_document(), $8 => Web_Raw_Dom_NonElementParentNode_getElementById($8, $0));
+ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Dom_document(), $8 => Web_Raw_Dom_NonElementParentNode_getElementById($8, $0));
 }
 
 /* Web.Dom.document : JSIO Document */
 const Web_Dom_document = __lazy(function () {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $5 => Web_Dom_prim__document($5));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $5 => Web_Dom_prim__document($5));
 });
 
 /* Web.Dom.castElementById_ : SafeCast a => String -> JSIO (Maybe a) */
 function Web_Dom_castElementById_($0, $1) {
- return Control_Monad_Error_Either_map_Functor_x28x28EitherTx20x24ex29x20x24mx29(csegen_645(), $6 => Prelude_Types_x3ex3ex3d_Monad_Maybe($6, $0(undefined)), Web_Dom_getElementById($1));
+ return Control_Monad_Error_Either_map_Functor_x28x28EitherTx20x24ex29x20x24mx29(csegen_638(), $6 => Prelude_Types_x3ex3ex3d_Monad_Maybe($6, $0(undefined)), Web_Dom_getElementById($1));
 }
 
 /* Web.Dom.body : JSIO HTMLElement */
 const Web_Dom_body = __lazy(function () {
- return JS_Util_unMaybe('Web.Dom.body', Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Dom_document(), $a => JS_Attribute_to($d => Web_Raw_Dom_Document_body($d), $a)));
+ return JS_Util_unMaybe('Web.Dom.body', Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Dom_document(), $a => JS_Attribute_to($d => Web_Raw_Dom_Document_body($d), $a)));
 });
 
 /* Web.Raw.Dom.EventListener.toEventListener : (Event -> IO ()) -> JSIO EventListener */
 function Web_Raw_Dom_EventListener_toEventListener($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_DomPrim_EventListener_prim__toEventListener($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_DomPrim_EventListener_prim__toEventListener($0, $6));
 }
 
 /* Web.Raw.Dom.Event.target : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem Event (Types t1)} ->
@@ -6959,13 +6759,13 @@ function Web_Raw_Dom_Event_target($0) {
 /* Web.Raw.Dom.Event.stopPropagation : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem Event (Types t1)} ->
 t1 -> JSIO () */
 function Web_Raw_Dom_Event_stopPropagation($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_DomPrim_Event_prim__stopPropagation($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_DomPrim_Event_prim__stopPropagation($0, $6));
 }
 
 /* Web.Raw.Dom.Element.setAttribute : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem Element (Types t1)} ->
 t1 -> String -> String -> JSIO () */
 function Web_Raw_Dom_Element_setAttribute($0, $1, $2) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $8 => Web_Internal_DomPrim_Element_prim__setAttribute($0, $1, $2, $8));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $8 => Web_Internal_DomPrim_Element_prim__setAttribute($0, $1, $2, $8));
 }
 
 /* Web.Raw.Dom.Element.scrollTop : {auto 0 conArg : JSType t} -> {auto 0 _ : Elem Element (Types t)} ->
@@ -6977,25 +6777,25 @@ function Web_Raw_Dom_Element_scrollTop($0) {
 /* Web.Raw.Dom.Element.scrollHeight : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem Element (Types t1)} ->
 t1 -> JSIO Int32 */
 function Web_Raw_Dom_Element_scrollHeight($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_DomPrim_Element_prim__scrollHeight($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_DomPrim_Element_prim__scrollHeight($0, $6));
 }
 
 /* Web.Raw.Dom.ParentNode.replaceChildren : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem ParentNode (Types t1)} ->
 t1 -> List (HSum [Node, String]) -> JSIO () */
 function Web_Raw_Dom_ParentNode_replaceChildren($0, $1) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $7 => Web_Internal_DomPrim_ParentNode_prim__replaceChildren($0, JS_Array_toFFI_ToFFI_x28Listx20x24ax29_x28IOx20x28Arrayx20x24bx29x29(csegen_652(), $1), $7));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $7 => Web_Internal_DomPrim_ParentNode_prim__replaceChildren($0, JS_Array_toFFI_ToFFI_x28Listx20x24ax29_x28IOx20x28Arrayx20x24bx29x29(csegen_645(), $1), $7));
 }
 
 /* Web.Raw.Dom.Element.removeAttribute : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem Element (Types t1)} ->
 t1 -> String -> JSIO () */
 function Web_Raw_Dom_Element_removeAttribute($0, $1) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $7 => Web_Internal_DomPrim_Element_prim__removeAttribute($0, $1, $7));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $7 => Web_Internal_DomPrim_Element_prim__removeAttribute($0, $1, $7));
 }
 
 /* Web.Raw.Dom.Event.preventDefault : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem Event (Types t1)} ->
 t1 -> JSIO () */
 function Web_Raw_Dom_Event_preventDefault($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_DomPrim_Event_prim__preventDefault($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_DomPrim_Event_prim__preventDefault($0, $6));
 }
 
 /* Web.Raw.Dom.InnerHTML.innerHTML : {auto 0 conArg : JSType t} -> {auto 0 _ : Elem InnerHTML (Types t)} ->
@@ -7014,19 +6814,19 @@ function Web_Raw_Dom_NonElementParentNode_getElementById($0, $1) {
 /* Web.Raw.Dom.Document.createElement : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem Document (Types t1)} ->
 t1 -> String -> JSIO Element */
 function Web_Raw_Dom_Document_createElement($0, $1) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $7 => Web_Internal_DomPrim_Document_prim__createElement($0, $1, JS_Undefined_undef(), $7));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $7 => Web_Internal_DomPrim_Document_prim__createElement($0, $1, JS_Undefined_undef(), $7));
 }
 
 /* Web.Raw.Dom.Document.createDocumentFragment : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem Document (Types t1)} ->
 t1 -> JSIO DocumentFragment */
 function Web_Raw_Dom_Document_createDocumentFragment($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_DomPrim_Document_prim__createDocumentFragment($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_DomPrim_Document_prim__createDocumentFragment($0, $6));
 }
 
 /* Web.Raw.Dom.Element.clientHeight : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem Element (Types t1)} ->
 t1 -> JSIO Int32 */
 function Web_Raw_Dom_Element_clientHeight($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_DomPrim_Element_prim__clientHeight($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_DomPrim_Element_prim__clientHeight($0, $6));
 }
 
 /* Web.Raw.Dom.Event.cancelable : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem Event (Types t1)} ->
@@ -7050,39 +6850,39 @@ function Web_Raw_Dom_Document_body($0) {
 /* Web.Raw.Dom.ParentNode.append : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem ParentNode (Types t1)} ->
 t1 -> List (HSum [Node, String]) -> JSIO () */
 function Web_Raw_Dom_ParentNode_append($0, $1) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $7 => Web_Internal_DomPrim_ParentNode_prim__append($0, JS_Array_toFFI_ToFFI_x28Listx20x24ax29_x28IOx20x28Arrayx20x24bx29x29(csegen_652(), $1), $7));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $7 => Web_Internal_DomPrim_ParentNode_prim__append($0, JS_Array_toFFI_ToFFI_x28Listx20x24ax29_x28IOx20x28Arrayx20x24bx29x29(csegen_645(), $1), $7));
 }
 
 /* Web.Raw.Dom.EventTarget.addEventListener : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem EventTarget (Types t1)} ->
 t1 -> String -> Maybe EventListener -> JSIO () */
 function Web_Raw_Dom_EventTarget_addEventListener($0, $1, $2) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $8 => Web_Internal_DomPrim_EventTarget_prim__addEventListener($0, $1, JS_Nullable_toFFI_ToFFI_x28Maybex20x24ax29_x28Nullablex20x24bx29($f => $f, $2), JS_Undefined_undef(), $8));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $8 => Web_Internal_DomPrim_EventTarget_prim__addEventListener($0, $1, JS_Nullable_toFFI_ToFFI_x28Maybex20x24ax29_x28Nullablex20x24bx29($f => $f, $2), JS_Undefined_undef(), $8));
 }
 
 /* Web.MVC.Event.wheelInfo : WheelEvent -> JSIO WheelInfo */
 function Web_MVC_Event_wheelInfo($0) {
- return Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), $1a => $1b => $1c => $1d => ({a1: $1a, a2: $1b, a3: $1c, a4: $1d})), Web_Raw_UIEvents_WheelEvent_deltaMode($0)), Web_Raw_UIEvents_WheelEvent_deltaX($0)), Web_Raw_UIEvents_WheelEvent_deltaY($0)), Web_Raw_UIEvents_WheelEvent_deltaZ($0));
+ return Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), $1a => $1b => $1c => $1d => ({a1: $1a, a2: $1b, a3: $1c, a4: $1d})), Web_Raw_UIEvents_WheelEvent_deltaMode($0)), Web_Raw_UIEvents_WheelEvent_deltaX($0)), Web_Raw_UIEvents_WheelEvent_deltaY($0)), Web_Raw_UIEvents_WheelEvent_deltaZ($0));
 }
 
 /* Web.MVC.Event.scrollInfo : Event -> JSIO ScrollInfo */
 function Web_MVC_Event_scrollInfo($0) {
  const $8 = $9 => {
   switch($9.h) {
-   case undefined: /* just */ return Prelude_Types_maybe(() => csegen_660()(), () => $10 => Web_MVC_Event_elemScrollInfo($10), Web_Internal_DomTypes_safeCast_SafeCast_Element($9.a1));
-   case 0: /* nothing */ return csegen_660()();
+   case undefined: /* just */ return Prelude_Types_maybe(() => csegen_653()(), () => $10 => Web_MVC_Event_elemScrollInfo($10), Web_Internal_DomTypes_safeCast_SafeCast_Element($9.a1));
+   case 0: /* nothing */ return csegen_653()();
   }
  };
- return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Web_Raw_Dom_Event_target($0), $8);
+ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Web_Raw_Dom_Event_target($0), $8);
 }
 
 /* Web.MVC.Event.mouseInfo : MouseEvent -> JSIO MouseInfo */
 function Web_MVC_Event_mouseInfo($0) {
- return Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), $4c => $4d => $4e => $4f => $50 => $51 => $52 => $53 => $54 => $55 => $56 => $57 => $58 => $59 => ({a1: $4c, a2: $4d, a3: $4e, a4: $4f, a5: $50, a6: $51, a7: $52, a8: $53, a9: $54, a10: $55, a11: $56, a12: $57, a13: $58, a14: $59})), Web_Raw_UIEvents_MouseEvent_button($0)), Web_Raw_UIEvents_MouseEvent_buttons($0)), Web_Raw_UIEvents_MouseEvent_clientX($0)), Web_Raw_UIEvents_MouseEvent_clientY($0)), Web_Raw_UIEvents_MouseEvent_offsetX($0)), Web_Raw_UIEvents_MouseEvent_offsetY($0)), Web_Raw_UIEvents_MouseEvent_pageX($0)), Web_Raw_UIEvents_MouseEvent_pageY($0)), Web_Raw_UIEvents_MouseEvent_screenX($0)), Web_Raw_UIEvents_MouseEvent_screenY($0)), Web_Raw_UIEvents_MouseEvent_altKey($0)), Web_Raw_UIEvents_MouseEvent_ctrlKey($0)), Web_Raw_UIEvents_MouseEvent_metaKey($0)), Web_Raw_UIEvents_MouseEvent_shiftKey($0));
+ return Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), $4c => $4d => $4e => $4f => $50 => $51 => $52 => $53 => $54 => $55 => $56 => $57 => $58 => $59 => ({a1: $4c, a2: $4d, a3: $4e, a4: $4f, a5: $50, a6: $51, a7: $52, a8: $53, a9: $54, a10: $55, a11: $56, a12: $57, a13: $58, a14: $59})), Web_Raw_UIEvents_MouseEvent_button($0)), Web_Raw_UIEvents_MouseEvent_buttons($0)), Web_Raw_UIEvents_MouseEvent_clientX($0)), Web_Raw_UIEvents_MouseEvent_clientY($0)), Web_Raw_UIEvents_MouseEvent_offsetX($0)), Web_Raw_UIEvents_MouseEvent_offsetY($0)), Web_Raw_UIEvents_MouseEvent_pageX($0)), Web_Raw_UIEvents_MouseEvent_pageY($0)), Web_Raw_UIEvents_MouseEvent_screenX($0)), Web_Raw_UIEvents_MouseEvent_screenY($0)), Web_Raw_UIEvents_MouseEvent_altKey($0)), Web_Raw_UIEvents_MouseEvent_ctrlKey($0)), Web_Raw_UIEvents_MouseEvent_metaKey($0)), Web_Raw_UIEvents_MouseEvent_shiftKey($0));
 }
 
 /* Web.MVC.Event.keyInfo : KeyboardEvent -> JSIO KeyInfo */
 function Web_MVC_Event_keyInfo($0) {
- return Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), $2e => $2f => $30 => $31 => $32 => $33 => $34 => $35 => ({a1: $2e, a2: $2f, a3: $30, a4: $31, a5: $32, a6: $33, a7: $34, a8: $35})), Web_Raw_UIEvents_KeyboardEvent_key($0)), Web_Raw_UIEvents_KeyboardEvent_code($0)), Web_Raw_UIEvents_KeyboardEvent_location($0)), Web_Raw_UIEvents_KeyboardEvent_isComposing($0)), Web_Raw_UIEvents_KeyboardEvent_altKey($0)), Web_Raw_UIEvents_KeyboardEvent_ctrlKey($0)), Web_Raw_UIEvents_KeyboardEvent_metaKey($0)), Web_Raw_UIEvents_KeyboardEvent_shiftKey($0));
+ return Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), $2e => $2f => $30 => $31 => $32 => $33 => $34 => $35 => ({a1: $2e, a2: $2f, a3: $30, a4: $31, a5: $32, a6: $33, a7: $34, a8: $35})), Web_Raw_UIEvents_KeyboardEvent_key($0)), Web_Raw_UIEvents_KeyboardEvent_code($0)), Web_Raw_UIEvents_KeyboardEvent_location($0)), Web_Raw_UIEvents_KeyboardEvent_isComposing($0)), Web_Raw_UIEvents_KeyboardEvent_altKey($0)), Web_Raw_UIEvents_KeyboardEvent_ctrlKey($0)), Web_Raw_UIEvents_KeyboardEvent_metaKey($0)), Web_Raw_UIEvents_KeyboardEvent_shiftKey($0));
 }
 
 /* Web.MVC.Event.files : Event -> JSIO (List File) */
@@ -7095,23 +6895,23 @@ function Web_MVC_Event_files($0) {
      $23 = {h: 0};
      break;
     }
-    default: $23 = Prelude_Types_List_mapAppend({h: 0}, $28 => Web_MVC_Event_prim__item(fs, $28), Prelude_Types_rangeFromTo_Range_x24a({a1: {a1: csegen_159(), a2: $33 => $34 => Prelude_Num_div_Integral_Bits32($33, $34), a3: $39 => $3a => Prelude_Num_mod_Integral_Bits32($39, $3a)}, a2: {a1: csegen_155(), a2: csegen_161()}}, 0, _sub32u(l, 1)));
+    default: $23 = Prelude_Types_List_mapAppend({h: 0}, $28 => Web_MVC_Event_prim__item(fs, $28), Prelude_Types_rangeFromTo_Range_x24a({a1: {a1: csegen_154(), a2: $33 => $34 => Prelude_Num_div_Integral_Bits32($33, $34), a3: $39 => $3a => Prelude_Num_mod_Integral_Bits32($39, $3a)}, a2: {a1: csegen_150(), a2: csegen_156()}}, 0, _sub32u(l, 1)));
    }
-   return Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), $23);
+   return Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), $23);
   };
-  return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $1a => Web_MVC_Event_prim__length(fs, $1a)), $1e);
+  return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $1a => Web_MVC_Event_prim__length(fs, $1a)), $1e);
  };
- return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $b => Web_MVC_Event_prim__files($0, $b)), $f);
+ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $b => Web_MVC_Event_prim__files($0, $b)), $f);
 }
 
 /* Web.MVC.Event.elemScrollInfo : Element -> JSIO ScrollInfo */
 function Web_MVC_Event_elemScrollInfo($0) {
- return Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), $15 => $16 => $17 => ({a1: $15, a2: $16, a3: $17})), JS_Attribute_get($0, $1f => Web_Raw_Dom_Element_scrollTop($1f))), Web_Raw_Dom_Element_scrollHeight($0)), Web_Raw_Dom_Element_clientHeight($0));
+ return Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), $15 => $16 => $17 => ({a1: $15, a2: $16, a3: $17})), JS_Attribute_get($0, $1f => Web_Raw_Dom_Element_scrollTop($1f))), Web_Raw_Dom_Element_scrollHeight($0)), Web_Raw_Dom_Element_clientHeight($0));
 }
 
 /* Web.MVC.Event.changeInfo : Event -> JSIO InputInfo */
 function Web_MVC_Event_changeInfo($0) {
- return Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), $15 => $16 => $17 => ({a1: $15, a2: $16, a3: $17})), Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $21 => Web_MVC_Event_prim__input($0, $21))), Web_MVC_Event_files($0)), Control_Monad_Error_Either_map_Functor_x28x28EitherTx20x24ex29x20x24mx29(csegen_645(), $2d => Prelude_EqOrd_x3dx3d_Eq_Bits8(1, $2d), Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $37 => Web_MVC_Event_prim__checked($0, $37))));
+ return Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_x3cx2ax3e_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), $15 => $16 => $17 => ({a1: $15, a2: $16, a3: $17})), Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $21 => Web_MVC_Event_prim__input($0, $21))), Web_MVC_Event_files($0)), Control_Monad_Error_Either_map_Functor_x28x28EitherTx20x24ex29x20x24mx29(csegen_638(), $2d => Prelude_EqOrd_x3dx3d_Eq_Bits8(1, $2d), Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $37 => Web_MVC_Event_prim__checked($0, $37))));
 }
 
 /* Web.Raw.UIEvents.MouseEvent.shiftKey : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem MouseEvent (Types t1)} ->
@@ -7128,37 +6928,37 @@ function Web_Raw_UIEvents_KeyboardEvent_shiftKey($0) {
 /* Web.Raw.UIEvents.MouseEvent.screenY : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem MouseEvent (Types t1)} ->
 t1 -> JSIO Double */
 function Web_Raw_UIEvents_MouseEvent_screenY($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__screenY($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__screenY($0, $6));
 }
 
 /* Web.Raw.UIEvents.MouseEvent.screenX : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem MouseEvent (Types t1)} ->
 t1 -> JSIO Double */
 function Web_Raw_UIEvents_MouseEvent_screenX($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__screenX($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__screenX($0, $6));
 }
 
 /* Web.Raw.UIEvents.MouseEvent.pageY : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem MouseEvent (Types t1)} ->
 t1 -> JSIO Double */
 function Web_Raw_UIEvents_MouseEvent_pageY($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__pageY($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__pageY($0, $6));
 }
 
 /* Web.Raw.UIEvents.MouseEvent.pageX : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem MouseEvent (Types t1)} ->
 t1 -> JSIO Double */
 function Web_Raw_UIEvents_MouseEvent_pageX($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__pageX($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__pageX($0, $6));
 }
 
 /* Web.Raw.UIEvents.MouseEvent.offsetY : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem MouseEvent (Types t1)} ->
 t1 -> JSIO Double */
 function Web_Raw_UIEvents_MouseEvent_offsetY($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__offsetY($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__offsetY($0, $6));
 }
 
 /* Web.Raw.UIEvents.MouseEvent.offsetX : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem MouseEvent (Types t1)} ->
 t1 -> JSIO Double */
 function Web_Raw_UIEvents_MouseEvent_offsetX($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__offsetX($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__offsetX($0, $6));
 }
 
 /* Web.Raw.UIEvents.MouseEvent.metaKey : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem MouseEvent (Types t1)} ->
@@ -7174,12 +6974,12 @@ function Web_Raw_UIEvents_KeyboardEvent_metaKey($0) {
 
 /* Web.Raw.UIEvents.KeyboardEvent.location : KeyboardEvent -> JSIO Bits32 */
 function Web_Raw_UIEvents_KeyboardEvent_location($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_UIEventsPrim_KeyboardEvent_prim__location($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_UIEventsPrim_KeyboardEvent_prim__location($0, $6));
 }
 
 /* Web.Raw.UIEvents.KeyboardEvent.key : KeyboardEvent -> JSIO String */
 function Web_Raw_UIEvents_KeyboardEvent_key($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_UIEventsPrim_KeyboardEvent_prim__key($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_UIEventsPrim_KeyboardEvent_prim__key($0, $6));
 }
 
 /* Web.Raw.UIEvents.KeyboardEvent.isComposing : KeyboardEvent -> JSIO Bool */
@@ -7189,22 +6989,22 @@ function Web_Raw_UIEvents_KeyboardEvent_isComposing($0) {
 
 /* Web.Raw.UIEvents.WheelEvent.deltaZ : WheelEvent -> JSIO Double */
 function Web_Raw_UIEvents_WheelEvent_deltaZ($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_UIEventsPrim_WheelEvent_prim__deltaZ($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_UIEventsPrim_WheelEvent_prim__deltaZ($0, $6));
 }
 
 /* Web.Raw.UIEvents.WheelEvent.deltaY : WheelEvent -> JSIO Double */
 function Web_Raw_UIEvents_WheelEvent_deltaY($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_UIEventsPrim_WheelEvent_prim__deltaY($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_UIEventsPrim_WheelEvent_prim__deltaY($0, $6));
 }
 
 /* Web.Raw.UIEvents.WheelEvent.deltaX : WheelEvent -> JSIO Double */
 function Web_Raw_UIEvents_WheelEvent_deltaX($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_UIEventsPrim_WheelEvent_prim__deltaX($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_UIEventsPrim_WheelEvent_prim__deltaX($0, $6));
 }
 
 /* Web.Raw.UIEvents.WheelEvent.deltaMode : WheelEvent -> JSIO Bits32 */
 function Web_Raw_UIEvents_WheelEvent_deltaMode($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_UIEventsPrim_WheelEvent_prim__deltaMode($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_UIEventsPrim_WheelEvent_prim__deltaMode($0, $6));
 }
 
 /* Web.Raw.UIEvents.MouseEvent.ctrlKey : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem MouseEvent (Types t1)} ->
@@ -7220,31 +7020,31 @@ function Web_Raw_UIEvents_KeyboardEvent_ctrlKey($0) {
 
 /* Web.Raw.UIEvents.KeyboardEvent.code : KeyboardEvent -> JSIO String */
 function Web_Raw_UIEvents_KeyboardEvent_code($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_UIEventsPrim_KeyboardEvent_prim__code($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_UIEventsPrim_KeyboardEvent_prim__code($0, $6));
 }
 
 /* Web.Raw.UIEvents.MouseEvent.clientY : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem MouseEvent (Types t1)} ->
 t1 -> JSIO Double */
 function Web_Raw_UIEvents_MouseEvent_clientY($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__clientY($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__clientY($0, $6));
 }
 
 /* Web.Raw.UIEvents.MouseEvent.clientX : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem MouseEvent (Types t1)} ->
 t1 -> JSIO Double */
 function Web_Raw_UIEvents_MouseEvent_clientX($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__clientX($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__clientX($0, $6));
 }
 
 /* Web.Raw.UIEvents.MouseEvent.buttons : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem MouseEvent (Types t1)} ->
 t1 -> JSIO Bits16 */
 function Web_Raw_UIEvents_MouseEvent_buttons($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__buttons($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__buttons($0, $6));
 }
 
 /* Web.Raw.UIEvents.MouseEvent.button : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem MouseEvent (Types t1)} ->
 t1 -> JSIO Int16 */
 function Web_Raw_UIEvents_MouseEvent_button($0) {
- return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_111()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__button($0, $6));
+ return Control_Monad_Error_Either_liftIO_HasIO_x28x28EitherTx20x24ex29x20x24mx29(csegen_106()(), $6 => Web_Internal_UIEventsPrim_MouseEvent_prim__button($0, $6));
 }
 
 /* Web.Raw.UIEvents.MouseEvent.altKey : {auto 0 conArg : JSType t1} -> {auto 0 _ : Elem MouseEvent (Types t1)} ->
@@ -7307,7 +7107,7 @@ function EmKit_Wire_JSON_Simple_fromJsonStreamEvent($0, $1) {
    case 0: /* Left */ return {h: 0 /* Left */, a1: $9.a1};
   }
  };
- return JSON_Simple_FromJSON_withValue('Object', csegen_626(), () => 'StreamEvent', $7, $1);
+ return JSON_Simple_FromJSON_withValue('Object', csegen_670(), () => 'StreamEvent', $7, $1);
 }
 
 /* EmKit.Wire.JSON.Simple.fromJsonResyncPayload : FromJSON ev => Parser JSON (ResyncPayload ev) */
@@ -7325,7 +7125,7 @@ function EmKit_Wire_JSON_Simple_fromJsonResyncPayload($0, $1) {
    case 0: /* Left */ return {h: 0 /* Left */, a1: $9.a1};
   }
  };
- return JSON_Simple_FromJSON_withValue('Object', csegen_626(), () => 'ResyncPayload', $7, $1);
+ return JSON_Simple_FromJSON_withValue('Object', csegen_670(), () => 'ResyncPayload', $7, $1);
 }
 
 /* EmKit.Frontend.Stream.subscribeStream : (stream -> String -> String) -> stream -> String -> (String -> msg) -> Cmd msg */
@@ -7340,7 +7140,7 @@ function EmKit_Frontend_SSE_subscribe($0, $1, $2) {
 
 /* EmKit.Frontend.SSE.requestClientId : (String -> msg) -> Cmd msg */
 function EmKit_Frontend_SSE_requestClientId($0, $1) {
- return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_45()(), EmKit_Frontend_SSE_prim__clientId(), cid => Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_36()(), $0(cid))), $1);
+ return Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), Control_Monad_Error_Either_x3ex3ex3d_Monad_x28x28EitherTx20x24ex29x20x24mx29(csegen_40()(), EmKit_Frontend_SSE_prim__clientId(), cid => Control_Monad_Error_Either_pure_Applicative_x28x28EitherTx20x24ex29x20x24mx29(csegen_34()(), $0(cid))), $1);
 }
 
 /* EmKit.Frontend.Execute.postExecuteSingle : ToJSON commandT =>
@@ -7357,157 +7157,69 @@ function EmKit_Frontend_Execute_getResync($0, $1, $2, $3, $4) {
 
 /* Domain.JSON.Simple.toJsonCommand : Command -> JSON */
 function Domain_JSON_Simple_toJsonCommand($0) {
- switch($0.h) {
-  case 0: /* Create */ return JSON_Simple_ToJSON_taggedObject('tag', 'contents', 'Create', {h: 4 /* JString */, a1: $0.a1});
-  case 1: /* Increment */ return {h: 4 /* JString */, a1: 'Increment'};
-  case 2: /* Decrement */ return {h: 4 /* JString */, a1: 'Decrement'};
+ switch($0) {
+  case 0: return {h: 4 /* JString */, a1: 'Increment'};
+  case 1: return {h: 4 /* JString */, a1: 'Decrement'};
  }
 }
 
 /* Domain.JSON.Simple.fromJsonCounterEvent : Parser JSON CounterEvent */
 function Domain_JSON_Simple_fromJsonCounterEvent($0) {
- const $2 = $3 => {
-  const $9 = x => {
-   switch(x) {
-    case 'Incremented': return {h: 1 /* Right */, a1: {h: 1 /* Incremented */}};
-    case 'Decremented': return {h: 1 /* Right */, a1: {h: 2 /* Decremented */}};
-    default: return {h: 0 /* Left */, a1: {a1: {h: 0}, a2: ('Unexpected constructor tag for CounterEvent: '+Prelude_Show_show_Show_String(x))}};
-   }
-  };
-  return JSON_Simple_FromJSON_withValue('String', csegen_627(), () => 'CounterEvent', $9, $3);
+ const $3 = $4 => {
+  switch($4.h) {
+   case 4: /* JString */ return {a1: $4.a1};
+   default: return {h: 0};
+  }
  };
- const $15 = $16 => {
-  const $1b = x => {
-   switch(x.a1) {
-    case 'Created': {
-     const $1e = JSON_Simple_FromJSON_withValue('String', csegen_627(), () => 'String', $25 => ({h: 1 /* Right */, a1: $25}), x.a2);
-     switch($1e.h) {
-      case 0: /* Left */ return {h: 0 /* Left */, a1: {a1: {a1: {h: 0 /* Key */, a1: 'Created'}, a2: $1e.a1.a1}, a2: $1e.a1.a2}};
-      case 1: /* Right */ return {h: 1 /* Right */, a1: {h: 0 /* Created */, a1: $1e.a1}};
-     }
-    }
-    default: return {h: 0 /* Left */, a1: {a1: {h: 0}, a2: ('Unexpected constructor tag for CounterEvent: '+Prelude_Show_show_Show_String(x.a1))}};
-   }
-  };
-  return JSON_Simple_FromJSON_fromTaggedObject(() => 'CounterEvent', 'tag', 'contents', $1b, $16);
+ const $8 = x => {
+  switch(x) {
+   case 'Incremented': return {h: 1 /* Right */, a1: 0};
+   case 'Decremented': return {h: 1 /* Right */, a1: 1};
+   default: return {h: 0 /* Left */, a1: {a1: {h: 0}, a2: ('Unexpected constructor tag for CounterEvent: '+Prelude_Show_show_Show_String(x))}};
+  }
  };
- return JSON_Simple_FromJSON_x3cx7cx3e($2, $15, $0);
+ return JSON_Simple_FromJSON_withValue('String', $3, () => 'CounterEvent', $8, $0);
 }
 
-/* Domain.4798:2267:step */
-function Domain_n__4798_2267_step($0, $1, $2, $3, $4) {
+/* Domain.3095:1693:step */
+function Domain_n__3095_1693_step($0, $1, $2, $3, $4) {
  const $5 = Prelude_Types_List_tailRecAppend($4.a3, {a1: $1, a2: {h: 0}});
- const $c = Domain_stepModel($4.a2, $1);
+ const $c = Domain_evolve_Projection_CounterEvent_CounterModel($4.a2, $1);
  return {a1: $3, a2: $c, a3: $5};
 }
 
-/* Domain.initial */
-const Domain_initial_Projection_CounterEvent_CounterModel = __lazy(function () {
- return {a1: 0, a2: '(unnamed)', a3: 0n, a4: ''};
-});
+/* Domain.evolve */
+function Domain_evolve_Projection_CounterEvent_CounterModel($0, $1) {
+ switch($1) {
+  case 0: return ($0+1n);
+  case 1: return Domain_decNat($0);
+ }
+}
 
 /* Domain.availableScreenActions */
 function Domain_availableScreenActions_ScreenActions_Screen_CounterBundle_Action_Intent($0, $1) {
- switch($0.a1) {
-  case 1: return {a1: 1, a2: {a1: 2, a2: {h: 0}}};
-  case 0: return {a1: 0, a2: {h: 0}};
- }
-}
-
-/* Domain.stepModel : CounterModel -> CounterEvent -> CounterModel */
-function Domain_stepModel($0, $1) {
- switch($1.h) {
-  case 0: /* Created */ return {a1: 1, a2: $1.a1, a3: 0n, a4: ''};
-  case 1: /* Incremented */ {
-   const $7 = ($0.a3+1n);
-   return {a1: 1, a2: $0.a2, a3: $7, a4: Domain_romanDigit($7)};
-  }
-  case 2: /* Decremented */ {
-   const $12 = Domain_decNat($0.a3);
-   return {a1: 1, a2: $0.a2, a3: $12, a4: Domain_romanDigit($12)};
-  }
- }
-}
-
-/* Domain.romanDigit : Nat -> String */
-function Domain_romanDigit($0) {
  switch($0) {
-  case 0n: return '';
-  default: {
-   const $2 = ($0-1n);
-   switch($2) {
-    case 0n: return 'I';
-    default: {
-     const $6 = ($2-1n);
-     switch($6) {
-      case 0n: return 'II';
-      default: {
-       const $a = ($6-1n);
-       switch($a) {
-        case 0n: return 'III';
-        default: {
-         const $e = ($a-1n);
-         switch($e) {
-          case 0n: return 'IV';
-          default: {
-           const $12 = ($e-1n);
-           switch($12) {
-            case 0n: return 'V';
-            default: {
-             const $16 = ($12-1n);
-             switch($16) {
-              case 0n: return 'VI';
-              default: {
-               const $1a = ($16-1n);
-               switch($1a) {
-                case 0n: return 'VII';
-                default: {
-                 const $1e = ($1a-1n);
-                 switch($1e) {
-                  case 0n: return 'VIII';
-                  default: {
-                   const $22 = ($1e-1n);
-                   switch($22) {
-                    case 0n: return 'IX';
-                    default: return 'X';
-                   }
-                  }
-                 }
-                }
-               }
-              }
-             }
-            }
-           }
-          }
-         }
-        }
-       }
-      }
-     }
-    }
-   }
-  }
+  case 0n: return {a1: 0, a2: {h: 0}};
+  default: return {a1: 0, a2: {a1: 1, a2: {h: 0}}};
  }
 }
 
 /* Domain.renderAction : Action -> String */
 function Domain_renderAction($0) {
  switch($0) {
-  case 0: return 'Create counter';
-  case 1: return 'Increment';
-  case 2: return 'Decrement';
+  case 0: return 'Increment';
+  case 1: return 'Decrement';
  }
 }
 
 /* Domain.emptyDetail : CounterDetail */
 const Domain_emptyDetail = __lazy(function () {
- return {a1: 0n, a2: Domain_initial_Projection_CounterEvent_CounterModel(), a3: {h: 0}};
+ return {a1: 0n, a2: 0n, a3: {h: 0}};
 });
 
 /* Domain.detailFromEvents : Nat -> List CounterEvent -> CounterDetail */
 function Domain_detailFromEvents($0, $1) {
- return {a1: $0, a2: EmKit_Sourcing_Projection_project($6 => ({h: 'Prelude.Basics.List', a1: $6}), {a1: $a => ({h: 'Prelude.Basics.List', a1: $a}), a2: e => ({h: 0}), a3: e => $e => $f => Prelude_Types_List_tailRecAppend($e, $f), a4: e => s => $14 => $15 => $16 => Prelude_Types_foldl_Foldable_List($14, $15, $16), a5: e => a => b => c => Data_List_appendAssociative(a, b, c), a6: e => right => undefined, a7: e => left => Data_List_appendNilRightNeutral(left), a8: e => s => start => step => undefined, a9: e => s => start => step => x => y => undefined}, {h: 'Domain.CounterEvent'}, {h: 'Domain.CounterModel'}, {a1: {h: 'Domain.CounterEvent'}, a2: {h: 'Domain.CounterModel'}, a3: Domain_initial_Projection_CounterEvent_CounterModel(), a4: $2e => $2f => Domain_stepModel($2e, $2f)}, $1), a3: $1};
+ return {a1: $0, a2: EmKit_Sourcing_Projection_project($6 => ({h: 'Prelude.Basics.List', a1: $6}), {a1: $a => ({h: 'Prelude.Basics.List', a1: $a}), a2: e => ({h: 0}), a3: e => $e => $f => Prelude_Types_List_tailRecAppend($e, $f), a4: e => s => $14 => $15 => $16 => Prelude_Types_foldl_Foldable_List($14, $15, $16), a5: e => a => b => c => Data_List_appendAssociative(a, b, c), a6: e => right => undefined, a7: e => left => Data_List_appendNilRightNeutral(left), a8: e => s => start => step => undefined, a9: e => s => start => step => x => y => undefined}, {h: 'Domain.CounterEvent'}, {h: 'Domain.CounterModel'}, {a1: {h: 'Domain.CounterEvent'}, a2: {h: 'Domain.CounterModel'}, a3: 0n, a4: $2d => $2e => Domain_evolve_Projection_CounterEvent_CounterModel($2d, $2e)}, $1), a3: $1};
 }
 
 /* Domain.decNat : Nat -> Nat */
@@ -7525,7 +7237,7 @@ function Domain_availableActionsForModel($0) {
 
 /* Domain.applyDetailEvent : Nat -> CounterEvent -> CounterDetail -> Either String CounterDetail */
 function Domain_applyDetailEvent($0, $1, $2) {
- const $3 = EmKit_Stream_Version_applyVersionedUpdate(csegen_631(), 'counter-main', $2.a1, $0, $c => $d => Domain_n__4798_2267_step($2, $1, $0, $c, $d), $2);
+ const $3 = EmKit_Stream_Version_applyVersionedUpdate(csegen_623(), 'counter-main', $2.a1, $0, $c => $d => Domain_n__3095_1693_step($2, $1, $0, $c, $d), $2);
  switch($3.h) {
   case 0: /* Left */ return {h: 0 /* Left */, a1: EmKit_Stream_Version_formatAdvanceError($18 => $18, $3.a1)};
   case 1: /* Right */ {

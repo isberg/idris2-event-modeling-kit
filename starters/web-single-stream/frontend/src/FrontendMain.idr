@@ -1,7 +1,6 @@
 module FrontendMain
 
 import Data.Maybe
-import Data.String
 import Domain
 import Domain.JSON.Simple
 import EmKit.Frontend.Execute as FrontendExecute
@@ -11,7 +10,6 @@ import EmKit.Wire.Contracts
 import EmKit.Wire.JSON.Simple
 import JS.Util
 import JSON.Simple
-import Text.HTML.Attribute as HtmlAttr
 import Web.MVC
 import Web.MVC.Http
 
@@ -20,22 +18,18 @@ import Web.MVC.Http
 record State where
   constructor MkState
   detail : CounterDetail
-  createName : String
   status : String
   busy : Bool
   clientId : Maybe String
 
 initialState : State
-initialState = MkState emptyDetail "Kitchen" "Connecting live feed..." True Nothing
+initialState = MkState emptyDetail "Connecting live feed..." True Nothing
 
 data Msg : Type where
   Initialized : Msg
   ClientIdReady : String -> Msg
   ResyncFinished : Either HTTPError (ResyncPayload CounterEvent) -> Msg
   LiveEventReceived : String -> Msg
-  CreateNameChanged : String -> Msg
-  CreateClicked : Msg
-  CreateFinished : Either HTTPError () -> Msg
   IncrementClicked : Msg
   IncrementFinished : Either HTTPError () -> Msg
   DecrementClicked : Msg
@@ -62,10 +56,6 @@ subscribeLive clientId = FrontendStream.subscribeStream eventsUrl counterStreamI
 requestResync : Cmd Msg
 requestResync = FrontendExecute.getResync resyncUrl (\_ => ResyncFinished) counterStreamId
 
-postCreate : Nat -> String -> Cmd Msg
-postCreate expectedVersion counterName =
-  FrontendExecute.postExecuteSingle executeUrl CreateFinished counterStreamId expectedVersion (Create counterName)
-
 postIncrement : Nat -> Cmd Msg
 postIncrement expectedVersion =
   FrontendExecute.postExecuteSingle executeUrl IncrementFinished counterStreamId expectedVersion Increment
@@ -86,7 +76,6 @@ hasAction wanted s = any matches (availableActions s)
     matches : Action -> Bool
     matches current =
       case (wanted, current) of
-        (CreateCounterAction, CreateCounterAction) => True
         (IncrementCounterAction, IncrementCounterAction) => True
         (DecrementCounterAction, DecrementCounterAction) => True
         _ => False
@@ -95,12 +84,10 @@ statusText : State -> String
 statusText s = if busy s then "Working: " ++ status s else status s
 
 renderHistoryEvent : CounterEvent -> String
-renderHistoryEvent (Created counterName) = "Created (" ++ counterName ++ ")"
 renderHistoryEvent Incremented = "Incremented"
 renderHistoryEvent Decremented = "Decremented"
 
 msgForAction : Action -> Msg
-msgForAction CreateCounterAction = CreateClicked
 msgForAction IncrementCounterAction = IncrementClicked
 msgForAction DecrementCounterAction = DecrementClicked
 
@@ -116,8 +103,6 @@ actionButton isBusy action =
 viewNode : State -> Node Msg
 viewNode s =
   let current = currentModel s
-      showCreate = hasAction CreateCounterAction s
-      showIncrement = hasAction IncrementCounterAction s
       showDecrement = hasAction DecrementCounterAction s
       historyRows = zipWith historyRow [1..length (history (detail s))] (history (detail s))
   in div [ style "min-height:100vh; padding:24px; background:linear-gradient(135deg,#f1eee8 0%, #e5eef7 55%, #dde7d8 100%); font-family:Georgia,serif; color:#20303b;" ]
@@ -128,17 +113,11 @@ viewNode s =
                ]
            , div [ style "background:#ffffffd9; border:1px solid #ced8e2; border-radius:18px; padding:18px;" ]
                [ div [ style "font-size:12px; opacity:0.65; text-transform:uppercase; letter-spacing:1px;" ] [ Text "ClientProjectionOnly" ]
-               , h1 [ style "margin:8px 0 6px 0; font-size:30px;" ] [ Text (label current) ]
+               , h1 [ style "margin:8px 0 6px 0; font-size:30px;" ] [ Text "Counter" ]
                , div [ style "font-size:84px; font-weight:700; line-height:0.9; color:#1b4f3e;" ] [ Text (show (value current)) ]
-               , div [ style "font-size:28px; letter-spacing:1px; margin-top:6px; color:#406657; min-height:34px;" ] [ Text (roman current) ]
-               , if showCreate
-                   then div [ style "display:flex; gap:10px; flex-wrap:wrap; margin:18px 0;" ]
-                          [ input [ onInput CreateNameChanged, HtmlAttr.value (createName s), placeholder "counter name", style "padding:10px; border:1px solid #98aaba; border-radius:10px; min-width:240px;" ] []
-                          , actionButton (busy s) CreateCounterAction
-                          ]
-                   else div [ style "display:flex; gap:10px; flex-wrap:wrap; margin:18px 0;" ]
-                          ((if showIncrement then [actionButton (busy s) IncrementCounterAction] else []) ++
-                           (if showDecrement then [actionButton (busy s) DecrementCounterAction] else []))
+               , div [ style "display:flex; gap:10px; flex-wrap:wrap; margin:18px 0;" ]
+                   ([actionButton (busy s) IncrementCounterAction] ++
+                    (if showDecrement then [actionButton (busy s) DecrementCounterAction] else []))
                , h2 [ style "margin:0 0 8px 0;" ] [ Text "Event History" ]
                , if null historyRows
                    then Text "No events yet."
@@ -189,26 +168,6 @@ controller (LiveEventReceived raw) s =
         Right nextDetail =>
           let s' = { detail := nextDetail, busy := False, status := "Live update applied." } s in
           (s', updateView s')
-
-controller (CreateNameChanged value) s = ({ createName := value } s, Cmd.noAction)
-
-controller CreateClicked s =
-  let cleanName = trim (createName s)
-      expectedVersion = version (detail s) in
-  if cleanName == "" then
-    let s' = { busy := False, status := "Counter name is required." } s in
-    (s', updateView s')
-  else
-    let s' = { busy := True, status := "Creating counter..." } s in
-    (s', batch [updateView s', postCreate expectedVersion cleanName])
-
-controller (CreateFinished (Left err)) s =
-  let s' = { busy := False, status := httpErrorMessage err } s in
-  (s', updateView s')
-
-controller (CreateFinished (Right _)) s =
-  let s' = { busy := False, createName := "", status := "Create accepted. Waiting for live update..." } s in
-  (s', updateView s')
 
 controller IncrementClicked s =
   let s' = { busy := True, status := "Incrementing counter..." } s in

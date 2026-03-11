@@ -100,7 +100,7 @@ if [[ "$READY" -ne 1 ]]; then
 fi
 
 view0=$(curl -fsS "$BASE_URL/api/counter/view")
-echo "$view0" | ${grep_cmd} '"created":false'
+echo "$view0" | ${grep_cmd} '^0$'
 
 resync0=$(curl -fsS "$BASE_URL/api/counter/resync")
 echo "$resync0" | ${grep_cmd} '"version":0'
@@ -111,52 +111,54 @@ curl -N -sS "$BASE_URL/api/counter/events/smoke-client" >"$SSE_FILE" 2>"$TMP_DIR
 SSE_PID=$!
 wait_for_event "SSE connected" '^: connected' "$SSE_FILE"
 
-create_status=$(curl -sS -o "$TMP_DIR/create.txt" -w '%{http_code}' -X POST "$BASE_URL/api/counter/execute" \
+inc1_status=$(curl -sS -o "$TMP_DIR/inc1.txt" -w '%{http_code}' -X POST "$BASE_URL/api/counter/execute" \
   -H 'Content-Type: application/json' \
-  -d '{"expectedVersion":0,"command":{"tag":"Create","contents":"Kitchen"}}')
-echo "$create_status" | ${grep_cmd} '^200$'
-wait_for_event "Created arrived" '"tag":"Created","contents":"Kitchen"' "$SSE_FILE"
-wait_for_event "Created id is 1" '^id: 1$' "$SSE_FILE"
+  -d '{"expectedVersion":0,"command":"Increment"}')
+echo "$inc1_status" | ${grep_cmd} '^200$'
+wait_for_event "First increment arrived" '"event":"Incremented"' "$SSE_FILE"
+wait_for_event "First increment id is 1" '^id: 1$' "$SSE_FILE"
 
-inc_status=$(curl -sS -o "$TMP_DIR/inc.txt" -w '%{http_code}' -X POST "$BASE_URL/api/counter/execute" \
+inc2_status=$(curl -sS -o "$TMP_DIR/inc2.txt" -w '%{http_code}' -X POST "$BASE_URL/api/counter/execute" \
   -H 'Content-Type: application/json' \
   -d '{"expectedVersion":1,"command":"Increment"}')
-echo "$inc_status" | ${grep_cmd} '^200$'
-wait_for_event "Increment arrived" '"event":"Incremented"' "$SSE_FILE"
-wait_for_event "Increment id is 2" '^id: 2$' "$SSE_FILE"
+echo "$inc2_status" | ${grep_cmd} '^200$'
+wait_for_event "Second increment arrived" '"event":"Incremented"' "$SSE_FILE"
+wait_for_event "Second increment id is 2" '^id: 2$' "$SSE_FILE"
 
 RESUME_FILE="$TMP_DIR/resume.log"
 curl -N -sS "$BASE_URL/api/counter/events/resume-client" -H 'Last-Event-ID: 1' >"$RESUME_FILE" 2>"$TMP_DIR/resume.err" &
 RESUME_PID=$!
 wait_for_event "Resume connected" '^: connected' "$RESUME_FILE"
-wait_for_event "Resume replay incremented" '"event":"Incremented"' "$RESUME_FILE"
-if ${grep_cmd} '"tag":"Created"' "$RESUME_FILE"; then
-  echo "resume stream unexpectedly replayed Created"
+wait_for_event "Resume replay second increment" '"event":"Incremented"' "$RESUME_FILE"
+if ${grep_cmd} '^id: 1$' "$RESUME_FILE"; then
+  echo "resume stream unexpectedly replayed first increment"
   cat "$RESUME_FILE"
   exit 1
 fi
 
-dec_status=$(curl -sS -o "$TMP_DIR/dec.txt" -w '%{http_code}' -X POST "$BASE_URL/api/counter/execute" \
+dec1_status=$(curl -sS -o "$TMP_DIR/dec1.txt" -w '%{http_code}' -X POST "$BASE_URL/api/counter/execute" \
   -H 'Content-Type: application/json' \
   -d '{"expectedVersion":2,"command":"Decrement"}')
-echo "$dec_status" | ${grep_cmd} '^200$'
-wait_for_event "Decrement arrived" '"event":"Decremented"' "$SSE_FILE"
+echo "$dec1_status" | ${grep_cmd} '^200$'
+wait_for_event "First decrement arrived" '"event":"Decremented"' "$SSE_FILE"
+
+dec2_status=$(curl -sS -o "$TMP_DIR/dec2.txt" -w '%{http_code}' -X POST "$BASE_URL/api/counter/execute" \
+  -H 'Content-Type: application/json' \
+  -d '{"expectedVersion":3,"command":"Decrement"}')
+echo "$dec2_status" | ${grep_cmd} '^200$'
+wait_for_event "Second decrement arrived" '"event":"Decremented"' "$SSE_FILE"
 
 reject_status=$(curl -sS -o "$TMP_DIR/reject.txt" -w '%{http_code}' -X POST "$BASE_URL/api/counter/execute" \
   -H 'Content-Type: application/json' \
-  -d '{"expectedVersion":3,"command":"Decrement"}')
+  -d '{"expectedVersion":4,"command":"Decrement"}')
 echo "$reject_status" | ${grep_cmd} '^400$'
 cat "$TMP_DIR/reject.txt" | ${grep_cmd} 'already at minimum'
 
 view1=$(curl -fsS "$BASE_URL/api/counter/view")
-echo "$view1" | ${grep_cmd} '"created":true'
-echo "$view1" | ${grep_cmd} '"label":"Kitchen"'
-echo "$view1" | ${grep_cmd} '"value":0'
-echo "$view1" | ${grep_cmd} '"roman":""'
+echo "$view1" | ${grep_cmd} '^0$'
 
 resync1=$(curl -fsS "$BASE_URL/api/counter/resync")
-echo "$resync1" | ${grep_cmd} '"version":3'
-echo "$resync1" | ${grep_cmd} '"tag":"Created","contents":"Kitchen"'
+echo "$resync1" | ${grep_cmd} '"version":4'
 echo "$resync1" | ${grep_cmd} '"Incremented"'
 echo "$resync1" | ${grep_cmd} '"Decremented"'
 
@@ -166,6 +168,6 @@ curl -fsS "$BASE_URL/static/index.html" -o "$index_file"
 curl -fsS "$BASE_URL/static/frontend.js" -o "$bundle_file"
 ${grep_cmd} 'frontend.js' "$index_file"
 ${grep_cmd} 'EMKit Web Single-Stream Starter' "$index_file"
-${grep_cmd} 'Creating counter' "$bundle_file"
+${grep_cmd} 'Incrementing counter' "$bundle_file"
 
 echo 'SMOKE_OK'

@@ -11,7 +11,9 @@ It is meant to be copied when you want:
 - SSE replay and live updates
 - memory mode by default with optional file-store mode
 
-It uses a concrete counter domain so the starter is runnable immediately. The expected workflow is:
+It intentionally uses a tiny counter domain so the domain does not compete with the wiring.
+There is no `Create`, no extra read model endpoint shape, and no arbitrary business rule like a maximum value.
+The expected workflow is:
 1. copy this directory,
 2. rename the package names and modules,
 3. replace the domain types and routes,
@@ -50,9 +52,10 @@ Then open `http://127.0.0.1:3000/static/index.html`.
 - one per-stream SSE feed
 - one resync endpoint
 - one execute endpoint
+- only two commands: `Increment` and `Decrement`
 
 ## Expected First Extensions
 
-1. Replace the counter domain with your own command/event/state model.
-2. Add an extra query endpoint if the UI needs a read model that is not just resync plus live events.
+1. Replace the counter domain with your own command/event/model types.
+2. Add a query endpoint only if the UI needs something beyond resync plus live events.
 3. Add translation or automation only after the basic execute/resync/feed loop is stable.
