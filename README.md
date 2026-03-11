@@ -46,7 +46,7 @@ This repository is not an application. It is a package workspace intended to sho
 ## Starters
 
 - `starters/web-single-stream`
-  Narrow copy target for a first SSE-first web application: one fixed stream, one screen, typed execute/resync payloads, live replayable feed, and the shared memory/file backend shell. Supports both a manual copy path and a helper script for the mechanical rename layer.
+  Narrow copy target for a first SSE-first web application: one fixed stream, one screen, typed execute/resync payloads, live replayable feed, and the shared memory/file backend shell. Supports a manual copy path, a helper script for the mechanical rename layer, and a post-copy checklist for controlled domain replacement.
 
 ## Notes
 

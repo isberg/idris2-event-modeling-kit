@@ -18,6 +18,7 @@ There are two supported ways to copy it:
 2. scripted copy with `scripts/copy-starter.sh`
 
 See `COPYING.md` for both flows.
+After the copy itself works, use `POST_COPY_CHECKLIST.md` to replace the tiny starter domain in a controlled order.
 
 ## What It Teaches
 
@@ -49,6 +50,7 @@ Then open `http://127.0.0.1:3000/static/index.html`.
 
 Manual path:
 - read `COPYING.md`
+- then read `POST_COPY_CHECKLIST.md`
 
 Scripted path:
 
@@ -57,6 +59,7 @@ Scripted path:
 ```
 
 The script only automates the mechanical rename layer. It does not invent your domain for you.
+After the generated copy builds and smokes once, follow `POST_COPY_CHECKLIST.md`.
 
 ## What Is Intentionally Fixed Here
 

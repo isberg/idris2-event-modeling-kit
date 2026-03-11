@@ -97,8 +97,9 @@ Usage:
 
 Then:
 1. build and smoke the generated copy
-2. replace the tiny counter domain with your own
-3. re-run build and smoke
+2. follow `POST_COPY_CHECKLIST.md`
+3. replace the tiny counter domain with your own
+4. re-run build and smoke
 
 ## What The Script Does Not Do
 

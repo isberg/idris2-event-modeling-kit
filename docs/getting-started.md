@@ -66,14 +66,16 @@ Why:
 - supports both:
   - manual copy with `COPYING.md`
   - scripted copy with `scripts/copy-starter.sh`
+  - controlled domain replacement with `POST_COPY_CHECKLIST.md`
 
 Read in this order:
 1. `starters/web-single-stream/README.md`
 2. `starters/web-single-stream/COPYING.md`
-3. `starters/web-single-stream/domain/src/Domain.idr`
-4. `starters/web-single-stream/backend/src/BackendMain.idr`
-5. `starters/web-single-stream/frontend/src/FrontendMain.idr`
-6. `starters/web-single-stream/scripts/smoke.sh`
+3. `starters/web-single-stream/POST_COPY_CHECKLIST.md`
+4. `starters/web-single-stream/domain/src/Domain.idr`
+5. `starters/web-single-stream/backend/src/BackendMain.idr`
+6. `starters/web-single-stream/frontend/src/FrontendMain.idr`
+7. `starters/web-single-stream/scripts/smoke.sh`
 
 ## Web Progression
 
