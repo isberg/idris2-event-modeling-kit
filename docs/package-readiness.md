@@ -7,12 +7,11 @@ Status values:
 - `needs-more-hardening`: useful and exercised, but still more opinionated or less externally tested
 
 Global blockers still affecting every package:
-- no top-level `LICENSE` yet
 - no public GitHub remote metadata wired into package fields yet
 
 | Package | Current Version | Wave | Status | Evidence | Main Remaining Risk |
 |---|---:|---:|---|---|---|
-| `emkit-sourcing` | `0.1.0` | 1 | `ready-soon` | tutorials, console example, all web examples | needs final public metadata and license |
+| `emkit-sourcing` | `0.1.0` | 1 | `ready-soon` | tutorials, console example, all web examples | needs final public repo metadata |
 | `emkit-stream` | `0.1.0` | 1 | `ready-soon` | all web examples, starter | SSE/version helper surface may still get minor polish |
 | `emkit-modeling` | `0.1.0` | 1 | `ready-soon` | tutorials, console example, project/tasks example | translation helper remains intentionally minimal |
 | `emkit-wire` | `0.1.0` | 1 | `ready-soon` | multi-stream web examples, starter | route-level helper policy intentionally deferred |

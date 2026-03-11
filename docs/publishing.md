@@ -9,8 +9,8 @@ This document tracks the minimum release hygiene expected before:
 
 The workspace is close on architecture and examples, but not fully publication-ready yet.
 
-Current blocker:
-- top-level `LICENSE` is still missing and must be chosen explicitly before public publication
+License choice completed:
+- top-level `LICENSE` added as `MIT`
 
 Current non-legal hardening completed in this slice:
 - package metadata strengthened in `.ipkg` files
@@ -37,8 +37,8 @@ This runs:
 Before making the repository public, complete these gates:
 
 1. Legal metadata
-- choose a top-level `LICENSE`
-- reflect that license in package metadata where appropriate
+- top-level `LICENSE` is present as `MIT`
+- reflect that license in package metadata where appropriate if a stable package-level field is adopted later
 
 2. Public verification
 - ensure `./scripts/verify-release.sh` passes from a clean clone
