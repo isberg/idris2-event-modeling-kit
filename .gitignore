@@ -1,6 +1,7 @@
 /build/
 **/build/
 examples/*/static/frontend.js
+starters/*/static/frontend.js
 *.db
 *.log
 *.tmp
