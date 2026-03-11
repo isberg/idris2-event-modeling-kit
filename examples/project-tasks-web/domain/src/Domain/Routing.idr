@@ -28,6 +28,12 @@ record RoutedTaskIntake where
   command : Task.TaskCommand
 
 public export
+record RoutedTaskAction where
+  constructor MkRoutedTaskAction
+  taskId : String
+  command : Task.TaskCommand
+
+public export
 record TaskIntakeAccepted where
   constructor MkTaskIntakeAccepted
   taskId : String
@@ -35,11 +41,27 @@ record TaskIntakeAccepted where
   acceptedTitle : String
 
 public export
+record TaskActionAccepted where
+  constructor MkTaskActionAccepted
+  taskId : String
+  acceptedCommand : String
+
+public export
 acceptedFromRoutedTaskIntake : RoutedTaskIntake -> TaskIntakeAccepted
 acceptedFromRoutedTaskIntake routed =
   case command routed of
     Task.CreateTask projectId title => MkTaskIntakeAccepted (taskId routed) projectId title
     _ => MkTaskIntakeAccepted (taskId routed) "" ""
+
+taskCommandName : Task.TaskCommand -> String
+taskCommandName (Task.CreateTask _ _) = "CreateTask"
+taskCommandName Task.StartTask = "StartTask"
+taskCommandName Task.CompleteTask = "CompleteTask"
+
+public export
+acceptedFromRoutedTaskAction : RoutedTaskAction -> TaskActionAccepted
+acceptedFromRoutedTaskAction routed =
+  MkTaskActionAccepted (taskId routed) (taskCommandName (command routed))
 
 public export
 routeTaskIntake :
@@ -53,3 +75,7 @@ routeTaskIntake intent routingView =
       let pid = projectId project
           freshId = Task.nextTaskIdFromSummaries pid (existingTasks routingView)
       in Right (MkRoutedTaskIntake freshId (Task.CreateTask pid (taskTitle intent)))
+
+public export
+routeTaskAction : Translation.TaskActionIntent -> RoutedTaskAction
+routeTaskAction intent = MkRoutedTaskAction (taskRef intent) (command intent)

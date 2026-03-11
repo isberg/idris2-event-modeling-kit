@@ -116,6 +116,23 @@ taskIntakeStatus (TaskIntakeTranslationRejected Translation.IntakeProjectRefMiss
 taskIntakeStatus (TaskIntakeRoutingRejected (Routing.IntakeProjectMissing _)) = NOT_FOUND
 taskIntakeStatus (TaskIntakeExecuteFailed err) = runtimeStatus err
 
+data TaskActionError
+  = TaskActionTranslationRejected Translation.TaskActionTranslationRejection
+  | TaskActionLoadFailed String
+  | TaskActionExecuteFailed (RuntimeExecuteError Task.TaskRejection)
+
+renderTaskActionErr : TaskActionError -> String
+renderTaskActionErr (TaskActionTranslationRejected rejection) =
+  Translation.renderTaskActionTranslationRejection rejection
+renderTaskActionErr (TaskActionLoadFailed err) = err
+renderTaskActionErr (TaskActionExecuteFailed err) = renderRuntimeErr Task.renderTaskRejection err
+
+taskActionStatus : TaskActionError -> Status
+taskActionStatus (TaskActionTranslationRejected Translation.ActionTaskRefMissing) = BAD_REQUEST
+taskActionStatus (TaskActionTranslationRejected (Translation.UnknownTaskAction _)) = BAD_REQUEST
+taskActionStatus (TaskActionLoadFailed _) = INTERNAL_SERVER_ERROR
+taskActionStatus (TaskActionExecuteFailed err) = runtimeStatus err
+
 projectEventFromStored : Event.StoredEvent -> Either LoadErr Event.ProjectEvent
 projectEventFromStored (Event.StoredProject event) = Right event
 projectEventFromStored (Event.StoredTask _) = Left Corrupt
@@ -234,6 +251,13 @@ executeTaskCommandInStore streamId payload = do
             _ => pure ()
       pure (Right (newVersion success))
 
+executeDirectTaskCommandInStore : String -> Task.TaskCommand -> ProjectTaskApp Event.StoredEvent (Either (RuntimeExecuteError Task.TaskRejection) Nat)
+executeDirectTaskCommandInStore streamId cmd = do
+  loaded <- loadMappedHistoryOrEmpty {m=ReaderT (StoreAppEnv Event.StoredEvent) IO} {stream=String} {storedEvent=Event.StoredEvent} {localEvent=Event.TaskEvent} taskEventFromStored streamId
+  case loaded of
+    Left err => pure (Left (RuntimeLoadFailed err))
+    Right (version, _) => executeTaskCommandInStore streamId (MkExecutePayload version cmd)
+
 executeTaskIntakeInStore : Translation.TaskIntakeSignal -> ProjectTaskApp Event.StoredEvent (Either TaskIntakeError Routing.TaskIntakeAccepted)
 executeTaskIntakeInStore signal = do
   case translate signal of
@@ -251,6 +275,19 @@ executeTaskIntakeInStore signal = do
                 case result of
                   Left err => Left (TaskIntakeExecuteFailed err)
                   Right _ => Right (Routing.acceptedFromRoutedTaskIntake routed)
+
+executeTaskActionInStore : Translation.TaskActionSignal -> ProjectTaskApp Event.StoredEvent (Either TaskActionError Routing.TaskActionAccepted)
+executeTaskActionInStore signal =
+  case translate signal of
+    Left rejection => pure (Left (TaskActionTranslationRejected rejection))
+    Right intent => do
+      let routed = Routing.routeTaskAction intent
+      result <- executeDirectTaskCommandInStore (taskId routed) (command routed)
+      pure $
+        case result of
+          Left (RuntimeLoadFailed err) => Left (TaskActionLoadFailed (renderLoadErr err))
+          Left err => Left (TaskActionExecuteFailed err)
+          Right _ => Right (Routing.acceptedFromRoutedTaskAction routed)
 
 frameProjectDetailEvent : Nat -> Event.ProjectEvent -> Buffer
 frameProjectDetailEvent version event =
@@ -327,6 +364,11 @@ runTaskExecuteP env streamId payload = promise $ \resolve, _ => do
 runTaskIntakeP : StoreAppEnv Event.StoredEvent -> Translation.TaskIntakeSignal -> Promise Error IO (Either TaskIntakeError Routing.TaskIntakeAccepted)
 runTaskIntakeP env signal = promise $ \resolve, _ => do
   result <- runReaderT env (executeTaskIntakeInStore signal)
+  resolve result
+
+runTaskActionP : StoreAppEnv Event.StoredEvent -> Translation.TaskActionSignal -> Promise Error IO (Either TaskActionError Routing.TaskActionAccepted)
+runTaskActionP env signal = promise $ \resolve, _ => do
+  result <- runReaderT env (executeTaskActionInStore signal)
   resolve result
 
 
@@ -450,6 +492,15 @@ main = do
                 result <- liftPromise $ runTaskIntakeP env ctx.request.body
                 case result of
                   Left err => sendText (renderTaskIntakeErr err) ctx >>= status (taskIntakeStatus err)
+                  Right accepted => sendText (SimpleToJSON.encode accepted) ctx >>= status OK)
+      , post
+          $ pattern "/api/inbox/task-actions"
+          $ consumes' [JSON] {a = Translation.TaskActionSignal}
+              (\ctx => sendText "Content cannot be parsed." ctx >>= status BAD_REQUEST)
+              (\ctx => do
+                result <- liftPromise $ runTaskActionP env ctx.request.body
+                case result of
+                  Left err => sendText (renderTaskActionErr err) ctx >>= status (taskActionStatus err)
                   Right accepted => sendText (SimpleToJSON.encode accepted) ctx >>= status OK)
       , post
           $ pattern "/api/tasks/execute/{taskId}"

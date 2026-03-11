@@ -24,4 +24,6 @@ import JSON
 %runElab derive "Domain.Task.TaskSummary" [ToJSON, FromJSON]
 %runElab derive "Domain.Task.TaskDetail" [ToJSON, FromJSON]
 %runElab derive "Domain.Translation.TaskIntakeSignal" [ToJSON, FromJSON]
+%runElab derive "Domain.Translation.TaskActionSignal" [ToJSON, FromJSON]
 %runElab derive "Domain.Routing.TaskIntakeAccepted" [ToJSON, FromJSON]
+%runElab derive "Domain.Routing.TaskActionAccepted" [ToJSON, FromJSON]

@@ -1,6 +1,7 @@
 module Domain.Translation
 
 import Data.String
+import Domain.Task as Task
 import EmKit.Modeling.Pattern.Translation
 
 %default total
@@ -33,3 +34,46 @@ implementation Translation TaskIntakeSignal TaskIntakeIntent TaskIntakeTranslati
     in if cleanProjectRef == ""
          then Left IntakeProjectRefMissing
          else Right (MkTaskIntakeIntent cleanProjectRef cleanTaskTitle)
+
+public export
+record TaskActionSignal where
+  constructor MkTaskActionSignal
+  taskRef : String
+  action : String
+
+public export
+record TaskActionIntent where
+  constructor MkTaskActionIntent
+  taskRef : String
+  command : Task.TaskCommand
+
+public export
+data TaskActionTranslationRejection
+  = ActionTaskRefMissing
+  | UnknownTaskAction String
+
+public export
+renderTaskActionTranslationRejection : TaskActionTranslationRejection -> String
+renderTaskActionTranslationRejection ActionTaskRefMissing = "task reference is required."
+renderTaskActionTranslationRejection (UnknownTaskAction raw) =
+  "unknown external task action: " ++ raw
+
+normalizedTaskAction : String -> Maybe Task.TaskCommand
+normalizedTaskAction raw =
+  let cleaned = trim raw in
+    if cleaned == "start" || cleaned == "StartTask"
+      then Just Task.StartTask
+      else if cleaned == "complete" || cleaned == "CompleteTask"
+        then Just Task.CompleteTask
+        else Nothing
+
+public export
+implementation Translation TaskActionSignal TaskActionIntent TaskActionTranslationRejection where
+  translate signal =
+    let cleanTaskRef = trim (taskRef signal)
+        rawAction = trim (action signal)
+    in if cleanTaskRef == ""
+         then Left ActionTaskRefMissing
+         else case normalizedTaskAction rawAction of
+                Nothing => Left (UnknownTaskAction rawAction)
+                Just cmd => Right (MkTaskActionIntent cleanTaskRef cmd)

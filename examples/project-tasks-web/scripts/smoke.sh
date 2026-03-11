@@ -194,18 +194,34 @@ echo "$task_resync_one" | ${grep_cmd} '"version":1'
 echo "$task_resync_one" | ${grep_cmd} '"tag":"TaskCreated"'
 echo "$task_resync_one" | ${grep_cmd} '"Imported task"'
 
-start_task_code=$(curl -sS -o "$TMP_DIR/start-task.txt" -w '%{http_code}' -X POST "$BASE_URL/api/tasks/execute/task-project-1-1" \
+unknown_task_action_code=$(curl -sS -o "$TMP_DIR/unknown-task-action.txt" -w '%{http_code}' -X POST "$BASE_URL/api/inbox/task-actions" \
   -H 'Content-Type: application/json' \
-  -d '{"expectedVersion":1,"command":"StartTask"}')
+  -d '{"taskRef":"task-project-1-1","action":"dance"}')
+echo "$unknown_task_action_code" | ${grep_cmd} '^400$'
+cat "$TMP_DIR/unknown-task-action.txt" | ${grep_cmd} 'unknown external task action: dance'
+
+start_task_code=$(curl -sS -o "$TMP_DIR/start-task.txt" -w '%{http_code}' -X POST "$BASE_URL/api/inbox/task-actions" \
+  -H 'Content-Type: application/json' \
+  -d '{"taskRef":"task-project-1-1","action":"start"}')
 echo "$start_task_code" | ${grep_cmd} '^200$'
+cat "$TMP_DIR/start-task.txt" | ${grep_cmd} '"taskId":"task-project-1-1"'
+cat "$TMP_DIR/start-task.txt" | ${grep_cmd} '"acceptedCommand":"StartTask"'
 wait_for_event "Task started detail" '"version":2' "$TASK_FILE"
 wait_for_event "Task started tag" '"StartTask"|"TaskStarted"' "$TASK_FILE"
 wait_for_event "Task started project feed" '"streamVersion":2' "$PROJECT_TASKS_FILE"
 
-complete_task_code=$(curl -sS -o "$TMP_DIR/complete-task.txt" -w '%{http_code}' -X POST "$BASE_URL/api/tasks/execute/task-project-1-1" \
+repeat_start_code=$(curl -sS -o "$TMP_DIR/repeat-start-task.txt" -w '%{http_code}' -X POST "$BASE_URL/api/inbox/task-actions" \
   -H 'Content-Type: application/json' \
-  -d '{"expectedVersion":2,"command":"CompleteTask"}')
+  -d '{"taskRef":"task-project-1-1","action":"start"}')
+echo "$repeat_start_code" | ${grep_cmd} '^400$'
+cat "$TMP_DIR/repeat-start-task.txt" | ${grep_cmd} 'task is already in progress.'
+
+complete_task_code=$(curl -sS -o "$TMP_DIR/complete-task.txt" -w '%{http_code}' -X POST "$BASE_URL/api/inbox/task-actions" \
+  -H 'Content-Type: application/json' \
+  -d '{"taskRef":"task-project-1-1","action":"complete"}')
 echo "$complete_task_code" | ${grep_cmd} '^200$'
+cat "$TMP_DIR/complete-task.txt" | ${grep_cmd} '"taskId":"task-project-1-1"'
+cat "$TMP_DIR/complete-task.txt" | ${grep_cmd} '"acceptedCommand":"CompleteTask"'
 wait_for_event "Task completed detail" '"version":3' "$TASK_FILE"
 wait_for_event "Task completed tag" '"CompleteTask"|"TaskCompleted"' "$TASK_FILE"
 wait_for_event "Task completed project feed" '"streamVersion":3' "$PROJECT_TASKS_FILE"
