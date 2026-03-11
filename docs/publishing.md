@@ -17,7 +17,7 @@ Current non-legal hardening completed in this slice:
 - public orientation docs strengthened
 - package readiness matrix added
 - reproducible verification script added
-- first GitHub Actions CI workflow added
+- GitHub Actions CI deferred for now; local release verification remains the canonical check
 
 ## Verification Command
 
@@ -42,7 +42,7 @@ Before making the repository public, complete these gates:
 
 2. Public verification
 - ensure `./scripts/verify-release.sh` passes from a clean clone
-- ensure GitHub Actions CI passes on the target default branch
+- reintroduce CI later if automated hosted verification becomes necessary
 
 3. Public-facing docs
 - keep `README.md`, `docs/START-HERE.md`, and `docs/getting-started.md` coherent
