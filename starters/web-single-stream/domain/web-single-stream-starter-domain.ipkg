@@ -1,0 +1,17 @@
+package web-single-stream-starter-domain
+version = 0.1.0
+authors = ""
+
+sourcedir = "src"
+
+modules = Domain
+        , Domain.JSON
+        , Domain.JSON.Simple
+
+depends = base
+        , contrib
+        , emkit-sourcing
+        , emkit-modeling
+        , emkit-stream
+        , json
+        , json-simple

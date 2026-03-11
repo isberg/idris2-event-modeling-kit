@@ -13,8 +13,9 @@ If you are new to `emkit`, do not start by reading every package. Start by readi
 4. `tutorials/counter-stages/04-automation`
 5. `examples/counter-console`
 6. `examples/counter-web`
-7. `examples/todo-web`
-8. `examples/project-tasks-web`
+7. `starters/web-single-stream`
+8. `examples/todo-web`
+9. `examples/project-tasks-web`
 
 ### AI path
 1. Read `README.md`
@@ -52,6 +53,23 @@ Read in this order:
 3. `examples/counter-web/backend/src/BackendMain.idr`
 4. `examples/counter-web/frontend/src/FrontendMain.idr`
 5. `examples/counter-web/scripts/smoke.sh`
+
+## First Copy Target
+
+After `examples/counter-web`, read `starters/web-single-stream`.
+
+Why:
+- same single-stream web shape, but reduced to the stable current defaults
+- typed execute, resync, and stream-event payloads
+- fixed stream id so the routing surface stays trivial
+- intended to be copied and renamed for a first real app
+
+Read in this order:
+1. `starters/web-single-stream/README.md`
+2. `starters/web-single-stream/domain/src/Domain.idr`
+3. `starters/web-single-stream/backend/src/BackendMain.idr`
+4. `starters/web-single-stream/frontend/src/FrontendMain.idr`
+5. `starters/web-single-stream/scripts/smoke.sh`
 
 ## Web Progression
 

@@ -43,6 +43,11 @@ This repository is not an application. It is a package workspace intended to sho
 - `tutorials/counter-stages/README.md`
   One counter app grown through four runnable slices: state change, view, translation, and automation.
 
+## Starters
+
+- `starters/web-single-stream`
+  Narrow copy target for a first SSE-first web application: one fixed stream, one screen, typed execute/resync payloads, live replayable feed, and the shared memory/file backend shell.
+
 ## Notes
 
 - `docs/getting-started.md`
@@ -116,6 +121,13 @@ Build and smoke the web examples:
     ./scripts/build.sh
     ./scripts/smoke.sh --port 3016
     ./scripts/smoke.sh --port 3017 --skip-build --file-store "$(mktemp -d)"
+
+Build and smoke the starter:
+
+    cd starters/web-single-stream
+    ./scripts/build.sh
+    ./scripts/smoke.sh --port 3018
+    ./scripts/smoke.sh --port 3019 --skip-build --file-store "$(mktemp -d)"
 
 ## Repository Rule
 

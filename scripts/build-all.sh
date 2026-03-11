@@ -56,3 +56,6 @@ cd "$repo_root/examples/counters-web"
 
 cd "$repo_root/examples/project-tasks-web"
 ./scripts/build.sh
+
+cd "$repo_root/starters/web-single-stream"
+./scripts/build.sh
