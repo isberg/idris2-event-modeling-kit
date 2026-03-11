@@ -40,10 +40,16 @@ This repository is not an application. It is a package workspace intended to sho
 
 ## Notes
 
+- `docs/getting-started.md`
+  Recommended learning path for humans and AI agents.
+- `docs/pattern-map.md`
+  Pattern-to-code map for the four Event Modeling patterns and the glue layers.
 - `docs/package-boundaries.md`
   Current package ownership and extraction boundaries.
 - `docs/sse-feed-boundaries.md`
   Current stance on per-stream feeds, category feeds, replay semantics, and client-side projection safety.
+
+See also the `README.md` in each example directory for what that example teaches and what files to read first.
 
 ## Quickstart
 
