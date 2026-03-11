@@ -157,6 +157,13 @@ After splitting `examples/project-tasks-web/frontend/src/FrontendMain.idr` into 
 
 The split made the app easier to read without producing a strong new shared API candidate. The remaining repeated burden lives mostly in `Frontend.Update`, where decode failure handling, reload-versus-resync policy, selected-state guards, and status text are still tightly coupled.
 
+After adding the task-intake boundary endpoint to `examples/project-tasks-web`, one more translation boundary is clearer:
+
+- the shared `Translation` interface is usable for context-dependent translation only by manually bundling the external signal together with a projected view,
+- the actual translation route, view loading, and command execution still belong app-local for now.
+
+This is enough evidence to say the shared translation abstraction is still under-specified for view-dependent translation, but not enough evidence yet to replace it.
+
 The same app now also confirms one naming rule:
 
 - when the same aggregate-local fold serves both write-side validation and read-side projection without divergence, prefer one neutral `Model` type,
