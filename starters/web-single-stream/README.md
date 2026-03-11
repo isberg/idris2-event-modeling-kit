@@ -13,11 +13,11 @@ It is meant to be copied when you want:
 
 It intentionally uses a tiny counter domain so the domain does not compete with the wiring.
 There is no `Create`, no extra read model endpoint shape, and no arbitrary business rule like a maximum value.
-The expected workflow is:
-1. copy this directory,
-2. rename the package names and modules,
-3. replace the domain types and routes,
-4. keep the shared `emkit` wiring shape unless you have evidence to change it.
+There are two supported ways to copy it:
+1. manual copy and rename
+2. scripted copy with `scripts/copy-starter.sh`
+
+See `COPYING.md` for both flows.
 
 ## What It Teaches
 
@@ -44,6 +44,19 @@ The expected workflow is:
 ```
 
 Then open `http://127.0.0.1:3000/static/index.html`.
+
+## Copying
+
+Manual path:
+- read `COPYING.md`
+
+Scripted path:
+
+```sh
+./scripts/copy-starter.sh /path/to/target my-app --title "My App"
+```
+
+The script only automates the mechanical rename layer. It does not invent your domain for you.
 
 ## What Is Intentionally Fixed Here
 
