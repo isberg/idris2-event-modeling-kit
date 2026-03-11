@@ -12,6 +12,7 @@ import Domain.Event as Event
 import Domain.JSON
 import Domain.JSON.Simple
 import Domain.Project as Project
+import Domain.Routing as Routing
 import Domain.Task as Task
 import Domain.Translation as Translation
 import EmKit.Modeling.Pattern.Translation
@@ -98,19 +99,21 @@ runtimeStatus (RuntimeLoadFailed _) = INTERNAL_SERVER_ERROR
 runtimeStatus (RuntimeAppendFailed _) = INTERNAL_SERVER_ERROR
 
 data TaskIntakeError
-  = TaskIntakeViewLoadFailed String
-  | TaskIntakeRejected Translation.TaskIntakeRejection
+  = TaskIntakeRoutingViewLoadFailed String
+  | TaskIntakeTranslationRejected Translation.TaskIntakeTranslationRejection
+  | TaskIntakeRoutingRejected Routing.TaskIntakeRoutingRejection
   | TaskIntakeExecuteFailed (RuntimeExecuteError Task.TaskRejection)
 
 renderTaskIntakeErr : TaskIntakeError -> String
-renderTaskIntakeErr (TaskIntakeViewLoadFailed err) = err
-renderTaskIntakeErr (TaskIntakeRejected rejection) = Translation.renderTaskIntakeRejection rejection
+renderTaskIntakeErr (TaskIntakeRoutingViewLoadFailed err) = err
+renderTaskIntakeErr (TaskIntakeTranslationRejected rejection) = Translation.renderTaskIntakeTranslationRejection rejection
+renderTaskIntakeErr (TaskIntakeRoutingRejected rejection) = Routing.renderTaskIntakeRoutingRejection rejection
 renderTaskIntakeErr (TaskIntakeExecuteFailed err) = renderRuntimeErr Task.renderTaskRejection err
 
 taskIntakeStatus : TaskIntakeError -> Status
-taskIntakeStatus (TaskIntakeViewLoadFailed _) = INTERNAL_SERVER_ERROR
-taskIntakeStatus (TaskIntakeRejected (Translation.IntakeProjectMissing _)) = NOT_FOUND
-taskIntakeStatus (TaskIntakeRejected Translation.IntakeEmptyTaskTitle) = BAD_REQUEST
+taskIntakeStatus (TaskIntakeRoutingViewLoadFailed _) = INTERNAL_SERVER_ERROR
+taskIntakeStatus (TaskIntakeTranslationRejected Translation.IntakeProjectRefMissing) = BAD_REQUEST
+taskIntakeStatus (TaskIntakeRoutingRejected (Routing.IntakeProjectMissing _)) = NOT_FOUND
 taskIntakeStatus (TaskIntakeExecuteFailed err) = runtimeStatus err
 
 projectEventFromStored : Event.StoredEvent -> Either LoadErr Event.ProjectEvent
@@ -177,16 +180,16 @@ tasksForProjectInStore targetProjectId = do
       Left err => Left (renderProjectedSummaryErr err)
       Right summaries => Right summaries
 
-taskIntakeViewInStore : Translation.TaskIntakeSignal -> ProjectTaskApp Event.StoredEvent (Either String Translation.TaskIntakeView)
-taskIntakeViewInStore signal = do
+taskIntakeRoutingViewInStore : Translation.TaskIntakeIntent -> ProjectTaskApp Event.StoredEvent (Either String Routing.TaskIntakeRoutingView)
+taskIntakeRoutingViewInStore intent = do
   projects <- listProjectSummariesInStore
-  tasks <- tasksForProjectInStore (projectRef signal)
+  tasks <- tasksForProjectInStore (projectRef intent)
   pure $
     case (projects, tasks) of
       (Left err, _) => Left err
       (_, Left err) => Left err
       (Right projectSummaries, Right taskSummaries) =>
-        Right (Translation.MkTaskIntakeView (findExistingProjectSummary (projectRef signal) projectSummaries) taskSummaries)
+        Right (Routing.MkTaskIntakeRoutingView (findExistingProjectSummary (projectRef intent) projectSummaries) taskSummaries)
 
 taskResyncInStore : String -> ProjectTaskApp Event.StoredEvent (Either String (ResyncPayload Event.TaskEvent))
 taskResyncInStore streamId = do
@@ -231,21 +234,23 @@ executeTaskCommandInStore streamId payload = do
             _ => pure ()
       pure (Right (newVersion success))
 
-executeTaskIntakeInStore : Translation.TaskIntakeSignal -> ProjectTaskApp Event.StoredEvent (Either TaskIntakeError Translation.TaskIntakeAccepted)
+executeTaskIntakeInStore : Translation.TaskIntakeSignal -> ProjectTaskApp Event.StoredEvent (Either TaskIntakeError Routing.TaskIntakeAccepted)
 executeTaskIntakeInStore signal = do
-  viewResult <- taskIntakeViewInStore signal
-  case viewResult of
-    Left err => pure (Left (TaskIntakeViewLoadFailed err))
-    Right intakeView =>
-      case translate (Translation.MkTaskIntakeInput signal intakeView) of
-        Left rejection => pure (Left (TaskIntakeRejected rejection))
-        Right translated => do
-          let Translation.MkTranslatedTaskCommand targetTaskId targetCommand = translated
-          result <- executeTaskCommandInStore targetTaskId (MkExecutePayload 0 targetCommand)
-          pure $
-            case result of
-              Left err => Left (TaskIntakeExecuteFailed err)
-              Right _ => Right (Translation.acceptedFromTranslation translated)
+  case translate signal of
+    Left rejection => pure (Left (TaskIntakeTranslationRejected rejection))
+    Right intent => do
+      viewResult <- taskIntakeRoutingViewInStore intent
+      case viewResult of
+        Left err => pure (Left (TaskIntakeRoutingViewLoadFailed err))
+        Right routingView =>
+          case Routing.routeTaskIntake intent routingView of
+            Left rejection => pure (Left (TaskIntakeRoutingRejected rejection))
+            Right routed => do
+              result <- executeTaskCommandInStore (taskId routed) (MkExecutePayload 0 (command routed))
+              pure $
+                case result of
+                  Left err => Left (TaskIntakeExecuteFailed err)
+                  Right _ => Right (Routing.acceptedFromRoutedTaskIntake routed)
 
 frameProjectDetailEvent : Nat -> Event.ProjectEvent -> Buffer
 frameProjectDetailEvent version event =
@@ -319,7 +324,7 @@ runTaskExecuteP env streamId payload = promise $ \resolve, _ => do
   result <- runReaderT env (executeTaskCommandInStore streamId payload)
   resolve result
 
-runTaskIntakeP : StoreAppEnv Event.StoredEvent -> Translation.TaskIntakeSignal -> Promise Error IO (Either TaskIntakeError Translation.TaskIntakeAccepted)
+runTaskIntakeP : StoreAppEnv Event.StoredEvent -> Translation.TaskIntakeSignal -> Promise Error IO (Either TaskIntakeError Routing.TaskIntakeAccepted)
 runTaskIntakeP env signal = promise $ \resolve, _ => do
   result <- runReaderT env (executeTaskIntakeInStore signal)
   resolve result

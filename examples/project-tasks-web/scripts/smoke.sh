@@ -125,6 +125,12 @@ missing_intake_code=$(curl -sS -o "$TMP_DIR/missing-intake.txt" -w '%{http_code}
 echo "$missing_intake_code" | ${grep_cmd} '^404$'
 cat "$TMP_DIR/missing-intake.txt" | ${grep_cmd} 'project does not exist: project-404'
 
+missing_project_ref_code=$(curl -sS -o "$TMP_DIR/missing-project-ref.txt" -w '%{http_code}' -X POST "$BASE_URL/api/inbox/tasks" \
+  -H 'Content-Type: application/json' \
+  -d '{"projectRef":"   ","taskTitle":"Ghost task"}')
+echo "$missing_project_ref_code" | ${grep_cmd} '^400$'
+cat "$TMP_DIR/missing-project-ref.txt" | ${grep_cmd} 'project reference is required.'
+
 create_project_code=$(curl -sS -o "$TMP_DIR/create-project.txt" -w '%{http_code}' -X POST "$BASE_URL/api/projects/execute/project-1" \
   -H 'Content-Type: application/json' \
   -d '{"expectedVersion":0,"command":{"tag":"CreateProject","contents":"Alpha"}}')
@@ -155,6 +161,13 @@ PROJECT_TASKS_FILE="$TMP_DIR/project-tasks.log"
 curl -N -sS "$BASE_URL/api/projects/tasks-events/project-1/smoke-project" >"$PROJECT_TASKS_FILE" 2>"$TMP_DIR/project-tasks.err" &
 PROJECT_TASKS_PID=$!
 wait_for_event "Project tasks connected" '^: connected' "$PROJECT_TASKS_FILE"
+
+blank_task_code=$(curl -sS -o "$TMP_DIR/blank-task.txt" -w '%{http_code}' -X POST "$BASE_URL/api/inbox/tasks" \
+  -H 'Content-Type: application/json' \
+  -d '{"projectRef":"project-1","taskTitle":"   "}')
+echo "$blank_task_code" | ${grep_cmd} '^400$'
+cat "$TMP_DIR/blank-task.txt" | ${grep_cmd} 'task title is required.'
+curl -fsS "$BASE_URL/api/projects/tasks/project-1" | ${grep_cmd} '^\[\]$'
 
 create_task_code=$(curl -sS -o "$TMP_DIR/create-task.txt" -w '%{http_code}' -X POST "$BASE_URL/api/inbox/tasks" \
   -H 'Content-Type: application/json' \

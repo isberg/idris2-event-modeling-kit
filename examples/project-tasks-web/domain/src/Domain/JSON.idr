@@ -5,6 +5,7 @@ import Derive.Prelude
 import Derive.ToJSON
 import Domain.Event
 import Domain.Project
+import Domain.Routing
 import Domain.Task
 import Domain.Translation
 import JSON
@@ -23,4 +24,4 @@ import JSON
 %runElab derive "Domain.Task.TaskSummary" [ToJSON, FromJSON]
 %runElab derive "Domain.Task.TaskDetail" [ToJSON, FromJSON]
 %runElab derive "Domain.Translation.TaskIntakeSignal" [ToJSON, FromJSON]
-%runElab derive "Domain.Translation.TaskIntakeAccepted" [ToJSON, FromJSON]
+%runElab derive "Domain.Routing.TaskIntakeAccepted" [ToJSON, FromJSON]

@@ -2,6 +2,7 @@ module Domain.JSON.Simple
 
 import Domain.Event
 import Domain.Project
+import Domain.Routing
 import Domain.Task
 import Domain.Translation
 import JSON.Simple.Derive
@@ -20,4 +21,4 @@ import JSON.Simple.Derive
 %runElab derive "Domain.Task.TaskSummary" [ToJSON, FromJSON]
 %runElab derive "Domain.Task.TaskDetail" [ToJSON, FromJSON]
 %runElab derive "Domain.Translation.TaskIntakeSignal" [ToJSON, FromJSON]
-%runElab derive "Domain.Translation.TaskIntakeAccepted" [ToJSON, FromJSON]
+%runElab derive "Domain.Routing.TaskIntakeAccepted" [ToJSON, FromJSON]
