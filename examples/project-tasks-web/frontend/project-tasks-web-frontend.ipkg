@@ -4,7 +4,11 @@ authors = ""
 
 sourcedir = "src"
 
-modules = FrontendMain
+modules = Frontend.State
+        , Frontend.Routes
+        , Frontend.View
+        , Frontend.Update
+        , FrontendMain
 
 main = FrontendMain
 executable = "project_tasks_web_frontend.js"
