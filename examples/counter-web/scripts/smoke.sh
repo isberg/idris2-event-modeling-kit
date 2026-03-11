@@ -58,7 +58,7 @@ wait_for_event() {
   local pattern="$2"
   local file="$3"
   for _ in $(seq 1 100); do
-    if ${grep_cmd} "$pattern" "$file"; then
+    if [[ -f "$file" ]] && ${grep_cmd} "$pattern" "$file"; then
       echo "$label"
       return 0
     fi
