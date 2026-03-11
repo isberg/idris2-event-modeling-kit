@@ -1,5 +1,8 @@
 # Getting Started
 
+For a fast repository overview, start with `docs/START-HERE.md`.
+
+
 This repository is a package workspace plus a set of examples.
 
 If you are new to `emkit`, do not start by reading every package. Start by reading one small example end to end.

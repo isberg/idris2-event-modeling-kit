@@ -50,6 +50,12 @@ This repository is not an application. It is a package workspace intended to sho
 
 ## Notes
 
+- `docs/START-HERE.md`
+  Public entry point for new readers: learning path, starter path, and release-readiness path.
+- `docs/publishing.md`
+  Current publication gates, release waves, and the remaining hard blockers before GitHub and pack-db publication.
+- `docs/package-readiness.md`
+  Package-by-package readiness matrix for the first public release waves.
 - `docs/getting-started.md`
   Recommended learning path for humans and AI agents.
 - `docs/pattern-map.md`
@@ -135,6 +141,11 @@ Copy the starter manually or with the helper script:
     cat COPYING.md
 
     ./scripts/copy-starter.sh /tmp/my-app my-app --title "My App"
+
+## Verification
+
+- `scripts/verify-release.sh`
+  Canonical pre-publication verification command. It runs the workspace build plus representative smoke checks from the tutorial, examples, and starter.
 
 ## Repository Rule
 
