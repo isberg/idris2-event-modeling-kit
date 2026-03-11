@@ -46,7 +46,7 @@ This repository is not an application. It is a package workspace intended to sho
 ## Starters
 
 - `starters/web-single-stream`
-  Narrow copy target for a first SSE-first web application: one fixed stream, one screen, typed execute/resync payloads, live replayable feed, and the shared memory/file backend shell.
+  Narrow copy target for a first SSE-first web application: one fixed stream, one screen, typed execute/resync payloads, live replayable feed, and the shared memory/file backend shell. Supports both a manual copy path and a helper script for the mechanical rename layer.
 
 ## Notes
 
@@ -128,6 +128,13 @@ Build and smoke the starter:
     ./scripts/build.sh
     ./scripts/smoke.sh --port 3018
     ./scripts/smoke.sh --port 3019 --skip-build --file-store "$(mktemp -d)"
+
+Copy the starter manually or with the helper script:
+
+    cd starters/web-single-stream
+    cat COPYING.md
+
+    ./scripts/copy-starter.sh /tmp/my-app my-app --title "My App"
 
 ## Repository Rule
 

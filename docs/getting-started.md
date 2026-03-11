@@ -63,13 +63,17 @@ Why:
 - typed execute, resync, and stream-event payloads
 - fixed stream id so the routing surface stays trivial
 - intended to be copied and renamed for a first real app
+- supports both:
+  - manual copy with `COPYING.md`
+  - scripted copy with `scripts/copy-starter.sh`
 
 Read in this order:
 1. `starters/web-single-stream/README.md`
-2. `starters/web-single-stream/domain/src/Domain.idr`
-3. `starters/web-single-stream/backend/src/BackendMain.idr`
-4. `starters/web-single-stream/frontend/src/FrontendMain.idr`
-5. `starters/web-single-stream/scripts/smoke.sh`
+2. `starters/web-single-stream/COPYING.md`
+3. `starters/web-single-stream/domain/src/Domain.idr`
+4. `starters/web-single-stream/backend/src/BackendMain.idr`
+5. `starters/web-single-stream/frontend/src/FrontendMain.idr`
+6. `starters/web-single-stream/scripts/smoke.sh`
 
 ## Web Progression
 
