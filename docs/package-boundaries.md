@@ -157,14 +157,15 @@ After splitting `examples/project-tasks-web/frontend/src/FrontendMain.idr` into 
 
 The split made the app easier to read without producing a strong new shared API candidate. The remaining repeated burden lives mostly in `Frontend.Update`, where decode failure handling, reload-versus-resync policy, selected-state guards, and status text are still tightly coupled.
 
-After tightening the task-intake boundary in `examples/project-tasks-web`, one more translation boundary is clearer:
+After tightening the task-intake boundary in `examples/project-tasks-web` and adding a second direct task-action intake, one more translation boundary is clearer:
 
 - pure translation can stay at `signal -> intent`,
 - routing and context resolution should stay separate from that pure translation step,
+- sometimes routing is only a direct carry-through of boundary metadata and does not need category lookup,
 - aggregate-local legality should stay in the target decider,
 - view loading, routing, and command execution still belong app-local for now.
 
-This is enough evidence to say the shared `Translation` interface is still fine for pure boundary interpretation. What remains under-specified is not the pure translation step itself, but any shared abstraction for context-dependent routing after translation.
+This is enough evidence to say the shared `Translation` interface is still fine for pure boundary interpretation. What remains under-specified is not the pure translation step itself, but any shared abstraction for routing after translation, especially when some cases need category lookup and some only need direct stream targeting.
 
 The same app now also confirms one naming rule:
 
