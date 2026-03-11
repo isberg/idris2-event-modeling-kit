@@ -1,3 +1,6 @@
 /build/
 **/build/
 examples/*/static/frontend.js
+*.db
+*.log
+*.tmp

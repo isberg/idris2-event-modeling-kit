@@ -1,6 +1,9 @@
 package emkit-modeling
 version = 0.1.0
-authors = ""
+authors = "Jonas Isberg"
+maintainers = "Jonas Isberg"
+readme = "README.md"
+brief = "Event Modeling runtime helpers and contracts for Idris2."
 
 sourcedir = "src"
 

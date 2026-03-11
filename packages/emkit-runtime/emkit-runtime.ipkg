@@ -1,6 +1,9 @@
 package emkit-runtime
 version = 0.1.0
-authors = ""
+authors = "Jonas Isberg"
+maintainers = "Jonas Isberg"
+readme = "README.md"
+brief = "Runtime helpers for store-backed emkit applications."
 
 sourcedir = "src"
 

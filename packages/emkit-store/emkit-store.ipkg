@@ -1,6 +1,9 @@
 package emkit-store
 version = 0.1.0
-authors = ""
+authors = "Jonas Isberg"
+maintainers = "Jonas Isberg"
+readme = "README.md"
+brief = "Persistence contracts and basic adapters for event streams."
 
 sourcedir = "src"
 

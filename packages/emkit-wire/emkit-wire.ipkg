@@ -1,6 +1,9 @@
 package emkit-wire
 version = 0.1.0
-authors = ""
+authors = "Jonas Isberg"
+maintainers = "Jonas Isberg"
+readme = "README.md"
+brief = "Shared wire contracts and JSON codecs for event-oriented applications."
 
 sourcedir = "src"
 

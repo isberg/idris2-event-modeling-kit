@@ -1,6 +1,9 @@
 package emkit-stream
 version = 0.1.0
-authors = ""
+authors = "Jonas Isberg"
+maintainers = "Jonas Isberg"
+readme = "README.md"
+brief = "Stream version and SSE framing helpers for emkit."
 
 sourcedir = "src"
 

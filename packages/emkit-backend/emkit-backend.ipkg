@@ -1,6 +1,9 @@
 package emkit-backend
 version = 0.1.1
-authors = ""
+authors = "Jonas Isberg"
+maintainers = "Jonas Isberg"
+readme = "README.md"
+brief = "Shared backend adapters for event-oriented Idris2 web applications."
 
 sourcedir = "src"
 

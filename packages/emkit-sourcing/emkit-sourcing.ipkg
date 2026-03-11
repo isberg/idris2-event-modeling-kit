@@ -1,6 +1,9 @@
 package emkit-sourcing
 version = 0.1.0
-authors = ""
+authors = "Jonas Isberg"
+maintainers = "Jonas Isberg"
+readme = "README.md"
+brief = "Pure event-sourcing algebra for Idris2."
 
 sourcedir = "src"
 
