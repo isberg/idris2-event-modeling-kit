@@ -4,7 +4,7 @@ Reusable Idris2 packages for building event-modeled, event-sourced, SSE-first ap
 
 This repository is not an application. It is a package workspace intended to shorten the path from idea to running system by providing stable shared contracts and helpers.
 
-Licensed under `MIT`.
+Licensed under `MIT`. Repository: `https://github.com/isberg/idris2-event-modeling-kit`.
 
 ## Current Packages
 

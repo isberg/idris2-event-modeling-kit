@@ -4,6 +4,10 @@ authors = "Jonas Isberg"
 maintainers = "Jonas Isberg"
 readme = "README.md"
 brief = "Shared frontend adapters for event-oriented Idris2 web applications."
+license = "MIT"
+homepage = "https://github.com/isberg/idris2-event-modeling-kit"
+sourceloc = "https://github.com/isberg/idris2-event-modeling-kit"
+bugtracker = "https://github.com/isberg/idris2-event-modeling-kit/issues"
 
 sourcedir = "src"
 

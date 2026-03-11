@@ -4,6 +4,10 @@ authors = "Jonas Isberg"
 maintainers = "Jonas Isberg"
 readme = "README.md"
 brief = "Pure event-sourcing algebra for Idris2."
+license = "MIT"
+homepage = "https://github.com/isberg/idris2-event-modeling-kit"
+sourceloc = "https://github.com/isberg/idris2-event-modeling-kit"
+bugtracker = "https://github.com/isberg/idris2-event-modeling-kit/issues"
 
 sourcedir = "src"
 

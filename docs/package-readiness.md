@@ -7,7 +7,7 @@ Status values:
 - `needs-more-hardening`: useful and exercised, but still more opinionated or less externally tested
 
 Global blockers still affecting every package:
-- no public GitHub remote metadata wired into package fields yet
+- release wave versions and public repo URL metadata should be treated as final enough for first publication
 
 | Package | Current Version | Wave | Status | Evidence | Main Remaining Risk |
 |---|---:|---:|---|---|---|

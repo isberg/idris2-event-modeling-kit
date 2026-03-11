@@ -51,6 +51,9 @@ Before making the repository public, complete these gates:
 4. Maintainer metadata
 - confirm package author/maintainer identity in `.ipkg` files is the intended public identity
 
+5. Repository metadata
+- public GitHub repository URL is wired into package metadata
+
 ## Pack-DB Submission Gates
 
 Each package should only be submitted when all of the following are true:
