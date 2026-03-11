@@ -1,0 +1,16 @@
+package tutorial-counter-stage-01
+version = 0.1.0
+authors = ""
+
+sourcedir = "src"
+main = Main
+executable = tutorial-counter-stage-01
+
+modules = Domain
+        , Main
+
+depends = base
+        , contrib
+        , emkit-sourcing
+        , emkit-runtime
+        , emkit-store

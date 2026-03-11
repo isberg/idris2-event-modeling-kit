@@ -27,6 +27,18 @@ pack build
 cd "$repo_root/packages/emkit-frontend"
 pack build
 
+cd "$repo_root/tutorials/counter-stages/01-state-change"
+pack build
+
+cd "$repo_root/tutorials/counter-stages/02-view"
+pack build
+
+cd "$repo_root/tutorials/counter-stages/03-translation"
+pack build
+
+cd "$repo_root/tutorials/counter-stages/04-automation"
+pack build
+
 cd "$repo_root/examples/counter-console"
 pack build
 

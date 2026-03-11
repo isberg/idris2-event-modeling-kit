@@ -7,10 +7,14 @@ If you are new to `emkit`, do not start by reading every package. Start by readi
 ## Recommended Order
 
 ### Human path
-1. `examples/counter-console`
-2. `examples/counter-web`
-3. `examples/todo-web`
-4. `examples/project-tasks-web`
+1. `tutorials/counter-stages/01-state-change`
+2. `tutorials/counter-stages/02-view`
+3. `tutorials/counter-stages/03-translation`
+4. `tutorials/counter-stages/04-automation`
+5. `examples/counter-console`
+6. `examples/counter-web`
+7. `examples/todo-web`
+8. `examples/project-tasks-web`
 
 ### AI path
 1. Read `README.md`
@@ -21,7 +25,7 @@ If you are new to `emkit`, do not start by reading every package. Start by readi
 
 ## First Example
 
-Start with `examples/counter-console`.
+Start with `tutorials/counter-stages` if you want the same app to grow pattern by pattern. Start with `examples/counter-console` if you want the smallest existing reference example.
 
 Why:
 - smallest full application in the repo

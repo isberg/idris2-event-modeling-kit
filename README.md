@@ -38,12 +38,19 @@ This repository is not an application. It is a package workspace intended to sho
 - `examples/project-tasks-web`
   Multi-category SSE-first web application with `project-*` and `task-*` streams, aggregate-local project/task events, neutral aggregate-local `ProjectModel` and `TaskModel` folds, an app-local stored-event wrapper, a project overview feed, project-scoped task category feeds, per-project and per-task detail feeds, typed execute/resync payloads, and both memory/file store smoke paths. It now uses the shared backend store-app shell and shared mapped stored-event helpers for execute, summary queries, and SSE replay/live subscriptions. It includes a first Automation Pattern slice, where all-done task state triggers `CompleteProject`, and two Translation Pattern slices: one with pure signal-to-intent translation plus context-based routing for task creation, and one with pure signal-to-intent translation plus direct routing for task actions on existing streams.
 
+## Tutorial
+
+- `tutorials/counter-stages/README.md`
+  One counter app grown through four runnable slices: state change, view, translation, and automation.
+
 ## Notes
 
 - `docs/getting-started.md`
   Recommended learning path for humans and AI agents.
 - `docs/pattern-map.md`
   Pattern-to-code map for the four Event Modeling patterns and the glue layers.
+- `docs/slice-contracts.md`
+  How to grow an app pattern by pattern and what to freeze before parallel work.
 - `docs/package-boundaries.md`
   Current package ownership and extraction boundaries.
 - `docs/sse-feed-boundaries.md`

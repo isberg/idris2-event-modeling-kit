@@ -1,0 +1,4 @@
+[custom.all.tutorial-counter-stage-03]
+type = "local"
+path = "."
+ipkg = "tutorial-counter-stage-03.ipkg"
