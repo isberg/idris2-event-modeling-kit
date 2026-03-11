@@ -150,6 +150,13 @@ That run did not justify a new shared extraction on its own. It did confirm thre
 - keep aggregate-local `Decider` and `Projection` instances on aggregate-local event types,
 - keep backend and frontend consolidated until repeated cross-category ceremony becomes clearer than the domain policy.
 
+After splitting `examples/project-tasks-web/frontend/src/FrontendMain.idr` into app-local `State`, `Routes`, `View`, and `Update` modules, one more frontend boundary is clearer:
+
+- shared lifecycle helpers were worth extracting,
+- route wiring, rendering, and controller recovery should still stay app-local for now.
+
+The split made the app easier to read without producing a strong new shared API candidate. The remaining repeated burden lives mostly in `Frontend.Update`, where decode failure handling, reload-versus-resync policy, selected-state guards, and status text are still tightly coupled.
+
 The same app now also confirms one naming rule:
 
 - when the same aggregate-local fold serves both write-side validation and read-side projection without divergence, prefer one neutral `Model` type,
