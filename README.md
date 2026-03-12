@@ -44,6 +44,8 @@ Licensed under `MIT`. Repository: `https://github.com/isberg/idris2-event-modeli
 
 - `tutorials/counter-stages/README.md`
   One counter app grown through four runnable slices: state change, view, translation, and automation.
+- `tutorials/wave1-kernel/README.md`
+  Narrow downstream consumer for the proposed first pack-db release wave. It depends only on the four Wave 1 packages.
 
 ## Starters
 
@@ -58,6 +60,8 @@ Licensed under `MIT`. Repository: `https://github.com/isberg/idris2-event-modeli
   Current publication gates, release waves, and the remaining hard blockers before GitHub and pack-db publication.
 - `docs/package-readiness.md`
   Package-by-package readiness matrix for the first public release waves.
+- `docs/pack-db-wave1.md`
+  Exact candidate first-wave package set, dependency check, verification path, and draft `HEAD.toml` entries for pack-db.
 - `docs/getting-started.md`
   Recommended learning path for humans and AI agents.
 - `docs/pattern-map.md`
@@ -148,6 +152,8 @@ Copy the starter manually or with the helper script:
 
 - `scripts/verify-release.sh`
   Canonical pre-publication verification command. It runs the workspace build plus representative smoke checks from the tutorial, examples, and starter.
+- `scripts/verify-wave1.sh`
+  Narrow verification command for the proposed first pack-db release wave.
 
 ## Repository Rule
 

@@ -7,7 +7,7 @@ Status values:
 - `needs-more-hardening`: useful and exercised, but still more opinionated or less externally tested
 
 Global blockers still affecting every package:
-- release wave versions and public repo URL metadata should be treated as final enough for first publication
+- Wave 1 version freeze is now settled at `0.1.0`; later waves remain intentionally open
 
 | Package | Current Version | Wave | Status | Evidence | Main Remaining Risk |
 |---|---:|---:|---|---|---|

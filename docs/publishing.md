@@ -82,7 +82,7 @@ At the time of writing, that means pack-db submission still requires:
 - `emkit-modeling`
 - `emkit-wire`
 
-These are the most stable and least framework-heavy.
+These are the most stable and least framework-heavy. Their first public versions are currently frozen at `0.1.0`, and the current Wave 1 handoff material lives in `docs/pack-db-wave1.md`.
 
 ### Wave 2
 - `emkit-store`
