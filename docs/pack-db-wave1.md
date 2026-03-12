@@ -52,6 +52,22 @@ Confirmed present in current pack-db `HEAD`:
 - `json`
 - `json-simple`
 
+## Naming Review Against Current pack-db STATUS
+
+Checked against the current `STATUS.md` on March 12, 2026.
+
+Conclusions:
+- there are currently no `emkit-*` name collisions in pack-db
+- prefixed package families are normal in pack-db
+- multiple sibling packages from one repository are also normal
+
+Relevant examples from current `STATUS.md`:
+- `async`, `async-dom`, `async-epoll`, `async-js`, `async-posix`, `async-spec`
+- `ilex`, `ilex-core`, `ilex-debug`, `ilex-fasta`, `ilex-json`, `ilex-streams`, `ilex-toml`
+- `json`, `json-simple`
+
+That means the current `emkit-*` naming is appropriate, and a four-package first wave is not unusually fragmented for pack-db.
+
 ## Candidate HEAD.toml Entries
 
 These are the candidate package entries to adapt into a pack-db PR.
