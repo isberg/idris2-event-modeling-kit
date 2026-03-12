@@ -1,0 +1,4 @@
+[custom.all.tutorial-wave1-kernel]
+type = "local"
+path = "."
+ipkg = "tutorial-wave1-kernel.ipkg"

@@ -1,0 +1,18 @@
+package tutorial-wave1-kernel
+version = 0.1.0
+authors = "Jonas Isberg"
+
+sourcedir = "src"
+main = Main
+executable = tutorial-wave1-kernel
+
+modules = Domain
+        , Domain.JSON.Simple
+        , Main
+
+depends = base
+        , emkit-sourcing
+        , emkit-stream
+        , emkit-modeling
+        , emkit-wire
+        , json-simple

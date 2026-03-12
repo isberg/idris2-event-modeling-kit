@@ -39,6 +39,9 @@ pack build
 cd "$repo_root/tutorials/counter-stages/04-automation"
 pack build
 
+cd "$repo_root/tutorials/wave1-kernel"
+pack build
+
 cd "$repo_root/examples/counter-console"
 pack build
 
