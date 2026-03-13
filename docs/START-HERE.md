@@ -1,6 +1,6 @@
 # Start Here
 
-This repository has three different entry paths, depending on what you are trying to do.
+This repository has two main entry paths, depending on what you are trying to do.
 
 ## 1. Learn The Core Pattern Stack
 
@@ -29,14 +29,6 @@ cd starters/web-single-stream
 ./scripts/copy-starter.sh /tmp/my-app my-app --title "My App"
 ```
 
-## 3. Evaluate Release Readiness
-
-Start here if you want to understand whether the workspace is ready for public publication or pack-db submission.
-
-1. `docs/publishing.md`
-2. `docs/package-readiness.md`
-3. `scripts/verify-release.sh`
-
 ## Recommended First Technical Read
 
 If you only read one example first, use:
@@ -47,3 +39,12 @@ If you only read one web example first, use:
 
 If you want the full pattern map in one app, use:
 - `examples/project-tasks-web`
+
+## Advanced And Maintainer Material
+
+If you already understand the basics and want deeper architecture or release material, use:
+
+- `docs/package-boundaries.md`
+- `docs/slice-contracts.md`
+- `docs/sse-feed-boundaries.md`
+- `docs/maintainers/README.md`

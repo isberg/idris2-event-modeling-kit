@@ -44,34 +44,34 @@ Licensed under `MIT`. Repository: `https://github.com/isberg/idris2-event-modeli
 
 - `tutorials/counter-stages/README.md`
   One counter app grown through four runnable slices: state change, view, translation, and automation.
-- `tutorials/wave1-kernel/README.md`
-  Narrow downstream consumer for the proposed first pack-db release wave. It depends only on the four Wave 1 packages.
 
 ## Starters
 
 - `starters/web-single-stream`
   Narrow copy target for a first SSE-first web application: one fixed stream, one screen, typed execute/resync payloads, live replayable feed, and the shared memory/file backend shell. Supports a manual copy path, a helper script for the mechanical rename layer, and a post-copy checklist for controlled domain replacement.
 
-## Notes
+## Learn
 
 - `docs/START-HERE.md`
-  Public entry point for new readers: learning path, starter path, and release-readiness path.
-- `docs/publishing.md`
-  Current publication gates, release waves, and the remaining hard blockers before GitHub and pack-db publication.
-- `docs/package-readiness.md`
-  Package-by-package readiness matrix for the first public release waves.
-- `docs/pack-db-wave1.md`
-  Exact candidate first-wave package set, dependency check, verification path, and draft `HEAD.toml` entries for pack-db.
+  Public entry point for new readers: learning path and starter path.
 - `docs/getting-started.md`
   Recommended learning path for humans and AI agents.
 - `docs/pattern-map.md`
   Pattern-to-code map for the four Event Modeling patterns and the glue layers.
+
+## Advanced Docs
+
 - `docs/slice-contracts.md`
   How to grow an app pattern by pattern and what to freeze before parallel work.
 - `docs/package-boundaries.md`
   Current package ownership and extraction boundaries.
 - `docs/sse-feed-boundaries.md`
   Current stance on per-stream feeds, category feeds, replay semantics, and client-side projection safety.
+
+## Maintainer Docs
+
+- `docs/maintainers/README.md`
+  Release, pack-db, and package-readiness notes for repository maintainers.
 
 See also the `README.md` in each example directory for what that example teaches and what files to read first.
 
@@ -151,9 +151,9 @@ Copy the starter manually or with the helper script:
 ## Verification
 
 - `scripts/verify-release.sh`
-  Canonical pre-publication verification command. It runs the workspace build plus representative smoke checks from the tutorial, examples, and starter.
-- `scripts/verify-wave1.sh`
-  Narrow verification command for the proposed first pack-db release wave.
+  Canonical whole-repo verification command. It runs the workspace build plus representative smoke checks from the tutorial, examples, and starter.
+
+Maintainer-specific release verification notes live under `docs/maintainers/README.md`.
 
 ## Repository Rule
 
